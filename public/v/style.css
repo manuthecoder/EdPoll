@@ -1,0 +1,106 @@
+* {-webkit-tap-highlight-color: transparent;box-sizing: border-box;}
+.disabled {
+	pointer-events: none;
+	opacity: .5
+}
+.btn {
+	box-shadow: none !important;
+	text-transform: none !important
+}
+.waves-effect .waves-ripple {
+	transition: all .4s !important
+}
+.progress {margin: 0 !important}
+nav a {
+	color: gray !important
+}
+nav {
+	box-shadow: 0 0 10px #ccc !important;
+	position: fixed;
+	top: 0;
+	z-index: 1;
+	left: 0;
+}
+body {
+	margin-top: 65px;
+}
+.loading h3 {
+	width: 100%;
+	height: 50px;
+	border-radius: 100px;
+	background: rgba(200, 200, 200, .3);
+	animation: loading 1s infinite;
+	color: transparent !important
+}
+.loading #date {
+	width: 75%;
+	height: 30px;
+	border-radius: 100px;
+	background: rgba(200, 200, 200, .3);
+	animation: loading 2s infinite;
+	color: transparent !important
+}
+.loading .cardLoading {
+	width: 100%;
+	height: 70px;
+	border-radius: 10px;
+	margin-bottom: 10px;
+	background: rgba(200, 200, 200, .3);
+	animation: loading 1s infinite linear
+}
+
+
+@keyframes loading {
+	0% {background: rgba(200, 200, 200, .3);}
+	50% {background: rgba(200, 200, 200, .6)}
+	100% {background: rgba(200, 200, 200, .3);}
+}
+.card {
+	width: 100%
+}
+
+			.progress {
+	background: #b3e5fc !important;
+	transition: all .2s !important
+}
+.determinate {
+	background: #0277bd !important;
+	transition: all .2s !important
+}
+			.dark_mode .progress {
+				background: rgba(255, 255, 255, .1) !important
+			}
+			.dark_mode .determinate {
+				background: white !important
+			}
+      .dark_mode body {
+        background: #212121 !important;
+        color: white;
+      }
+      .dark_mode .card {
+        background: rgba(255, 255, 255, 0.1) !important;
+      }
+      .dark_mode .waves-effect .waves-ripple {
+        background: rgba(255, 255, 255, 0.3) !important;
+      }
+      .dark_mode nav,
+      .dark_mode footer {
+        background: #303030 !important;
+        box-shadow: none !important;
+      }
+      .dark_mode nav a {
+        color: #fff !important;
+      }
+      .dark_mode input {
+        color: white !important;
+      }
+      * {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+      }
+			.chip{
+				background: rgba(200, 200, 200, .3) !important
+			}
+			.dark_mode .chip {
+				color: white !important
+			}
