@@ -3,6 +3,79 @@
 	pointer-events: none;
 	opacity: .5
 }
+.iframe nav {
+	display: none !important
+}
+.iframe body {
+	margin-top: 0 !important
+}
+.iframe .col.s12.m4 {
+	padding-top: 100px !important
+}
+*:not(.material-icons,.fa) {
+	font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif !important;
+}
+.btn {
+	box-shadow: none !important;
+	text-transform: none !important
+}
+.waves-effect .waves-ripple {
+	transition: all .4s !important
+}
+.progress {margin: 0 !important}
+nav a {
+	color: gray !important
+}
+nav {
+	box-shadow: 0 0 10px #ccc !important;
+	position: fixed;
+	top: 0;
+	z-index: 1;
+	left: 0;
+}
+body {
+	margin-top: 60px;
+}
+.loading h3 {
+	width: 100%;
+	height: 50px;
+	border-radius: 100px;
+	background: #eee;
+	animation: loading 1s infinite;
+	color: transparent !important
+}
+.loading #date {
+	width: 75%;
+	height: 30px;
+	border-radius: 100px;
+	background: #eee;
+	animation: loading 2s infinite;
+	color: transparent !important
+}
+.loading .cardLoading {
+	width: 100%;
+	height: 70px;
+	border-radius: 10px;
+	margin-bottom: 10px;
+	background: #eee;
+	animation: loading 1s infinite linear
+}
+
+
+@keyframes loading {
+	0% {background: #eee;}
+	50% {background: #ddd}
+	100% {background: #eee;}
+}
+.card {
+	width: 100%
+}
+
+* {-webkit-tap-highlight-color: transparent;box-sizing: border-box;}
+.disabled {
+	pointer-events: none;
+	opacity: .5
+}
 .btn {
 	box-shadow: none !important;
 	text-transform: none !important
@@ -73,7 +146,7 @@ body {
 			.dark_mode .determinate {
 				background: white !important
 			}
-      .dark_mode body {
+      .dark_mode body,.dark_mode html {
         background: #212121 !important;
         color: white;
       }
@@ -104,3 +177,4 @@ body {
 			.dark_mode .chip {
 				color: white !important
 			}
+			

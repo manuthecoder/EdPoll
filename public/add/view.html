@@ -1,0 +1,170 @@
+<div id="main">
+
+</div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script>
+	var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				document.title = "View"
+			  var data = JSON.parse(this.responseText);
+				var el = document.getElementById("main");
+				console.log(data[id])
+				var tags = ""
+				data[id].categories.forEach((e) => {
+					tags += `<div class="chip">${e}</div>`
+				})
+				el.innerHTML = `
+				<br><br>
+				<input class="js-copytextarea" type="text" style="border: 0;font-size: 50px;overflow: visible !important;box-shadow: none !important;height: 100px !important" readonly value="poll.rf.gd/${id}">
+				<div class="fixed-action-btn">
+				<button id="presentBTN" class="btn blue-grey btn-fixed btn-large darken-3 waves-effect waves-light btn-floating bt" onclick="presentCode(${id})"><i class="material-icons">present_to_all</i></button>
+				</div>
+				<hr>
+				
+				<a href="javascript:void(0)" class="tooltipped fa fa-link js-textareacopybtn" data-position="bottom" data-tooltip="Copy Link"></a>
+				<a href="javascript:void(0)" class="tooltipped fa fa-code js-textareacopybtn" data-position="bottom" data-tooltip="Embed" onclick="c_embed(${id})"></a>
+        <a href="mailto:example@example.net?subject=Today's%20Poll&body=Hi%2C%0D%0AHere's%20the%20link%20for%20today's%20poll%3A%20https%3A%2F%2Fedpoll.ga%2Fv%2F${id}%0D%0A%0D%0AThanks!%0D%0ASincerely%2C%0D%0A_____" data-position="bottom" data-tooltip="Generate email template with link" class="tooltipped fa fa-envelope"></a>
+        <a href="https://classroom.google.com/share?url=https%3A%2F%2Fedpoll.ga%2Fvote%2F${id}" data-position="bottom" data-tooltip="Share to classroom" class="tooltipped fa fa-book"></a>
+
+		<a href="http://www.facebook.com/sharer.php?u=https%3A%2F%2Fedpoll.ga%2Fvote%2F${id}" data-position="bottom" data-tooltip="Facebook" class="tooltipped fa fa-facebook"></a>
+<a href="http://twitter.com/share?text=EdPoll - Poll&url=https%3A%2F%2Fedpoll.ga%2Fvote%2F${id}&hashtags=#EdPoll, #Poll" data-position="bottom" data-tooltip="Copy Link" class="fa fa-twitter"></a>
+<a href="http://pinterest.com/pin/create/button/?pin=https%3A%2F%2Fedpoll.ga%2Fvote%2F${id}" data-position="bottom" data-tooltip="Pinterest" class="tooltipped fa fa-pinterest"></a>
+<p onclick="new clipboardText('https://${window.location.hostname}/e/${id}')">The direct link for the poll's embed is: <a href="https://${window.location.hostname}/e/${id}">https://${window.location.hostname}/e/${id}</a></p>
+<p onclick="new clipboardText('https://poll.rf.gd/${id}')">If our app is blocked by your organization, please try: <a target="_blank" href="https://poll.rf.gd/${id}">https://poll.rf.gd/${id}</a></p>
+<br><br>
+				<h4>Details<h4>
+				<h6>Title: ${data[id].title}</h6>
+				<h6>Date created: ${data[id].date}</h6>
+				<p>Description: ${data[id].desc || ""}</p>
+				<p>Tags: ${tags}</p>
+<br>
+<br>
+<br>
+<br>
+<br>
+				`
+				        
+var copyTextareaBtn = document.querySelector('.js-textareacopybtn');
+
+copyTextareaBtn.addEventListener('click', function(event) {
+  var copyTextarea = document.querySelector('.js-copytextarea');
+  var e  = copyTextarea.value;
+  copyTextarea.value = "https://"+copyTextarea.value
+  copyTextarea.focus();
+  copyTextarea.select();
+
+  try {
+    var successful = document.execCommand('copy');
+    var msg = successful ? 'successful' : 'unsuccessful';
+    console.log('Copying text command was ' + msg);
+    M.toast({html: "Copied!"})
+    copyTextarea.value = e
+  } catch (err) {
+    console.log('Oops, unable to copy');
+  }
+});
+$(".tooltipped").tooltip()
+			}
+		};
+		xhttp.open("GET", "https://"+window.location.hostname+"/database/polls.json", true);
+		xhttp.send();
+		
+		  
+function c_embed(id) {
+	new clipboardText(`<iframe src="https://edpoll.ga/e/${id}" style="border:0px #ffffff none;" name="myiFrame" scrolling="no" frameborder="1" marginheight="0px" marginwidth="0px" height="400px" width="600px" allowfullscreen></iframe>`)
+}
+var xhttp = new XMLHttpRequest();
+xhttp.onreadystatechange = function() {
+	if (this.readyState == 4 && this.status == 200) {
+		const json = JSON.parse(this.responseText);
+		var count = 0
+		json[id].options.forEach(e => {
+			count += e.votes
+		})
+		document.getElementById("count").innerHTML = count
+		$('.tap-target').tapTarget();
+		if(localStorage.getItem("a") !== "true") {
+			$('.tap-target').tapTarget("open");
+		}
+	}
+};
+xhttp.open("GET", "https://" +window.location.hostname+ "/database/polls.json", true);
+xhttp.send();
+
+function presentCode(id) {
+	localStorage.setItem("a", 'true')
+	$(".modal").modal({
+		onCloseEnd: function() {
+				window.onbeforeunload = null;
+				document.getElementById("present").onfullscreenchange = null;
+				document.exitFullscreen()
+		},
+		onOpenEnd: function() {
+			document.getElementById("present").requestFullscreen()
+			document.getElementById("s2").style.display = ""
+			setTimeout(function() {
+				document.getElementById("present").onfullscreenchange = function() {
+		$(".modal").modal('close')
+	}
+			}, 1000)
+		}
+	});
+	
+	$("#present").modal("open");
+	document.getElementById("h1").innerHTML = `poll.rf.gd/${id}`;
+	socket.on("votedNow", (e, s) => {
+		if(e == id) {
+			document.getElementById("count").innerHTML = (parseInt(document.getElementById("count").innerHTML) + 1)
+		}
+	})
+	window.onbeforeunload = function () {$(".modal").modal("close");}
+}
+</script>
+<div id="present" class="modal">
+	<div class="animatedIntro modal-content">
+		<a href="javascript:void(0)" class="right btn-floating btn-flat waves-effect modal-close" style="box-shadow: none !important;background: #eee;">
+			<i class="material-icons">close</i>
+		</a>
+		<a id="s2" href="javascript:void(0)" class="right btn-floating btn-flat waves-effect" onclick="document.exitFullscreen();this.style.display = 'none';" style="box-shadow: none !important;margin-right: 10px;">
+			<i class="material-icons">close_fullscreen</i>
+		</a>
+		<div style="position: fixed;top: 50%;left: 50%;transform: translate(-50%, -50%)" class="center">
+			<h1 id="h1"></h1>
+			<p class="center"><b><span id="count">0</span></b> people have voted</p>
+		</div>
+	</div>
+</div>
+<style>
+	.modal {
+		animation: animatedIntro .2s forwards;
+		background: white;
+		width: 100%;
+		opacity: 1 !important;
+		height: 100vh !important;
+		min-height: 100vh !important;
+		max-height: 100vh !important;
+		padding: 10px;
+		position: absolute;
+		top: 0 !important;
+		left: 0 !important;
+	}
+	.dark_mode .modal {
+		background: #212121 !important
+	}
+	.modal .btn-floating {
+		background: rgba(200, 200, 200, .3) !important
+	}
+	.modal .btn-floating i {
+		color: black !important
+	}
+	.dark_mode .modal .btn-floating i {
+		color: white !important
+	}
+</style>
+ <div class="tap-target white-text blue" data-target="presentBTN">
+    <div class="tap-target-content">
+      <h5>Introducing present mode!</h5>
+      <p>Now you can present an invite code to your entire team or class!</p>
+    </div>
+  </div>
