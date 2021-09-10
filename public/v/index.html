@@ -258,10 +258,15 @@
         transition: all 0s !important;
       }
 			.modal {
-				max-height: 90% !important;
+				max-height: 100vh !important;
+				opacity: 1 !important;
 				margin: auto !important;
-				min-height: 90% !important;
-				width: 90% !important;
+				height: 100vh !important;
+				min-height: 100vh !important;
+				position: fixed !important;
+				top: 0 !important;
+				left: 0 !important;
+				width: 100% !important;
 			}
 			@media only screen and (min-width: 992px) {
 				.modal {
@@ -272,9 +277,13 @@
   </head>
 
   <body class="loading">
-		<div id="feedback" class="modal bottom-sheet">
+		<div id="feedback" class="modal">
 			<div class="modal-content">
+				<a href="javascript:void(0)" class="right btn-floating btn-flat waves-effect modal-close" style="box-shadow: none !important;background: #eee;">
+					<i class="material-icons">close</i>
+				</a>
 				<h5>Feedback</h5>
+				<p>You may also contact us via this form. <b>Please provide a valid email, so that we can contact you</b></p>
 				<form action="https://formspree.io/f/mnqllrne" method="post">
 				<div class="input-field">
 					<label for="email">Your Email</label>
@@ -321,13 +330,13 @@
       </ul>
     </nav>
     <script src="../components.js"></script>
-		<audio src="https://padlet-uploads.storage.googleapis.com/446844750/f84dfa8a5cf0e025612f3517c2619e99/hero_simple_celebration_03.wav" id="check"></audio>
-		<audio src="https://padlet-uploads.storage.googleapis.com/446844750/0a02d7e08fe5b8a5d41b26ccda4f2404/Tada_sound.mp3" id="tada"></audio>
+		<audio src="https://padlet-uploads.storage.googleapis.com/446844750/f84dfa8a5cf0e025612f3517c2619e99/hero_simple_celebration_03.wav" id="check" preload="none"></audio>
+		<audio src="https://padlet-uploads.storage.googleapis.com/446844750/0a02d7e08fe5b8a5d41b26ccda4f2404/Tada_sound.mp3" id="tada" preload="none"></audio>
     <div class="container">
 			<br />
-			<div class="alert waves-effect" onclick="$('#feedback').modal('open');localStorage.setItem('feedback', 'true')" style="background: rgba(227, 242, 253, .3);border: 1px solid #1565c0;padding:10px;border-radius: 5px;width: 100%;">
+			<div class="alert waves-effect" onclick="$('#feedback').modal('open');localStorage.setItem('feedback', 'true')" style="background: rgba(227, 242, 253, .3);border: 1px solid #1565c0;padding:10px;border-radius: 5px;width: 100%;display:none">
 				<h5>Hey there!</h5>
-				<p>We've redesigned our app, and we want feedback!</p>
+				<p>We've redesigned our app, and we would love to hear your feedback!</p>
 			</div>
       <h3>
         <b id="title"></b>
@@ -336,7 +345,7 @@
 			<p id="desc"></p>
       <div id="chips" style="margin-top: 20px !important;"></div>
       <br />
-			<div class="row">
+			<div class="row" id="app">
 				<div class="col s12 m8">
       
 
@@ -360,7 +369,10 @@
       <br />
       <br />
     </div>
-		<div class="col s12 m4" id="social"></div>
+		<div class="col s12 m4" id="social">
+			<div class="cardLoading" style="height: 400px;"></div>
+			<div class="cardLoading" style="height: 400px;"></div>
+		</div>
 		</div>
 		</div>
 		 <!-- <script src="/socket.io/socket.io.js"></script> -->
@@ -386,6 +398,10 @@
 			$(".modal").modal();
 			if(localStorage.getItem('feedback')) {
 				document.getElementsByClassName("alert")[0].remove()
+			}
+			else {
+				document.getElementsByClassName("alert")[0].style.display = "block"
+
 			}
 		</script>
   </body>

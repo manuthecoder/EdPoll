@@ -25,7 +25,28 @@ function loadDoc() {
 var xhttp = new XMLHttpRequest();
 xhttp.onreadystatechange = function () {
   if (this.readyState == 4 && this.status == 200) {
-    var json = JSON.parse(this.responseText)[$_GET['id']];
+    var json = JSON.parse(this.responseText);
+		if(!json[$_GET['id']]) {
+			document.body.classList.remove("loading");
+			document.getElementById("app").innerHTML = `
+			<center>
+			<div class="container">
+			<div class="container">
+			<div class="container">
+			<img src="https://icons8.com/l/animations/images/Dancer.gif" width="100%">
+			</div>
+			</div>
+			</div>
+				<h1>404</h1>
+				<p>Poll doesn't exist. Invalid code? </p>
+			</center>
+			`;
+			document.getElementsByTagName("footer")[0].remove();
+			return false;
+		}
+		else {
+			json = json[$_GET['id']]
+		}
 		// alert(json)
 		var voteHistory = JSON.parse(localStorage.getItem("voteHistory")) || [];
 		
@@ -48,10 +69,11 @@ xhttp.onreadystatechange = function () {
 		document.getElementById("date").innerHTML = ""
 		document.getElementById("chips").innerHTML = ""
 		document.getElementById("desc").innerHTML = ""
-    document.getElementById("social").innerHTML += `
+			document.getElementById("social").innerHTML += `
 <div class="card"><div class="card-content"><h5><b>Live Chat</b></h5><iframe style="border: 0;height: 300px;width: 100%" loading="lazy" src="https://Smartlist-Events-Chat.manuthecoder.repl.co/?room=pollApp${poll.id}&name=Anonymous"></iframe></div></div>
 
 <div class="card"><div class="card-content"><h5><b id="totalVotes">${poll.totalVotes}</b></h5><p>Total votes</p><br><hr><img class="right materialboxed" src="https://api.qrserver.com/v1/create-qr-code/?size=900x900&data=https%3A%2F%2F${window.location.hostname}%2Fv%2F${poll.id}" style="position: relative;top: 5px;" width="30px"><h5>Share</h5><br>
+<a href="javascript:void(0)" class="tooltipped fa fa-code js-textareacopybtn" data-position="bottom" data-tooltip="Embed" onclick="c_embed(${poll.id})"></a>
 <a href="mailto:example@example.net?subject=Today's%20Poll&body=Hi%2C%0D%0AHere's%20the%20link%20for%20today's%20poll%3A%20https%3A%2F%2F${window.location.hostname}%2Fv%2F${poll.id}%0D%0A%0D%0AThanks!%0D%0ASincerely%2C%0D%0A_____" data-position="bottom" data-tooltip="Generate email template with link" class="tooltipped fa fa-envelope"></a>
 <a href="https://classroom.google.com/share?url=https%3A%2F%2F${window.location.hostname}%2Fv%2F${poll.id}" data-position="bottom" data-tooltip="Share to classroom" class="tooltipped fa fa-book"></a>
 
@@ -242,9 +264,14 @@ if ('serviceWorker' in navigator) {
     .then(() => { console.log('Service Worker Registered'); });
 }
 
+function c_embed(id) {
+	new clipboardText(`<iframe src="https://edpoll.ga/e/${$_GET['id']}" style="border:0px #ffffff none;" name="myiFrame" scrolling="no" frameborder="1" marginheight="0px" marginwidth="0px" height="400px" width="600px" allowfullscreen></iframe>`)
+}
 
 // REMOVE THIS!
-navigator.serviceWorker.getRegistrations().then(function(registrations) {
- for(let registration of registrations) {
-  registration.unregister()
-} })
+// navigator.serviceWorker.getRegistrations().then(function(registrations) {
+//  for(let registration of registrations) {
+//   registration.unregister()
+// } })
+
+$(".tooltipped").tooltip()

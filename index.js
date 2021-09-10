@@ -10,6 +10,8 @@ var mime = require("mime-types");
 const date = require("date-and-time");
 var Filter = require('bad-words');
 var customFilter = new Filter({ placeHolder: '*'});
+var CleanCSS = require('clean-css');
+var minify = require('html-minifier').minify;
 
 
 app.get("/", function (req, res, next) {
@@ -75,6 +77,32 @@ var myLogger = function (req, res, next) {
 			content = content.split("${__vars/id}").join(id);
 		}
 		
+	}
+	console.log(path.extname(url))
+	if(path.extname(url) == ".css") {
+		var input = content;
+		var options = { /* options */ };
+		content = new CleanCSS(options).minify(input).styles
+	}
+	else if(path.extname(url) == ".html") {
+		var result = minify(content, {
+			removeAttributeQuotes: true,
+			minifyJS: true,
+			collapseWhitespace: true,
+			continueOnParseError: true,
+			minifyCSS: true,
+		});
+		content = result.trim().replace(/(\r\n|\n|\r)/gm, "");
+	}
+	else if(path.extname(url) == ".js") {
+		var result = minify(`<script id="DEL_TAG_SCRIPT">
+		${content}
+		</script>`, {
+			minifyJS: true,
+		});
+		result = result.replace(`<script id="DEL_TAG_SCRIPT">`, "")
+		result = result.replace(`</script>`, "")
+		content = result.trim().replace(/(\r\n|\n|\r)/gm, "");
 	}
   res.send(content);
   console.log(req.query);
