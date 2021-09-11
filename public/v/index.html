@@ -173,7 +173,9 @@
         background: #cb2027;
         color: white;
       }
-
+			.progress {
+				border-radius: 0 !important
+			}
       .fa-trash {
         background: #f54245;
         color: white;
@@ -273,10 +275,20 @@
       .card {
         transition: all 0s !important;
       }
-			
+			.indeterminate {
+				background: #1565c0 !important
+			}
+			.progress {
+				background: #e3f2fd
+			}
+			.dark_mode .indeterminate {
+				background: white !important
+			}
     </style>
   </head>
-
+<div class="progress" style="position: fixed;top: 0;left: 0;z-index: 99999" id="loader">
+	<div class="indeterminate"></div>
+</div>
   <body class="loading">
 		<div id="feedback" class="modal">
 			<div class="modal-content">
@@ -335,7 +347,7 @@
 		<audio src="https://padlet-uploads.storage.googleapis.com/446844750/0a02d7e08fe5b8a5d41b26ccda4f2404/Tada_sound.mp3" id="tada" preload="none"></audio>
     <div class="container">
 			<br />
-			<div class="alert waves-effect" onclick="$('#feedback').modal('open');localStorage.setItem('feedback', 'true')" style="background: rgba(227, 242, 253, .3);border: 1px solid #1565c0;padding:10px;border-radius: 5px;width: 100%;display:none">
+			<div class="alert hide waves-effect" onclick="this.remove();$('#feedback').modal('open');localStorage.setItem('feedback', 'true')" style="background: rgba(227, 242, 253, .3);border: 1px solid #1565c0;padding:10px;border-radius: 5px;width: 100%;display:none">
 				<h5>Hey there!</h5>
 				<p>We've redesigned our app, and we would love to hear your feedback! <b>You may also contact us via email at: manuthecoder@protonmail.com</b></p>
 			</div>

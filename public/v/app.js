@@ -53,6 +53,7 @@ xhttp.onreadystatechange = function () {
     json.options.forEach((e) => {
       cc += e.votes;
     });
+		document.getElementById("loader").style.display = "none";
     const poll = {
       id: $_GET['id'],
       title: json.title,
@@ -61,8 +62,11 @@ xhttp.onreadystatechange = function () {
       categories: json.categories,
       answers: json.options,
       desc: (json.desc ? json.desc : ""),
-      banner: json.image.replace("?w=500", "")
+      banner: json.image
     };
+		if(poll.banner) {
+			poll.banner = poll.banner.replace("?w=500", "")
+		}
 		document.title = poll.title
 		document.getElementById("social").innerHTML = ""
 		document.getElementById("title").innerHTML = ""
@@ -141,6 +145,7 @@ var alreadyVoted = false;
 // 	}
 // })
 function vote(el, id) {
+	document.getElementById("loader").style.display = "block"
 	// if(el !== -1) el.style.pointerEvents = "none"
 	document.getElementById('check').play()
 	history.pushState(null, null, (window.location.href.includes("/r/") ? window.location.href : window.location.href.replace("/v/", "/r/")))
@@ -191,6 +196,7 @@ setTimeout(() => {
   $(".materialboxed").materialbox();
 }
 socket.on("votedNow", function (pollID, e) {
+	document.getElementById("loader").style.display = "none"
 	if(pollID !== $_GET['id']) {
 		return false;
 	}

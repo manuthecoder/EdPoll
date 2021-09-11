@@ -57,6 +57,13 @@ var _logger = (req, res, next) => {
     url = $_GET[0] + "/v/index.html";
     url = url;
   }
+	if (url.includes("/d/")) {
+		isPoll = true;
+    var $_GET = url.split("/d/");
+    req.query.results = $_GET[1];
+    url = $_GET[0] + "/delete.html";
+    url = url;
+  }
 	if (url.includes("/j/")) {
     var $_GET = url.split("/j/");
     req.query.id = $_GET[1];
@@ -95,7 +102,7 @@ var _logger = (req, res, next) => {
 			continueOnParseError: true,
 			minifyCSS: true,
 		});
-		content = result.trim().replace(/(\r\n|\n|\r)/gm, "");
+		content = result.replace(/(\r\n|\n|\r)/gm, "").trim();
 	}
 	else if(path.extname(url) == ".js") {
 		var result = minify(`<script id="DEL_TAG_SCRIPT">
@@ -167,5 +174,15 @@ io.on("connection", (socket) => {
       fs.writeFileSync("./public/database/polls.json",JSON.stringify(db),"utf-8");
     }
     io.emit("votedNow", pollID, db[pollID].options);
+  });
+
+	socket.on("deletePoll", (pollID) => {
+    var db = JSON.parse(
+      fs.readFileSync("./public/database/polls.json", "utf-8")
+    );
+    if (db && pollID && db[pollID]) {
+      db[pollID];
+      fs.writeFileSync("./public/database/polls.json",JSON.stringify(db),"utf-8");
+    }
   });
 });
