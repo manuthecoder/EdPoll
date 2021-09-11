@@ -12,13 +12,13 @@ var Filter = require('bad-words');
 var customFilter = new Filter({ placeHolder: '*'});
 var CleanCSS = require('clean-css');
 var minify = require('html-minifier').minify;
+app.get("/", (req, res, next) => { next(); });
 
+var os = require('os');
 
-app.get("/", function (req, res, next) {
-  next();
-});
-var myLogger = function (req, res, next) {
-  console.log("LOGGED");
+console.log("CPU: " + os.cpus());
+
+var _logger = (req, res, next) => {
   next();
   var url = __dirname + "/public" + req.url || "";
   if (url.endsWith("/") || !url.includes(".")) {
@@ -63,25 +63,28 @@ var myLogger = function (req, res, next) {
     url = $_GET[0] + "/add/index.html";
     url = url;
   }
-  // console.log(path.extname(url))
   res.setHeader("Content-Type", mime.lookup(path.extname(url)));
 	var content = fs.readFileSync(url, { encoding: "utf-8" }).toString();
 	if(isPoll == true) {
 		var dbPolls = JSON.parse(fs.readFileSync(__dirname + "/public/database/polls.json"));
-		// console.log($_GET[1].replace(/\D/g,''))
 		var id = $_GET[1].replace(/\D/g,'');
 		console.log(dbPolls[id])
 		if(dbPolls[id]) {
 			content = content.split("${__vars/title}").join( dbPolls[id].title);
 			content = content.split("${__vars/description}").join(dbPolls[id].desc);
+			if(dbPolls[id].image) {
+				content = content.split("${__vars/banner}").join(dbPolls[id].image.toString().replace("?w=500", "") || "https://i.ibb.co/4jQj7tF/s.png");
+			}
+			else {
+					content = content.split("${__vars/banner}").join("https://i.ibb.co/4jQj7tF/s.png");
+			}
 			content = content.split("${__vars/id}").join(id);
 		}
-		
 	}
 	console.log(path.extname(url))
 	if(path.extname(url) == ".css") {
 		var input = content;
-		var options = { /* options */ };
+		var options = {};
 		content = new CleanCSS(options).minify(input).styles
 	}
 	else if(path.extname(url) == ".html") {
@@ -108,20 +111,19 @@ var myLogger = function (req, res, next) {
   console.log(req.query);
   res.end();
 };
-app.use(myLogger);
+app.use(_logger);
 httpserver.listen(3000);
-
-// const io = require("socket.io")(3000);
-
 io.on("connection", (socket) => {
-  socket.on("addPoll", (name, options, categories, desc) => {
+  socket.on("addPoll", (name, options, categories, desc, image) => {
     console.log(name, options, categories);
     var db = JSON.parse(fs.readFileSync("./public/database/polls.json"));
     var categories1 = [];
     var options1 = [];
+		if(categories !== "") {
     categories.split(",").forEach((data) => {
       categories1.push(customFilter.clean(data.trim()));
     });
+		}
     options.split("\n").forEach((data) => {
       options1.push({
         name: customFilter.clean(data),
@@ -135,8 +137,8 @@ io.on("connection", (socket) => {
         categories: categories1,
         options: options1,
         desc: customFilter.clean(desc),
+        image: (image),
       }) - 1;
-    // then you can access that item like this
     var item = db[testRowIndex];
     console.log(item, testRowIndex);
 		fs.writeFileSync(
@@ -145,11 +147,13 @@ io.on("connection", (socket) => {
       "utf-8"
     );
     io.emit("newPollAdded", testRowIndex);
-    
   });
-  socket.on("votedNow", function (a, b) {
+  socket.on("votedNow",  (a, b) => {
     console.log("votedNow");
     io.emit("votedNow", a, b);
+  });
+	socket.on("confetti",  (id) => {
+    io.emit("confetti", id);
   });
   socket.on("vote", (optionID, pollID) => {
     console.log(optionID);
@@ -160,11 +164,7 @@ io.on("connection", (socket) => {
     if (db && pollID && db[pollID] && db[pollID].options[optionID]) {
       db[pollID].options[optionID].votes += 1;
       console.log(db[pollID].options[optionID].votes);
-      fs.writeFileSync(
-        "./public/database/polls.json",
-        JSON.stringify(db),
-        "utf-8"
-      );
+      fs.writeFileSync("./public/database/polls.json",JSON.stringify(db),"utf-8");
     }
     io.emit("votedNow", pollID, db[pollID].options);
   });

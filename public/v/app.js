@@ -17,9 +17,6 @@ for (var i = 0; i < parts.length; i++) {
 }
 $_GET['id'] = window.location.href.replace(/\D/g,'')
 
-if(window.location.href.includes("/e/") || (window.self !== window.top)) {
-	document.documentElement.classList.add("iframe")
-}
 
 function loadDoc() {
 var xhttp = new XMLHttpRequest();
@@ -41,6 +38,7 @@ xhttp.onreadystatechange = function () {
 				<p>Poll doesn't exist. Invalid code? </p>
 			</center>
 			`;
+			
 			document.getElementsByTagName("footer")[0].remove();
 			return false;
 		}
@@ -63,7 +61,9 @@ xhttp.onreadystatechange = function () {
       categories: json.categories,
       answers: json.options,
       desc: (json.desc ? json.desc : ""),
+      banner: json.image.replace("?w=500", "")
     };
+		document.title = poll.title
 		document.getElementById("social").innerHTML = ""
 		document.getElementById("title").innerHTML = ""
 		document.getElementById("date").innerHTML = ""
@@ -84,6 +84,10 @@ xhttp.onreadystatechange = function () {
 <br>
 
 </div></div>`;
+				if(window.location.href.includes("/e/") || (window.self !== window.top)) {
+					document.getElementById("social").remove();
+					document.getElementsByTagName("footer")[0].remove()
+				}
     // alert(JSON.stringify(poll))
     document.body.classList.remove("loading");
     document.getElementById("title").innerHTML = poll.title;
@@ -100,7 +104,7 @@ xhttp.onreadystatechange = function () {
     poll.answers.forEach((e, key) => {
       document.getElementById(
         "questions"
-      ).innerHTML += `<div class="waves-effect card" onclick='vote(this, ${key})' ${voteHistory.includes($_GET['id']) ? "style='display:none'" : ""}>
+      ).innerHTML += `<div class="waves-effect card" onclick='vote(this, ${key});this.classList.add("active")' ${voteHistory.includes($_GET['id']) ? "style='display:none'" : ""}>
 		<div class="card-content">${e.name} <span class="green-text right"></span></div>
 	</div>`;
     });
@@ -110,6 +114,9 @@ xhttp.onreadystatechange = function () {
 	if(window.location.href.includes("/r/")) {
 			vote(-1, 1)
 	}	
+	if(poll.banner && poll.banner !== "") {
+				document.getElementById("header").innerHTML = `<img src="${poll.banner}" style="width: 100%;height: 200px;object-fit: cover;">`
+			}
   }
 };
 xhttp.open("GET", "../database/polls.json", true);
@@ -134,13 +141,15 @@ var alreadyVoted = false;
 // 	}
 // })
 function vote(el, id) {
+	// if(el !== -1) el.style.pointerEvents = "none"
 	document.getElementById('check').play()
 	history.pushState(null, null, (window.location.href.includes("/r/") ? window.location.href : window.location.href.replace("/v/", "/r/")))
 	document.querySelectorAll("#questions .card").forEach(el => {
+				el.style.pointerEvents = "none"
 				el.style.display = ''
-			})
+	})
 	var voteHistory = JSON.parse(localStorage.getItem("voteHistory")) || [];
-	// voteHistory.push($_GET['id']);
+	voteHistory.push($_GET['id']);
 	localStorage.setItem("voteHistory", JSON.stringify(voteHistory))
   alreadyVoted = true;
   document.getElementById("skip").style.display = "none";
@@ -185,7 +194,9 @@ socket.on("votedNow", function (pollID, e) {
 	if(pollID !== $_GET['id']) {
 		return false;
 	}
-		document.getElementById("totalVotes").innerHTML =		parseInt(document.getElementById("totalVotes").innerHTML) + 1
+if(document.getElementById("totalVotes")) {
+			document.getElementById("totalVotes").innerHTML =		parseInt(document.getElementById("totalVotes").innerHTML) + 1
+}
   if (alreadyVoted) {
     // M.toast({html: pollID +"<br>"+ JSON.stringify(e)})
     var counter = 0;
@@ -265,7 +276,7 @@ if ('serviceWorker' in navigator) {
 }
 
 function c_embed(id) {
-	new clipboardText(`<iframe src="https://edpoll.ga/e/${$_GET['id']}" style="border:0px #ffffff none;" name="myiFrame" scrolling="no" frameborder="1" marginheight="0px" marginwidth="0px" height="400px" width="600px" allowfullscreen></iframe>`)
+	new clipboardText(`<iframe src="https://edpoll.ga/e/${$_GET['id']}" style="border:0px #ffffff none;" name="myiFrame" frameborder="1" marginheight="0px" marginwidth="0px" height="400px" width="600px" allowfullscreen></iframe>`)
 }
 
 // REMOVE THIS!

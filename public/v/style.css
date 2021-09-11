@@ -199,7 +199,22 @@ body {
 .dark_mode .chip {
   color: white !important;
 }
-
+.modal {
+				max-height: 100vh !important;
+				opacity: 1 !important;
+				margin: auto !important;
+				height: 100vh !important;
+				min-height: 100vh !important;
+				position: fixed !important;
+				top: 0 !important;
+				left: 0 !important;
+				width: 100% !important;
+			}
+			@media only screen and (min-width: 992px) {
+				.modal {
+					width: 100% !important
+				}
+			}
 .modal .btn-floating {
   background: rgba(200, 200, 200, 0.3) !important;
 }
@@ -212,4 +227,16 @@ body {
 .fa-code {
   background: #f54245;
   color: white;
+}
+body {
+	overflow: scroll !important
+}
+.iframe #social {
+	display: none !important;
+}
+.iframe footer {
+	display: none !important
+}
+.iframe .alert {
+	display: none !important;
 }

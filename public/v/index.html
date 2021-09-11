@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
+		<script>
+				if(window.location.href.includes("/e/") || (window.self !== window.top)) {
+				document.documentElement.classList.add("iframe")
+			}
+		</script>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/@materializecss/materialize@1.0.0/dist/css/materialize.min.css"
@@ -32,7 +37,7 @@
       type="image/png"
       href="https://i.ibb.co/4jQj7tF/Untitled.png"
     />
-    <title>Test</title>
+    <title>Loading...</title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
@@ -55,7 +60,7 @@
       content="${__vars/title}"
     />
     <meta property="og:site_name" content="EdPoll" />
-    <meta property="og:image" content="https://i.ibb.co/4jQj7tF/s.png" />
+    <meta property="og:image" content="${__vars/banner}" />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
@@ -65,7 +70,7 @@
       property="twitter:description"
       content="${__vars/description}  | EdPoll is a simple polling app for schools, offices, and your daily lives! Click on the link above to get started!"
     />
-    <meta property="twitter:image" content="https://i.ibb.co/4jQj7tF/s.png" />
+    <meta property="twitter:image" content="${__vars/banner}" />
     <style>
 			/* fallback */
 @font-face {
@@ -89,6 +94,15 @@
   direction: ltr;
   -webkit-font-feature-settings: 'liga';
   -webkit-font-smoothing: antialiased;
+}
+.iframe #social {
+	display: none !important;
+}
+.iframe footer {
+	display: none !important
+}
+.iframe .alert {
+	display: none !important;
 }
       hr {
         border: 0;
@@ -234,7 +248,9 @@
         background: #430297;
         color: white;
       }
-
+			.active {
+				background: rgba(200, 200, 200, .5) !important
+			}
       .fa-soundcloud {
         background: #ff5500;
         color: white;
@@ -257,22 +273,7 @@
       .card {
         transition: all 0s !important;
       }
-			.modal {
-				max-height: 100vh !important;
-				opacity: 1 !important;
-				margin: auto !important;
-				height: 100vh !important;
-				min-height: 100vh !important;
-				position: fixed !important;
-				top: 0 !important;
-				left: 0 !important;
-				width: 100% !important;
-			}
-			@media only screen and (min-width: 992px) {
-				.modal {
-					width: 100% !important
-				}
-			}
+			
     </style>
   </head>
 
@@ -283,7 +284,7 @@
 					<i class="material-icons">close</i>
 				</a>
 				<h5>Feedback</h5>
-				<p>You may also contact us via this form. <b>Please provide a valid email, so that we can contact you</b></p>
+				<p>You may also contact us via this form. <b>Please provide a valid email, so that we can contact you. </b></p>
 				<form action="https://formspree.io/f/mnqllrne" method="post">
 				<div class="input-field">
 					<label for="email">Your Email</label>
@@ -336,8 +337,9 @@
 			<br />
 			<div class="alert waves-effect" onclick="$('#feedback').modal('open');localStorage.setItem('feedback', 'true')" style="background: rgba(227, 242, 253, .3);border: 1px solid #1565c0;padding:10px;border-radius: 5px;width: 100%;display:none">
 				<h5>Hey there!</h5>
-				<p>We've redesigned our app, and we would love to hear your feedback!</p>
+				<p>We've redesigned our app, and we would love to hear your feedback! <b>You may also contact us via email at: manuthecoder@protonmail.com</b></p>
 			</div>
+			<div id="header"></div>
       <h3>
         <b id="title"></b>
       </h3>

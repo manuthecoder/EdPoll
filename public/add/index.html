@@ -25,6 +25,22 @@
 		    <style>.fa { display: inline-block; padding-left: 10px; padding-top: 10px; cursor: unset;border-radius: 2px;padding-right: 13px; padding-bottom: 10px; font-size: 25px !important; width: 50px; text-align: center; text-decoration: none; margin: 5px 2px; } * { font-family: 'Poppins', sans-serif ; } .fa:hover { transform: scale(1.05) }.fa:active { transform: scale(.97) } .fa-facebook { background: #3B5998; color: white; } .fa-twitter { background: #55ACEE; color: white; } .fa-google { background: #dd4b39; color: white; } .fa-linkedin { background: #007bb5; color: white; } .fa-youtube { background: #bb0000; color: white; } .fa-instagram { background: #125688; color: white; } .fa-pinterest { background: #cb2027; color: white; } .fa-code { background: #f54245; color: white; } .fa-snapchat-ghost { background: #fffc00; color: white; text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; } .fa-id-card { background: #00aff0; color: white; } .fa-skype { background: #00aff0; color: white; } .fa-android { background: #a4c639; color: white; } .fa-dribbble { background: #ea4c89; color: white; } .fa-vimeo { background: #45bbff; color: white; } .fa-tumblr { background: #2c4762; color: white; } .fa-book { background: #00b489; color: white; } .fa-address-book { background: #45bbff; color: white; } .fa-stumbleupon { background: #eb4924; color: white; } button[disabled] {background:#ccc !important} .fa-link { background: #f40083; color: white; } .fa-yahoo { background: #430297; color: white; } .fa-soundcloud { background: #ff5500; color: white; } .fa-reddit { background: #ff5700; color: white; } .fa-envelope { background: #ff6600; color: white; }
         .new {content: "New" !important}
         .js-copytextarea {caret-color: transparent !important}
+				.modal {
+				max-height: 100vh !important;
+				opacity: 1 !important;
+				margin: auto !important;
+				height: 100vh !important;
+				min-height: 100vh !important;
+				position: fixed !important;
+				top: 0 !important;
+				left: 0 !important;
+				width: 100% !important;
+			}
+			@media only screen and (min-width: 992px) {
+				.modal {
+					width: 100% !important
+				}
+			}
         </style>
   </head>
   <body style="margin-top: 55px !important">
@@ -58,6 +74,22 @@
       </ul>
     </nav>
     <style>
+			.select_image {
+				height: 100px;
+				object-fit: cover;
+				width: 300px;
+			}
+			.select_image:hover {
+				transform: scale(1.01)
+			}
+			.select_image:active {
+				transform: scale(.99)
+			}
+			@media only screen and (max-width: 992px) {
+				.select_image {
+					width: 100% !important
+				}
+			}
       .dark_mode body {
         background: #212121 !important;
         color: white;
@@ -120,19 +152,74 @@
 				</div>
 				<div class="input-field">
 					<label>Description/Directions</label>
-					<textarea class="materialize-textarea" style="min-height: 200px;" name="desc" id="desc" required autocomplete="off"></textarea>
+					<textarea class="materialize-textarea" style="min-height: 100px;" name="desc" id="desc" required autocomplete="off">
+						Fill out the poll below!
+					</textarea>
 				</div>
 				<div class="input-field">
-					<label>Categories</label>
+					<label>Categories (Optional)</label>
 					<input type="text" name="cat" id="categories" autocomplete="off">
 					<p>Seperate categories with commas</p>
 				</div>
+				<a href="#image" class="modal-trigger btn blue-grey darken-3">
+					Select header image...
+				</a>
+				<br>
+				<br>
 				<button onclick="addPoll()" class="blue btn darken-3 waves-effect waves-light">
 					Create
 				</button>
 				<br><br><br><br>
 			</form>
     </div>
+		<div class="modal modal-fixed-footer" id="image">
+			<div class="modal-content">
+				<a href="javascript:void(0)" class="right btn-floating btn-flat waves-effect modal-close" style="box-shadow: none !important;background: #eee;position: fixed;top: 10px;right: 10px;">
+					<i class="material-icons">close</i>
+				</a>
+				<h5>Paste link here...</h5>
+				<div class="input-field">
+					<label for="url">URL</label>
+					<input type="text" id="url">
+				</div>
+				<br>
+				<h5>Or select header image...</h5>
+				<br>
+				<img src="https://picsum.photos/200/300" class="select_image" onclick="selectImage(this)">
+				<img src="https://images.unsplash.com/photo-1453928582365-b6ad33cbcf64?w=500" class="select_image" onclick="selectImage(this)">
+				<img src="https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?w=500" class="select_image" onclick="selectImage(this)">
+				<img src="https://images.unsplash.com/photo-1526675849333-144a81e4670d?w=500" class="select_image" onclick="selectImage(this)">
+				<img src="https://images.unsplash.com/photo-1566470235028-bec698904f61?w=500" class="select_image" onclick="selectImage(this)">
+				<img src="https://images.unsplash.com/photo-1610878785620-3ab2d3a2ae7b?w=500" class="select_image" onclick="selectImage(this)">
+				<img src="https://images.unsplash.com/photo-1568725386896-a38b401cbd8c?w=500" class="select_image" onclick="selectImage(this)">
+				<img src="https://images.unsplash.com/photo-1589271243979-3153ef0dcbd7?w=500" class="select_image" onclick="selectImage(this)">
+				<img src="https://images.unsplash.com/photo-1603397830143-1a78752fb208?w=500" class="select_image" onclick="selectImage(this)">
+
+				<img src="https://images.unsplash.com/photo-1532307227439-64b2c0117889?w=500" class="select_image" onclick="selectImage(this)">
+				<img src="https://images.unsplash.com/photo-1512187849-463fdb898f21?w=500" class="select_image" onclick="selectImage(this)">
+				<img src="https://images.unsplash.com/photo-1598511757337-fe2cafc31ba0?w=500" class="select_image" onclick="selectImage(this)">
+				<img src="https://images.unsplash.com/photo-1581073598026-26753e28b782?w=500" class="select_image" onclick="selectImage(this)">
+				<img src="https://images.unsplash.com/photo-1485001564903-56e6a54d46ef?w=500" class="select_image" onclick="selectImage(this)">
+
+				<img src="https://images.unsplash.com/photo-1552777969-557c49688622?w=500" class="select_image" onclick="selectImage(this)">
+				<img src="https://images.unsplash.com/photo-1559847580-a4ea81d30549?w=500" class="select_image" onclick="selectImage(this)">
+				<img src="https://images.unsplash.com/photo-1557256728-cd9dbea73286?w=500" class="select_image" onclick="selectImage(this)">
+				<img src="https://images.unsplash.com/photo-1611775021817-1280f283352e?w=500" class="select_image" onclick="selectImage(this)">
+				<img src="https://images.unsplash.com/photo-1567021892994-278ad3f489f4?w=500" class="select_image" onclick="selectImage(this)">
+				<img src="https://images.unsplash.com/photo-1528912599607-dc5f96f6c1d8?w=500" class="select_image" onclick="selectImage(this)">
+				<img src="https://images.unsplash.com/photo-1512360893-6cfbebd8da30?w=500" class="select_image" onclick="selectImage(this)">
+				<img src="https://images.unsplash.com/photo-1610815555435-780e58c3c4ed?w=500" class="select_image" onclick="selectImage(this)">
+				<img src="https://images.unsplash.com/photo-1626358177385-c3be17336ed6?w=500" class="select_image" onclick="selectImage(this)">
+
+
+
+			</div>
+			<div class="modal-footer">
+				<a href="javascript:void(0)" class="btn green darken-3 waves-effect waves-light modal-close">
+					<i class="material-icons left">save</i> Save
+				</a>
+			</div>
+		</div>
 		<script src="../components.js"></script>
     <script
       src="https://cdn.jsdelivr.net/npm/@materializecss/materialize@1.0.0/dist/js/materialize.min.js"
@@ -151,14 +238,33 @@
       </div>
     </footer>
 		<script>
+			function searchImage(el, event) {
+				event.preventDefault();
+				  var xhttp = new XMLHttpRequest();
+					xhttp.onreadystatechange = function() {
+						if (this.readyState == 4 && this.status == 200) {
+							alert(1)
+						alert( this.responseText );
+						}
+					};
+					xhttp.open("GET", "https://serpapi.com/search.json?q="+encodeURIComponent(document.getElementById('search').value), true);
+					xhttp.send();
+			}
+			function selectImage(e) {
+				var url = document.getElementById("url");
+				url.value = e.src;
+				url.focus();
+				$(".modal").modal('close');
+			}
 			var socket = io();
 			var name = document.getElementById('name');
 			var options = document.getElementById('options');
 			var desc = document.getElementById('desc');
+			var url = document.getElementById('url');
 			var categories = document.getElementById('categories');
 			function addPoll(e) {
 				e.preventDefault();
-				socket.emit("addPoll", document.getElementById('name').value, options.value, categories.value, desc.value)
+				socket.emit("addPoll", document.getElementById('name').value, options.value, categories.value, desc.value, url.value)
 				localStorage.clear();
 				socket.on("newPollAdded", (data) => {
 				// window.location.href = "../j/" + data
@@ -206,6 +312,7 @@ else {
 	document.getElementById("app").style.display = "block"
 }
 
+$(".modal").modal()
 			
 		</script>
   </body>
