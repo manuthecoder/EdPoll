@@ -43,4 +43,10 @@ Students get to view poll results live! Confetti included
 <br>
 
 
-<img src="https://i.ibb.co/LC5K6cq/Ed-Poll-1.png" width="100%">
+
+
+
+
+
+
+<img src="https://i.ibb.co/LC5K6cq/Ed-Poll-1.png" width="100%" style="margin-top:10px">
