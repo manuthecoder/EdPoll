@@ -39,3 +39,5 @@ Students can chat with each other. Profanity and spam filter included. No studen
 
 Students get to view poll results live! Confetti included 
 <br><br>
+
+<img src="https://i.ibb.co/LC5K6cq/Ed-Poll-1.png" width="100%">
