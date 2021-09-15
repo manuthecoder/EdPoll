@@ -1,3 +1,4 @@
+<img src="https://i.ibb.co/qMkwFvJ/EdPoll.png" width="100%">
 
 # EdPoll
 
