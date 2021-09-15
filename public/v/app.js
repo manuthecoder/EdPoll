@@ -4,7 +4,7 @@ window.onerror = function (msg, url, linenumber) {
   );
   return true;
 };
-
+var resolvePWD, pollPWD;
 var socket = io();
 socket.emit("message", "READY");
 socket.on("error", console.error.bind(console));
@@ -17,7 +17,7 @@ for (var i = 0; i < parts.length; i++) {
 }
 $_GET['id'] = window.location.href.replace(/\D/g,'')
 
-
+var poll = {};
 function loadDoc() {
 var xhttp = new XMLHttpRequest();
 xhttp.onreadystatechange = function () {
@@ -45,16 +45,14 @@ xhttp.onreadystatechange = function () {
 		else {
 			json = json[$_GET['id']]
 		}
-		// alert(json)
 		var voteHistory = JSON.parse(localStorage.getItem("voteHistory")) || [];
 		
-    // alert(JSON.stringify(json))
     var cc = 0;
     json.options.forEach((e) => {
       cc += e.votes;
     });
 		document.getElementById("loader").style.display = "none";
-    const poll = {
+    poll = {
       id: $_GET['id'],
       title: json.title,
       date: json.date,
@@ -62,19 +60,48 @@ xhttp.onreadystatechange = function () {
       categories: json.categories,
       answers: json.options,
       desc: (json.desc ? json.desc : ""),
-      banner: json.image
+      banner: json.image,
+			pwd: (json.pwd ? json.pwd : ""),
     };
 		if(poll.banner) {
 			poll.banner = poll.banner.replace("?w=500", "")
 		}
+		
 		document.title = poll.title
+		document.body.classList.remove("loading");
+		const promise1 = new Promise((resolve, reject) => {
+			resolvePWD = resolve
+			pollPWD = poll.pwd
+			if(localStorage.getItem(`pwd_${poll.id}`) == true) {
+				resolve(true);
+				return;
+			}
+			if(poll.pwd !== "") {
+				document.getElementById("skip").style.display = "none";
+				document.getElementById("questions").innerHTML = `
+				<h4>This poll is password-protected</h4>
+				<p>Enter the password to vote!</p>
+				<div class="input-field">
+					<label>Enter password to vote...</label>
+					<input type="password" id="passwordInput" onkeyup="if(event.keyCode == 13) {document.getElementById('a').click()}">
+				</div>
+				<button id='a' onclick="if(document.getElementById('passwordInput').value == pollPWD) { resolvePWD(true);localStorage.setItem('pwd_${poll.id}', 'true') } else { M.toast({html: 'Incorrect password'}) }" class="btn red darken-3 waves-effect waves-light">Submit</button>`;
+				window.scrollTo(0, 0)
+			}
+			else {
+				resolve(true);
+			}
+
+		});
+				promise1.then((value) => {
+	if(value === true) {
 		document.getElementById("social").innerHTML = ""
 		document.getElementById("title").innerHTML = ""
 		document.getElementById("date").innerHTML = ""
 		document.getElementById("chips").innerHTML = ""
 		document.getElementById("desc").innerHTML = ""
 			document.getElementById("social").innerHTML += `
-<div class="card"><div class="card-content"><h5><b>Live Chat</b></h5><iframe style="border: 0;height: 300px;width: 100%" loading="lazy" src="https://Smartlist-Events-Chat.manuthecoder.repl.co/?room=pollApp${poll.id}&name=Anonymous"></iframe></div></div>
+<div class="card"><div class="card-content"><h5><b>Live Chat</b></h5><iframe allow="notifications" style="border: 0;height: 300px;width: 100%" loading="lazy" src="https://Smartlist-Events-Chat.manuthecoder.repl.co/?room=pollApp${poll.id}&name=Anonymous"></iframe></div></div>
 
 <div class="card"><div class="card-content"><h5><b id="totalVotes">${poll.totalVotes}</b></h5><p>Total votes</p><br><hr><img class="right materialboxed" src="https://api.qrserver.com/v1/create-qr-code/?size=900x900&data=https%3A%2F%2F${window.location.hostname}%2Fv%2F${poll.id}" style="position: relative;top: 5px;" width="30px"><h5>Share</h5><br>
 <a href="javascript:void(0)" class="tooltipped fa fa-code js-textareacopybtn" data-position="bottom" data-tooltip="Embed" onclick="c_embed(${poll.id})"></a>
@@ -92,8 +119,7 @@ xhttp.onreadystatechange = function () {
 					document.getElementById("social").remove();
 					document.getElementsByTagName("footer")[0].remove()
 				}
-    // alert(JSON.stringify(poll))
-    document.body.classList.remove("loading");
+    
     document.getElementById("title").innerHTML = poll.title;
     document.getElementById("desc").innerHTML = poll.desc;
     document.getElementById("date").innerHTML = poll.date;
@@ -103,7 +129,10 @@ xhttp.onreadystatechange = function () {
       ).innerHTML += `<div class="chip">${e}</div>`;
     });
 		
-		document.getElementById("questions").innerHTML = ""
+		
+
+		document.getElementById("skip").style.display = "";
+document.getElementById("questions").innerHTML = ""
 
     poll.answers.forEach((e, key) => {
       document.getElementById(
@@ -112,41 +141,39 @@ xhttp.onreadystatechange = function () {
 		<div class="card-content">${e.name} <span class="green-text right"></span></div>
 	</div>`;
     });
-		if(voteHistory.includes($_GET['id'])) {
-			document.getElementById("questions").innerHTML += `<center><div class="containder"><div class="contdainer"><img src="https://i.ibb.co/t40j0qg/Clip-Financial-report-transparent-by-Icons8.gif" style="width: 100%"><br><b>You've already answered!</b><br><p>You can't vote any more, but you can view the results!</p><br><a href="https://icons8.com/l/animations/#clip">Image credits</a></div></div></center>`;
-		}
-	if(window.location.href.includes("/r/")) {
-			vote(-1, 1)
-	}	
-	if(poll.banner && poll.banner !== "") {
-				document.getElementById("header").innerHTML = `<img src="${poll.banner}" style="width: 100%;height: 200px;object-fit: cover;">`
+		if(poll.banner && poll.banner !== "") {
+				document.getElementById("header").innerHTML = `<img loading="lazy" src="${poll.banner}" style="width: 100%;height: 200px;object-fit: cover;">`
 			}
+			if(voteHistory.includes($_GET['id'])) {
+			document.getElementById("questions").innerHTML += `<center><div class="containder"><div class="contdainer"><img src="https://i.ibb.co/t40j0qg/Clip-Financial-report-transparent-by-Icons8.gif" style="width: 100%"><br><b>You've already answered!</b><br><p>You can't vote any more, but you can view the results!</p><br><a href="https://icons8.com/l/animations/#clip">Image credits</a></div></div></center><br><br>`;
+		}
+		window.scrollTo(0, 0)
+	}
+});
+
+		
+		
+		
+	if(window.location.href.includes("/r/")) {
+			// vote(-1, -1);
+			vote(1, -1)
+			
+	}	
+	
   }
 };
 xhttp.open("GET", "../database/polls.json", true);
+xhttp.setRequestHeader("Authorization", "Bearer f6ae2f01");
 xhttp.send();
 
 }
 loadDoc()
 var ee;
+var ed = 0
 var alreadyVoted = false;
-// window.addEventListener("popstate", () => {
-// 	 parts = window.location.search.substr(1).split("&");
-// 	 $_GET = {};
-// 	for (var i = 0; i < parts.length; i++) {
-// 		var temp = parts[i].split("=");
-// 		$_GET[decodeURIComponent(temp[0])] = decodeURIComponent(temp[1]);
-// 	}
-// 	if(window.location.href.includes("/r/")) {
-// 			vote(-1, 1)
-// 	}
-// 	else {
-// 		loadDoc()
-// 	}
-// })
 function vote(el, id) {
 	document.getElementById("loader").style.display = "block"
-	// if(el !== -1) el.style.pointerEvents = "none"
+	window.scrollTo(0,0)
 	document.getElementById('check').play()
 	history.pushState(null, null, (window.location.href.includes("/r/") ? window.location.href : window.location.href.replace("/v/", "/r/")))
 	document.querySelectorAll("#questions .card").forEach(el => {
@@ -155,10 +182,9 @@ function vote(el, id) {
 	})
 	var voteHistory = JSON.parse(localStorage.getItem("voteHistory")) || [];
 	voteHistory.push($_GET['id']);
-	localStorage.setItem("voteHistory", JSON.stringify(voteHistory))
+	// localStorage.setItem("voteHistory", JSON.stringify(voteHistory))
   alreadyVoted = true;
   document.getElementById("skip").style.display = "none";
-  cf();
 setTimeout(() => {
 	document.getElementById('tada').play();
 }, 200)
@@ -188,14 +214,14 @@ setTimeout(() => {
         ),
     200
   );
-  $(".tooltipped").tooltip({
-    // specify options here
-  });
+  $(".tooltipped").tooltip();
   $(".materialboxed").materialbox();
   $(".tooltipped").tooltip();
   $(".materialboxed").materialbox();
 }
 socket.on("votedNow", function (pollID, e) {
+	if(ed == 0) cf(); 
+	ed = 1;
 	document.getElementById("loader").style.display = "none"
 	if(pollID !== $_GET['id']) {
 		return false;
@@ -204,7 +230,11 @@ if(document.getElementById("totalVotes")) {
 			document.getElementById("totalVotes").innerHTML =		parseInt(document.getElementById("totalVotes").innerHTML) + 1
 }
   if (alreadyVoted) {
-    // M.toast({html: pollID +"<br>"+ JSON.stringify(e)})
+		if(!document.hasFocus()) {
+			if(pollID == $_GET['id']) {
+				sendNotification(`New vote on "${poll.title}"`, pollID)
+			}
+	}
     var counter = 0;
 		
     e.forEach((e) => {
@@ -292,3 +322,20 @@ function c_embed(id) {
 // } })
 
 $(".tooltipped").tooltip()
+
+function notifyMe() {
+  if (!("Notification" in window)) {
+    alert("This browser does not support desktop notification");
+  }
+
+  else if (Notification.permission !== "denied") {
+    Notification.requestPermission().then(function (permission) {
+      if (permission === "granted") {
+        // var notification = new Notification("Hi there!");
+      }
+    });
+  }
+}
+if(! /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+	document.body.onload = notifyMe;
+}

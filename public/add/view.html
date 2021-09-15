@@ -61,13 +61,14 @@ copyTextareaBtn.addEventListener('click', function(event) {
     M.toast({html: "Copied!"})
     copyTextarea.value = e
   } catch (err) {
-    console.log('Oops, unable to copy');
+    alert('Oops, unable to copy');
   }
 });
 $(".tooltipped").tooltip()
 			}
 		};
 		xhttp.open("GET", "https://"+window.location.hostname+"/database/polls.json", true);
+		xhttp.setRequestHeader("Authorization", "Bearer f6ae2f01");
 		xhttp.send();
 		
 		  

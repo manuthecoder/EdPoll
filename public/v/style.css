@@ -189,6 +189,9 @@ body {
 .dark_mode input {
   color: white !important;
 }
+.dark_mode textarea {
+  color: white !important;
+}
 * {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;

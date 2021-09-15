@@ -2,7 +2,7 @@ self.addEventListener('install', (e) => {
   e.waitUntil(
     caches.open('fox-store').then((cache) => cache.addAll([
       '/v/style.css',
-      '/v/app.js',
+      // '/v/app.js',
       '/v/index.html',
       '/icon.png',
 			'/index.html',

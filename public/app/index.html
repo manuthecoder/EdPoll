@@ -101,133 +101,10 @@
           Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
       }
     </style>
-    <script defer>
-      function dark_mode() {
-        if (document.documentElement.classList.contains("dark_mode")) {
-          document.documentElement.classList.remove("dark_mode");
-          localStorage.setItem("dark_mode", "false");
-        } else {
-          document.documentElement.classList.add("dark_mode");
-          localStorage.setItem("dark_mode", "true");
-        }
-      }
-      window.addEventListener("load", () => {
-        if (
-          localStorage.getItem("dark_mode") &&
-          localStorage.getItem("dark_mode") == "true"
-        ) {
-          document.documentElement.classList.add("dark_mode");
-        }
-      });
-    </script>
-    <div
-		id="hero"
-      class="hero-image"
-      style="
-			transition: all .2s;
-         background: linear-gradient(
-            0deg,
-            rgba(0, 0, 0, 0.3),
-            rgba(0, 0, 0, 0.3)
-          ),
-          url(https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs3/100818559/original/4ec2b3722e9e24d6b7050ec5d1f9685825709af5/do-background-anime-style.png);
-        background-size: 130%;
-        background-repeat: no-repeat;
-				background-position:center;background-attachment: fixed;
-      "
-    >
-      <div class="container white-text center" style="padding: 20vh 0">
-        <h2 style="font-size: 50px; color: white !important">
-          Smart &amp; easy group decision making
-        </h2>
-        <p>An immersive polling experience for both schools and offices! <b>No signup required!</b></p>
-        <a
-          class="waves-effect waves-light"
-          style="
-            color: white;
-            min-width: 200px;
-            backdrop-filter: blur(5px);
-            background: transparent;
-            padding: 10px;
-            border: 2px solid #0d47a1;
-            border-radius: 10px;
-          "
-          href="./add"
-          >Create your own poll!</a
-        >
-      </div>
-    </div>
-    <div class="container">
-			<br>
-			<div class="row">
-				<div class="col s12">
-					<br>
-					<div class="row">
-						<div class="col s12 m8">
-					<h5>
-						Create, Manage, and Assign polls!
-					</h5>
-					<p>
-						Create polls on the fly, and present them to your class!
-						<b>No signup required!</b>
-					</p>
-					</div>
-					<div class="col s12 m4">
-						<img src="https://i.ibb.co/JszX1VP/Screenshot-2021-09-08-7-05-20-PM.png" alt="https://i.ibb.co/JszX1VP/Screenshot-2021-09-08-7-05-20-PM.png" style="width: 100%">
-					</div>
-				</div>
-				</div>
-				<div class="col s12">
-					<div class="row">
-						<div class="col s12 m8">
-							<h5>Present your polls</h5>
-							<p>Present your poll to your entire class or team</p>
-						</div>
-						<div class="col s12 m4">
-							<img src="https://i.ibb.co/92pYNmn/Screenshot-2021-09-08-7-07-22-PM.png" alt="https://i.ibb.co/92pYNmn/Screenshot-2021-09-08-7-07-22-PM.png" style="width: 100%">
-						</div>
-					</div>
-				</div>
-				<div class="col s12">
-					<div class="row">
-						<div class="col s12 m8">
-							<h5>Vote</h5>
-							<p>Students can chat with each other. Profanity and spam filter included. No student sign up required!</p>
-						</div>
-						<div class="col s12 m4">
-							<img src="https://i.ibb.co/1qMYHxD/Screenshot-2021-09-08-7-08-48-PM.png" alt="https://i.ibb.co/1qMYHxD/Screenshot-2021-09-08-7-08-48-PM.png" style="width: 100%">
-						</div>
-					</div>
-				</div>
-				<div class="col s12">
-					<div class="row">
-						<div class="col s12 m8">
-							<h5>View Poll Results!</h5>
-							<p>Students get to view poll results live! Confetti included.</p>
-						</div>
-						<div class="col s12 m4">
-							<img src="https://i.ibb.co/Y2Zp2Vq/Screenshot-2021-09-08-7-13-22-PM.png" alt="https://i.ibb.co/Y2Zp2Vq/Screenshot-2021-09-08-7-13-22-PM.png" style="width: 100%">
-						</div>
-					</div>
-				</div>
-				<div class="col s12">
-					<div class="card">
-						<div class="card-content">
-							<h5>Created by a middle school student!</h5>
-							<p>This app was created by a middle school student in the US!</p>
-							<br>
-						</div>
-					</div>
-				</div>
-				<div class="col s12"></div>
-				<div class="col s12"></div>
-			</div>
+    <script src="../components.js"></script>
       <br />
 			<div class="row">
 				<div class="col s12 m8">
-      <h3>
-        <b>Recent Polls</b>
-      </h3>
 				</div>
 				<div class="col s12 m4">
 					<div class="input-field">
@@ -301,7 +178,7 @@
 							cat += `<div class="chip">${d}</div>`
 						})
 						// document.getElementById("polls").getElementsByClassName("chips1")[0].innerHTML += `${cat}`
-            document.getElementById("polls").innerHTML += `<div class="col s12 m4">
+            document.getElementById("polls").innerHTML += `<div class="col s12">
 					<div class="card waves-effect" onclick="window.location = './v/${key}/'" tabindex="0" onkeyup="if(event.keyCode == 13) {window.location = './v/${key}/'}">
 						<div class="card-content">
 						<b><h5>${data.title}</h5></b>
@@ -315,27 +192,10 @@
           }
         };
         xhttp.open("GET", "./database/polls.json", true);
-				xhttp.setRequestHeader("Authorization", "Bearer f6ae2f01");
         xhttp.send();
       });
 
-			window.onscroll = function() {scrollFunction()};
-scrollFunction()
-function scrollFunction() {
-	// M.toast({html: document.documentElement.scrollTop })
-	if($(document).width() < 992) {
-document.getElementById("hero").style.backgroundSize = `${document.documentElement.scrollTop/4+250}%`;
-	}
-	else {
-		document.getElementById("hero").style.backgroundSize = `${document.documentElement.scrollTop/55+100}%`;
-	}
-	
-  // if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-  //   document.getElementById("hero").style.backgroundSize = "100%";
-  // } else {
-  //   document.getElementById("hero").style.backgroundSize = document.body.scrollTop + "%";
-  // }
-}
+
     </script>
   </body>
 </html>

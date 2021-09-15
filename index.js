@@ -14,10 +14,6 @@ var CleanCSS = require('clean-css');
 var minify = require('html-minifier').minify;
 app.get("/", (req, res, next) => { next(); });
 
-var os = require('os');
-
-console.log("CPU: " + os.cpus());
-
 var _logger = (req, res, next) => {
   next();
   var url = __dirname + "/public" + req.url || "";
@@ -27,11 +23,7 @@ var _logger = (req, res, next) => {
   }
   console.log(url);
 	var isPoll = false;
-  if (
-    url.includes("/v/") &&
-    url !== "/home/runner/beta/public/v/style.css" &&
-    url !== "/home/runner/beta/public/v/app.js"
-  ) {
+  if (url.includes("/v/") && url !== "/home/runner/beta/public/v/style.css" && url !== "/home/runner/beta/public/v/app.js") {
 		isPoll = true;
     var $_GET = url.split("/v/");
     req.query.id = $_GET[1];
@@ -39,11 +31,7 @@ var _logger = (req, res, next) => {
     url = $_GET[0] + "/v/index.html";
     url = url;
   }
-	if (
-    url.includes("/e/") &&
-    url !== "/home/runner/beta/public/v/style.css" &&
-    url !== "/home/runner/beta/public/v/app.js"
-  ) {
+	if (url.includes("/e/") && url !== "/home/runner/beta/public/v/style.css" && url !== "/home/runner/beta/public/v/app.js") {
 		isPoll = true;
     var $_GET = url.split("/e/");
     req.query.id = $_GET[1];
@@ -75,7 +63,6 @@ var _logger = (req, res, next) => {
 	if(isPoll == true) {
 		var dbPolls = JSON.parse(fs.readFileSync(__dirname + "/public/database/polls.json"));
 		var id = $_GET[1].replace(/\D/g,'');
-		console.log(dbPolls[id])
 		if(dbPolls[id]) {
 			content = content.split("${__vars/title}").join( dbPolls[id].title);
 			content = content.split("${__vars/description}").join(dbPolls[id].desc);
@@ -88,7 +75,6 @@ var _logger = (req, res, next) => {
 			content = content.split("${__vars/id}").join(id);
 		}
 	}
-	console.log(path.extname(url))
 	if(path.extname(url) == ".css") {
 		var input = content;
 		var options = {};
@@ -112,17 +98,21 @@ var _logger = (req, res, next) => {
 		});
 		result = result.replace(`<script id="DEL_TAG_SCRIPT">`, "")
 		result = result.replace(`</script>`, "")
-		content = result.trim().replace(/(\r\n|\n|\r)/gm, "");
+		content = result.trim().replace(/(\r\n|\n|\r)/gm, "").trim();
+	}
+	else if(path.extname(url) == ".json" && req.header("Authorization") !== "Bearer f6ae2f01") {
+		res.redirect("https://http.cat/403");
+		return false;
 	}
   res.send(content);
-  console.log(req.query);
   res.end();
 };
+
 app.use(_logger);
+
 httpserver.listen(3000);
 io.on("connection", (socket) => {
-  socket.on("addPoll", (name, options, categories, desc, image) => {
-    console.log(name, options, categories);
+  socket.on("addPoll", (name, options, categories, desc, image, pwd) => {
     var db = JSON.parse(fs.readFileSync("./public/database/polls.json"));
     var categories1 = [];
     var options1 = [];
@@ -145,9 +135,9 @@ io.on("connection", (socket) => {
         options: options1,
         desc: customFilter.clean(desc),
         image: (image),
+        pwd: pwd,
       }) - 1;
     var item = db[testRowIndex];
-    console.log(item, testRowIndex);
 		fs.writeFileSync(
       "./public/database/polls.json",
       JSON.stringify(db),
@@ -156,33 +146,21 @@ io.on("connection", (socket) => {
     io.emit("newPollAdded", testRowIndex);
   });
   socket.on("votedNow",  (a, b) => {
-    console.log("votedNow");
     io.emit("votedNow", a, b);
   });
 	socket.on("confetti",  (id) => {
     io.emit("confetti", id);
   });
   socket.on("vote", (optionID, pollID) => {
-    console.log(optionID);
     io.emit("vote", optionID);
     var db = JSON.parse(
       fs.readFileSync("./public/database/polls.json", "utf-8")
     );
     if (db && pollID && db[pollID] && db[pollID].options[optionID]) {
       db[pollID].options[optionID].votes += 1;
-      console.log(db[pollID].options[optionID].votes);
       fs.writeFileSync("./public/database/polls.json",JSON.stringify(db),"utf-8");
     }
     io.emit("votedNow", pollID, db[pollID].options);
   });
-
-	socket.on("deletePoll", (pollID) => {
-    var db = JSON.parse(
-      fs.readFileSync("./public/database/polls.json", "utf-8")
-    );
-    if (db && pollID && db[pollID]) {
-      db[pollID];
-      fs.writeFileSync("./public/database/polls.json",JSON.stringify(db),"utf-8");
-    }
-  });
 });
+
