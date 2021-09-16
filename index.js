@@ -107,6 +107,7 @@ var _logger = (req, res, next) => {
 		result = result.replace(`</script>`, "")
 		
 		content = result.trim().replace(/(\r\n|\n|\r)/gm, "").trim();
+		content = result.split("${__vars/hostname}").join(req.headers.host)
 		content = content.replace("{{DBTOKEN}}", process.env.__dbToken)
 	}
 	else if(path.extname(url) == ".json" && req.header("Authorization") !== "Bearer "+ process.env.__dbToken) {
@@ -154,7 +155,7 @@ io.on("connection", (socket) => {
       fs.readFileSync("./public/database/polls.json", "utf-8")
     );
     if (db && pollID && db[pollID] && db[pollID].options[optionID]) {
-      db[pollID].options[optionID].votes += 1;
+      db[pollID].options[optionID].votes++;
       fs.writeFileSync("./public/database/polls.json",JSON.stringify(db),"utf-8");
     }
     io.emit("votedNow", pollID, db[pollID].options);

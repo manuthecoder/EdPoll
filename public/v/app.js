@@ -135,11 +135,28 @@ xhttp.onreadystatechange = function () {
 document.getElementById("questions").innerHTML = ""
 
     poll.answers.forEach((e, key) => {
-      document.getElementById(
-        "questions"
-      ).innerHTML += `<div class="waves-effect card" onclick='vote(this, ${key});this.classList.add("active")' ${voteHistory.includes($_GET['id']) ? "style='display:none'" : ""}>
+if(e.name.includes("![")) {
+  var url = e.name.split("![")[1].split("]")[0];
+  var p = `<img src="${url}">`
+
+  e.name = e.name.replace(`![${url}]`, "")
+	
+	var d = `<div class="waves-effect card" onclick='vote(this, ${key});this.classList.add("active");document.getElementById("check").play()' ${voteHistory.includes($_GET['id']) ? "style='display:none'" : ""}>
+	<div class="card-image">
+	${p}
+	</div>
+		${(e.name.trim() !== "" ? `<div class="card-content"><span class="green-text right"></span></div>`: "")}
+	</div>`;
+}
+else {
+	var d = `<div class="waves-effect card" onclick='vote(this, ${key});this.classList.add("active");document.getElementById("check").play()' ${voteHistory.includes($_GET['id']) ? "style='display:none'" : ""}>
 		<div class="card-content">${e.name} <span class="green-text right"></span></div>
 	</div>`;
+}
+
+
+      document.getElementById("questions").innerHTML += d;
+
     });
 		if(poll.banner && poll.banner !== "") {
 				document.getElementById("header").innerHTML = `<img loading="lazy" src="${poll.banner}" style="width: 100%;height: 200px;object-fit: cover;">`
@@ -172,9 +189,9 @@ var ee;
 var ed = 1
 var alreadyVoted = false;
 function vote(el, id) {
+	document.getElementById("desc").innerHTML += "<br><b>Leave this tab open to recieve notifications for new answers</b>"
 	document.getElementById("loader").style.display = "block"
 	window.scrollTo(0,0)
-	document.getElementById('check').play()
 	history.pushState(null, null, (window.location.href.includes("/r/") ? window.location.href : window.location.href.replace("/v/", "/r/")))
 	document.querySelectorAll("#questions .card").forEach(el => {
 				el.style.pointerEvents = "none"
@@ -315,11 +332,6 @@ function c_embed(id) {
 	new clipboardText(`<iframe src="https://edpoll.ga/e/${$_GET['id']}" style="border:0px #ffffff none;" name="myiFrame" frameborder="1" marginheight="0px" marginwidth="0px" height="400px" width="600px" allowfullscreen></iframe>`)
 }
 
-// REMOVE THIS!
-// navigator.serviceWorker.getRegistrations().then(function(registrations) {
-//  for(let registration of registrations) {
-//   registration.unregister()
-// } })
 
 $(".tooltipped").tooltip()
 
@@ -336,28 +348,20 @@ function notifyMe() {
     });
   }
 }
-if(! /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-	document.body.onload = notifyMe;
-}
+
+document.body.onload = notifyMe;
 
 let deferredPrompt;
 const addBtn = document.querySelector('.add-button');
 addBtn.style.display = 'none';
 
 window.addEventListener('beforeinstallprompt', (e) => {
-  // Prevent Chrome 67 and earlier from automatically showing the prompt
   e.preventDefault();
-  // Stash the event so it can be triggered later.
   deferredPrompt = e;
-  // Update UI to notify the user they can add to home screen
   addBtn.style.display = 'block';
-
   addBtn.addEventListener('click', () => {
-    // hide our user interface that shows our A2HS button
     addBtn.style.display = 'none';
-    // Show the prompt
     deferredPrompt.prompt();
-    // Wait for the user to respond to the prompt
     deferredPrompt.userChoice.then((choiceResult) => {
       if (choiceResult.outcome === 'accepted') {
         console.log('User accepted the A2HS prompt');
@@ -368,3 +372,15 @@ window.addEventListener('beforeinstallprompt', (e) => {
     });
   });
 });
+
+
+
+
+
+
+// REMOVE THIS!
+// navigator.serviceWorker.getRegistrations().then(function(registrations) {
+//  for(let registration of registrations) {
+//   registration.unregister()
+// } })
+

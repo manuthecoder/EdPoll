@@ -38,13 +38,33 @@ window.addEventListener("load", () => {
 		document.documentElement.classList.add("dark_mode");
 	}
 });
+
+
 function sendNotification(data, id) {
-	var __nt = new Notification("EdPoll", {
-  body: data,
+	Notification.requestPermission(function(result) {
+    if (result === 'granted') {
+      navigator.serviceWorker.ready.then(function(registration) {
+        	var __nt = registration.showNotification('EdPoll', {
+          body: data,
 	data: data,
-  icon: "https://image.flaticon.com/icons/png/512/5455/5455405.png"
-})
-__nt.onclick = function() {
+	image: (poll.banner ? poll.banner : null),
+  icon: "https://image.flaticon.com/icons/png/512/5455/5455405.png",
+          vibrate: [200, 100, 200],
+					data: {
+          dateOfArrival: Date.now()
+        },
+				actions: [
+          {action: `view_${id}`, title: 'View updated results',
+            // icon: 'images/checkmark.png'
+					},
+        ]
+        });
+
+				__nt.onclick = function() {
 	window.open(`https://${window.location.hostname}/r/${id}`)
 }
+
+      });
+    }
+  });
 }

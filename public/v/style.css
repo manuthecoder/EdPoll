@@ -250,3 +250,5 @@ body {
 	color: #fff !important;
 	background: transparent !important
 }
+.card img {max-width: 100%}
+.card img {display:block;}

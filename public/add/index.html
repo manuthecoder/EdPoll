@@ -161,7 +161,10 @@
 					<textarea class="materialize-textarea" style="min-height: 300px;" name="options" id="options" required autocomplete="off" onfocus="$('#d1').show()" onblur="$('#d1').hide()"></textarea>
 					<p class="red white-text" style="display: none;padding: 10px;" id="d1">Press "Enter" for each option</p>
 				</div>
-				
+					<a href="#image" class="modal-trigger btn blue-grey darken-3 waves-effect waves-light" style="width: 100%;" onclick="image1 = true">
+					Add image...
+				</a>
+			</form>
 			
 
   <ul class="collapsible" style="box-shadow: none !important;border: 0 !important">
@@ -184,7 +187,7 @@
 					<input type="text" name="pwd" id="pwd" autocomplete="off">
 				</div>
 
-				<a href="#image" class="modal-trigger btn blue-grey darken-3 waves-effect waves-light" style="width: 100%;">
+				<a href="#image" class="modal-trigger btn blue-grey darken-3 waves-effect waves-light" style="width: 100%;" onclick="image1 = false">
 					Select header image...
 				</a>
 
@@ -198,7 +201,7 @@
 				
 				<br>
 				<br>
-				<button onclick="addPoll();this.innerHTML = 'Loading...';setTimeout(() => this.disabled = true, 200)" class="blue btn darken-3 waves-effect waves-light btn-large">
+				<button onclick="addPoll(event);" class="blue btn darken-3 waves-effect waves-light btn-large" type="submit" id="btn">
 					Create
 				</button>
 				<br><br><br><br>
@@ -265,6 +268,7 @@
       </div>
     </footer>
 		<script>
+			var image1 = false
 			function searchImage(el, event) {
 				event.preventDefault();
 				  var xhttp = new XMLHttpRequest();
@@ -278,9 +282,15 @@
 					xhttp.send();
 			}
 			function selectImage(e) {
-				var url = document.getElementById("url");
-				url.value = e.src;
-				url.focus();
+				if(image1 === false) {
+					var url = document.getElementById("url");
+					url.value = e.src;
+					url.focus();
+				}
+				else {
+					document.getElementById("options").value += `\n![${e.src}]`;
+					document.getElementById("options").focus
+				}
 				$(".modal").modal('close');
 			}
 			var socket = io();
@@ -290,6 +300,7 @@
 			var url = document.getElementById('url');
 			var categories = document.getElementById('categories');
 			function addPoll(e) {
+				// document.getElementById("btn").innerHTML = "Loading..."
 				e.preventDefault();
 				socket.emit("addPoll", document.getElementById('name').value, options.value, categories.value, desc.value, url.value, document.getElementById('pwd').value)
 				localStorage.clear();
