@@ -12,7 +12,8 @@ var Filter = require('bad-words');
 var customFilter = new Filter({ placeHolder: '*'});
 var CleanCSS = require('clean-css');
 var minify = require('html-minifier').minify;
-app.get("/", (req, res, next) => { next(); });
+
+app.get("/", (req, res, next) => next());
 
 var _logger = (req, res, next) => {
   next();
@@ -115,27 +116,18 @@ var _logger = (req, res, next) => {
   res.send(content);
   res.end();
 };
-
 app.use(_logger);
-
 httpserver.listen(3000);
+
 io.on("connection", (socket) => {
   socket.on("addPoll", (name, options, categories, desc, image, pwd) => {
     var db = JSON.parse(fs.readFileSync("./public/database/polls.json"));
-    var categories1 = [];
-    var options1 = [];
+    var categories1 = [], options1 = [];
 		if(categories !== "") {
-    categories.split(",").forEach((data) => {
-      categories1.push(customFilter.clean(data.trim()));
-    });
+    categories.split(",").forEach(e=>categories1.push(customFilter.clean(e.trim())));
 		}
-    options.split("\n").forEach((data) => {
-      options1.push({
-        name: customFilter.clean(data),
-        votes: 0,
-      });
-    });
-    var testRowIndex =
+    options.split("\n").forEach(o => options1.push({name:customFilter.clean(o),votes:0}));
+    var i =
       db.push({
         title: customFilter.clean(name),
         date: `${date.format(new Date(), "ddd, MMM DD YYYY")}`,
@@ -145,20 +137,17 @@ io.on("connection", (socket) => {
         image: (image),
         pwd: pwd,
       }) - 1;
-    var item = db[testRowIndex];
+    var item = db[i];
 		fs.writeFileSync(
       "./public/database/polls.json",
       JSON.stringify(db),
       "utf-8"
     );
-    io.emit("newPollAdded", testRowIndex);
+    io.emit("newPollAdded", i);
   });
-  socket.on("votedNow",  (a, b) => {
-    io.emit("votedNow", a, b);
-  });
-	socket.on("confetti",  (id) => {
-    io.emit("confetti", id);
-  });
+  socket.on("votedNow", (a, b) => io.emit("votedNow", a, b));
+	socket.on("confetti", (id) => io.emit("confetti", id));
+
   socket.on("vote", (optionID, pollID) => {
     io.emit("vote", optionID);
     var db = JSON.parse(
