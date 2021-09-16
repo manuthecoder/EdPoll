@@ -41,9 +41,10 @@ window.addEventListener("load", () => {
 function sendNotification(data, id) {
 	var __nt = new Notification("EdPoll", {
   body: data,
+	data: data,
   icon: "https://image.flaticon.com/icons/png/512/5455/5455405.png"
 })
 __nt.onclick = function() {
-	window.open(`https://beta.manuthecoder.repl.co/r/${id}`)
+	window.open(`https://${window.location.hostname}/r/${id}`)
 }
 }

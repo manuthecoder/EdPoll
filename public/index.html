@@ -6,6 +6,7 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/@materializecss/materialize@1.0.0/dist/css/materialize.min.css"
     />
+		<link rel="manifest" href="manifest.webmanifest">
 		<meta name="theme-color" content="#fff">
 		<link rel="dns-prefetch" href="https://fonts.googleapis.com/" >
 		<link rel="dns-prefetch" href="https://i.ibb.co/" >
@@ -266,6 +267,8 @@
           >
         </div>
       </div>
+		<div class="add-button"></div>
+
     </footer>
     <script>
 			// const socket = io("wss://" + window.location.hostname);
@@ -302,16 +305,7 @@
 							cat += `<div class="chip">${d}</div>`
 						})
 						// document.getElementById("polls").getElementsByClassName("chips1")[0].innerHTML += `${cat}`
-            document.getElementById("polls").innerHTML += `<div class="col s12 m4">
-					<div class="card waves-effect" onclick="window.location = './v/${key}/'" tabindex="0" onkeyup="if(event.keyCode == 13) {window.location = './v/${key}/'}">
-						<div class="card-content">
-						<b><h5>${data.title}</h5></b>
-						<p>${data.date}</p>
-						<br>
-						<p>${cat}</p>
-						</div>
-					</div>
-				</div>`;
+            document.getElementById("polls").innerHTML += `<div class="col s12 m4"> <div class="card waves-effect" onclick="window.location = './v/${key}/'" tabindex="0" onkeyup="if(event.keyCode == 13) {window.location = './v/${key}/'}"> <div class="card-content"> <b><h5>${data.title}</h5></b> <p>${data.date}</p> <br> <p>${cat}</p> </div> </div> </div>`;
 						})
           }
         };
@@ -337,6 +331,34 @@ document.getElementById("hero").style.backgroundSize = `${document.documentEleme
   //   document.getElementById("hero").style.backgroundSize = document.body.scrollTop + "%";
   // }
 }
+let deferredPrompt;
+const addBtn = document.querySelector('.add-button');
+addBtn.style.display = 'none';
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  // Prevent Chrome 67 and earlier from automatically showing the prompt
+  e.preventDefault();
+  // Stash the event so it can be triggered later.
+  deferredPrompt = e;
+  // Update UI to notify the user they can add to home screen
+  addBtn.style.display = 'block';
+
+  addBtn.addEventListener('click', () => {
+    // hide our user interface that shows our A2HS button
+    addBtn.style.display = 'none';
+    // Show the prompt
+    deferredPrompt.prompt();
+    // Wait for the user to respond to the prompt
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        console.log('User accepted the A2HS prompt');
+      } else {
+        console.log('User dismissed the A2HS prompt');
+      }
+      deferredPrompt = null;
+    });
+  });
+});
     </script>
   </body>
 </html>

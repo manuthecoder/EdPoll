@@ -243,3 +243,10 @@ body {
 .iframe .alert {
 	display: none !important;
 }
+.dark_mode .modal {
+	background: #333333 !important;
+}
+.dark_mode label {
+	color: #fff !important;
+	background: transparent !important
+}

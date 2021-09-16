@@ -58,11 +58,11 @@ var _logger = (req, res, next) => {
     url = $_GET[0] + "/add/index.html";
     url = url;
   }
-  res.setHeader("Content-Type", mime.lookup(path.extname(url)));
-	if(!fs.existsSync(url)) {
-		res.redirect("https://http.cat/404");
+	if(fs.existsSync(url) === false) {
+		res.redirect("https://"+req.headers.host+"/v/404");
 		return false;
 	}
+  res.setHeader("Content-Type", mime.lookup(path.extname(url)));
 	var content = fs.readFileSync(url, { encoding: "utf-8" }).toString();
 	if(isPoll == true) {
 		var dbPolls = JSON.parse(fs.readFileSync(__dirname + "/public/database/polls.json"));
@@ -109,8 +109,7 @@ var _logger = (req, res, next) => {
 		content = content.replace("{{DBTOKEN}}", process.env.__dbToken)
 	}
 	else if(path.extname(url) == ".json" && req.header("Authorization") !== "Bearer "+ process.env.__dbToken) {
-		res.redirect("https://"+req.headers.host+"/v/404");
-		res.setStatus(404);
+		res.redirect("https://http.cat/403");
 		res.end()
 	}
   res.send(content);

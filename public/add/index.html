@@ -198,7 +198,7 @@
 				
 				<br>
 				<br>
-				<button onclick="addPoll()" class="blue btn darken-3 waves-effect waves-light btn-large">
+				<button onclick="addPoll();this.innerHTML = 'Loading...';setTimeout(() => this.disabled = true, 200)" class="blue btn darken-3 waves-effect waves-light btn-large">
 					Create
 				</button>
 				<br><br><br><br>
