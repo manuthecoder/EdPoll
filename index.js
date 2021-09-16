@@ -59,6 +59,10 @@ var _logger = (req, res, next) => {
     url = url;
   }
   res.setHeader("Content-Type", mime.lookup(path.extname(url)));
+	if(!fs.existsSync(url)) {
+		res.redirect("https://http.cat/404");
+		return false;
+	}
 	var content = fs.readFileSync(url, { encoding: "utf-8" }).toString();
 	if(isPoll == true) {
 		var dbPolls = JSON.parse(fs.readFileSync(__dirname + "/public/database/polls.json"));
@@ -81,6 +85,7 @@ var _logger = (req, res, next) => {
 		content = new CleanCSS(options).minify(input).styles
 	}
 	else if(path.extname(url) == ".html") {
+		content = content.replace("{{DBTOKEN}}", process.env.__dbToken)
 		var result = minify(content, {
 			removeAttributeQuotes: true,
 			minifyJS: true,
@@ -89,6 +94,7 @@ var _logger = (req, res, next) => {
 			minifyCSS: true,
 		});
 		content = result.replace(/(\r\n|\n|\r)/gm, "").trim();
+		content = result.split("${__vars/hostname}").join(req.headers.host)
 	}
 	else if(path.extname(url) == ".js") {
 		var result = minify(`<script id="DEL_TAG_SCRIPT">
@@ -98,11 +104,14 @@ var _logger = (req, res, next) => {
 		});
 		result = result.replace(`<script id="DEL_TAG_SCRIPT">`, "")
 		result = result.replace(`</script>`, "")
+		
 		content = result.trim().replace(/(\r\n|\n|\r)/gm, "").trim();
+		content = content.replace("{{DBTOKEN}}", process.env.__dbToken)
 	}
-	else if(path.extname(url) == ".json" && req.header("Authorization") !== "Bearer f6ae2f01") {
-		res.redirect("https://http.cat/403");
-		return false;
+	else if(path.extname(url) == ".json" && req.header("Authorization") !== "Bearer "+ process.env.__dbToken) {
+		res.redirect("https://"+req.headers.host+"/v/404");
+		res.setStatus(404);
+		res.end()
 	}
   res.send(content);
   res.end();

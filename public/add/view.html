@@ -68,7 +68,7 @@ $(".tooltipped").tooltip()
 			}
 		};
 		xhttp.open("GET", "https://"+window.location.hostname+"/database/polls.json", true);
-		xhttp.setRequestHeader("Authorization", "Bearer f6ae2f01");
+		xhttp.setRequestHeader("Authorization", "Bearer {{DBTOKEN}}");
 		xhttp.send();
 		
 		  

@@ -35,7 +35,7 @@ xhttp.onreadystatechange = function () {
 			</div>
 			</div>
 				<h1>404</h1>
-				<p>Poll doesn't exist. Invalid code? </p>
+				<p>Poll or file doesn't exist. Invalid code? </p>
 			</center>
 			`;
 			
@@ -163,13 +163,13 @@ document.getElementById("questions").innerHTML = ""
   }
 };
 xhttp.open("GET", "../database/polls.json", true);
-xhttp.setRequestHeader("Authorization", "Bearer f6ae2f01");
+xhttp.setRequestHeader("Authorization", "Bearer {{DBTOKEN}}");
 xhttp.send();
 
 }
 loadDoc()
 var ee;
-var ed = 0
+var ed = 1
 var alreadyVoted = false;
 function vote(el, id) {
 	document.getElementById("loader").style.display = "block"

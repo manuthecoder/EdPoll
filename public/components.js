@@ -22,8 +22,10 @@ class clipboardText {
 function dark_mode() {
 	if (document.documentElement.classList.contains("dark_mode")) {
 		document.documentElement.classList.remove("dark_mode");
+		document.querySelector('meta[name="theme-color"]').setAttribute('content',  '#fff');
 		localStorage.setItem("dark_mode", "false");
 	} else {
+		document.querySelector('meta[name="theme-color"]').setAttribute('content',  '#1a1a1a');
 		document.documentElement.classList.add("dark_mode");
 		localStorage.setItem("dark_mode", "true");
 	}
