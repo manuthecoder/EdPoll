@@ -145,7 +145,7 @@ if(e.name.includes("![")) {
 	<div class="card-image materialboxed">
 	${p}
 	</div>
-		${(e.name.trim() !== `<div class="card-content" style="padding: 0 !important"><span class="green-text right" style="display: none !important;">&nbsp;</span></div>` ? `<div class="card-content"><span class="green-text right"></span></div>`: "")}
+		${(e.name.trim() !== `<div class="card-content"><span class="green-text right" style="display: none !important;">&nbsp;</span></div>` ? `<div class="card-content"><span class="green-text right"></span></div>`: "")}
 	</div>`;
 }
 else {
