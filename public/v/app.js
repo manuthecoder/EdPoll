@@ -142,10 +142,10 @@ if(e.name.includes("![")) {
   e.name = e.name.replace(`![${url}]`, "")
 	
 	var d = `<div class="waves-effect card" onclick='vote(this, ${key});this.classList.add("active");document.getElementById("check").play()' ${voteHistory.includes($_GET['id']) ? "style='display:none'" : ""}>
-	<div class="card-image">
+	<div class="card-image materialboxed">
 	${p}
 	</div>
-		${(e.name.trim() !== "" ? `<div class="card-content"><span class="green-text right"></span></div>`: "")}
+		${(e.name.trim() !== `<div class="card-content" style="padding: 0 !important"><span class="green-text right" style="display: none !important;">&nbsp;</span></div>` ? `<div class="card-content"><span class="green-text right"></span></div>`: "")}
 	</div>`;
 }
 else {
@@ -153,6 +153,8 @@ else {
 		<div class="card-content">${e.name} <span class="green-text right"></span></div>
 	</div>`;
 }
+  $(".materialboxed").materialbox();
+
 
 
       document.getElementById("questions").innerHTML += d;
@@ -194,7 +196,7 @@ function vote(el, id) {
 	window.scrollTo(0,0)
 	history.pushState(null, null, (window.location.href.includes("/r/") ? window.location.href : window.location.href.replace("/v/", "/r/")))
 	document.querySelectorAll("#questions .card").forEach(el => {
-				el.style.pointerEvents = "none"
+				el.onclick = null;
 				el.style.display = ''
 	})
 	var voteHistory = JSON.parse(localStorage.getItem("voteHistory")) || [];
