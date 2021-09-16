@@ -199,7 +199,7 @@ function vote(el, id) {
 	})
 	var voteHistory = JSON.parse(localStorage.getItem("voteHistory")) || [];
 	voteHistory.push($_GET['id']);
-	// localStorage.setItem("voteHistory", JSON.stringify(voteHistory))
+	localStorage.setItem("voteHistory", JSON.stringify(voteHistory))
   alreadyVoted = true;
   document.getElementById("skip").style.display = "none";
 setTimeout(() => {
