@@ -12,6 +12,7 @@
   "dependencies": {
     "bad-words": "^3.0.4",
     "clean-css": "^5.1.5",
+    "cors": "^2.8.5",
     "date-and-time": "^2.0.0",
     "express": "^4.17.1",
     "html-minifier": "^4.0.0",

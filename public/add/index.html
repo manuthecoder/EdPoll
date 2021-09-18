@@ -158,7 +158,7 @@
 				</div>
 				<div class="input-field">
 					<label>Options</label>
-					<textarea class="materialize-textarea" style="min-height: 300px;" name="options" id="options" required autocomplete="off" onfocus="$('#d1').show()" onblur="$('#d1').hide()"></textarea>
+					<textarea class="materialize-textarea" style="min-height: 300px;" name="options" id="options" required autocomplete="off" onfocus="$('#d1').show()" onblur="$('#d1').show()"></textarea>
 					<p class="red white-text" style="display: none;padding: 10px;" id="d1">Press "Enter" for each option</p>
 				</div>
 					<a href="#image" class="modal-trigger btn blue-grey darken-3 waves-effect waves-light" style="width: 100%;" onclick="image1 = true">
@@ -228,7 +228,7 @@
 			<div class="file-field input-field">
                 <div class="btn blue-grey darken-3 waves-effect waves-light">
                   <span style="color: white !important">Click to upload</span>
-                  <input type="file" id="input_img" onchange="fileChange(this, function(e) {document.getElementById('url').value = e;})" accept="image/*" required>
+                  <input type="file" id="input_img" onchange="fileChange(this, function(e) {if(image1 === false) {document.getElementById('url').value = e;} else {document.getElementById('options').value += `\n![${e}]`;$('.modal').modal('close')} })" accept="image/*" required>
                 </div>
                 <div class="file-path-wrapper">
                   <input class="file-path validate" type="text" placeholder="Upload a file...">
@@ -238,14 +238,14 @@
     <div id="test4" class="col s12">
 			<div class="input-field">
 					<label for="url">URL</label>
-					<input type="text" id="url">
+					<input type="text" id="url" onkeyup="if(event.keyCode == 13) {document.getElementById('save').click()}">
 				</div>
 		</div>
   </div>
         
 			</div>
 			<div class="modal-footer">
-				<a href="javascript:void(0)" class="btn green darken-3 waves-effect waves-light modal-close">
+				<a href="javascript:void(0)" id='save' class="btn green darken-3 waves-effect waves-light modal-close" onclick="if(image1 === true) {document.getElementById('options').value += `\n![${document.getElementById('url').value}]`;}">
 					<i class="material-icons left">save</i> Save
 				</a>
 			</div>
@@ -372,7 +372,12 @@ else {
 	document.getElementById("app").style.display = "block"
 }
 
-$(".modal").modal()
+$(".modal").modal({
+	onOpenEnd: function() {
+		document.getElementById("url").value = ""
+		document.getElementById("url").focus()
+	}
+})
 			 $(document).ready(function(){
     $('.collapsible').collapsible();
   });

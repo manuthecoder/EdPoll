@@ -65,6 +65,8 @@
             "
             ><i class="material-icons">dark_mode</i></a
           >
+        </li>
+				<li>
           <a
             href="./add"
             class="btn blue waves-effect waves-light"
@@ -103,16 +105,8 @@
           Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
       }
     </style>
+		<script src="components.js"></script>
     <script defer>
-      function dark_mode() {
-        if (document.documentElement.classList.contains("dark_mode")) {
-          document.documentElement.classList.remove("dark_mode");
-          localStorage.setItem("dark_mode", "false");
-        } else {
-          document.documentElement.classList.add("dark_mode");
-          localStorage.setItem("dark_mode", "true");
-        }
-      }
       window.addEventListener("load", () => {
         if (
           localStorage.getItem("dark_mode") &&
@@ -153,14 +147,34 @@
             padding: 10px;
             border: 2px solid #0d47a1;
             border-radius: 10px;
+						margin: 5px;
           "
           href="./add"
           >Create your own poll!</a
+        >
+
+				<a
+          class="waves-effect waves-light"
+          style="
+            color: white;
+            min-width: 200px;
+            backdrop-filter: blur(5px);
+            background: transparent;
+            padding: 10px;
+            border: 2px solid #0d47a1;
+            border-radius: 10px;
+						margin: 5px;
+          "
+          href="https://joinmypoll.ml/"
+          >Join poll</a
         >
       </div>
     </div>
     <div class="container">
 			<br>
+			<h3>
+				<b>Features</b>
+				</h3>
 			<div class="row">
 				<div class="col s12">
 					<br>

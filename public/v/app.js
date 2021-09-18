@@ -64,7 +64,7 @@ xhttp.onreadystatechange = function () {
 			pwd: (json.pwd ? json.pwd : ""),
     };
 		if(poll.banner) {
-			poll.banner = poll.banner.replace("?w=500", "")
+			poll.banner = poll.banner.replace("?w=500", "?w=1000")
 		}
 		
 		document.title = poll.title
@@ -100,8 +100,8 @@ xhttp.onreadystatechange = function () {
 		document.getElementById("date").innerHTML = ""
 		document.getElementById("chips").innerHTML = ""
 		document.getElementById("desc").innerHTML = ""
-			document.getElementById("social").innerHTML += `
-<div class="card"><div class="card-content"><h5><b>Live Chat</b></h5><iframe allow="notifications" style="border: 0;height: 300px;width: 100%" loading="lazy" src="https://Smartlist-Events-Chat.manuthecoder.repl.co/?room=pollApp${poll.id}&name=Anonymous"></iframe></div></div>
+		document.getElementById("social").innerHTML += `
+<div class="card"><div class="card-content"><h5><b>Live Chat</b> <span class="new badge right" id="unread_indicator">NEW!</span></h5><iframe allow="notifications" style="border: 0;height: 300px;width: 100%" loading="lazy" src="https://Smartlist-Events-Chat.manuthecoder.repl.co/?room=pollApp${poll.id}&name=Anonymous" id="chat">Error loading chat :(</iframe></div></div>
 
 <div class="card"><div class="card-content"><h5><b id="totalVotes">${poll.totalVotes}</b></h5><p>Total votes</p><br><hr><img class="right materialboxed" src="https://api.qrserver.com/v1/create-qr-code/?size=900x900&data=https%3A%2F%2F${window.location.hostname}%2Fv%2F${poll.id}" style="position: relative;top: 5px;" width="30px"><h5>Share</h5><br>
 <a href="javascript:void(0)" class="tooltipped fa fa-code js-textareacopybtn" data-position="bottom" data-tooltip="Embed" onclick="c_embed(${poll.id})"></a>
@@ -129,24 +129,23 @@ xhttp.onreadystatechange = function () {
       ).innerHTML += `<div class="chip">${e}</div>`;
     });
 		
-		
-
 		document.getElementById("skip").style.display = "";
 document.getElementById("questions").innerHTML = ""
 
     poll.answers.forEach((e, key) => {
 if(e.name.includes("![")) {
   var url = e.name.split("![")[1].split("]")[0];
-  var p = `<img src="${url}">`
+  var p = `<img src="${url}" class="materialboxed">`
 
   e.name = e.name.replace(`![${url}]`, "")
 	
 	var d = `<div class="waves-effect card" onclick='vote(this, ${key});this.classList.add("active");document.getElementById("check").play()' ${voteHistory.includes($_GET['id']) ? "style='display:none'" : ""}>
-	<div class="card-image materialboxed">
+	<div class="card-image">
 	${p}
 	</div>
-		${(e.name.trim() !== `<div class="card-content"><span class="green-text right" style="display: none !important;">&nbsp;</span></div>` ? `<div class="card-content"><span class="green-text right"></span></div>`: "")}
+		${(e.name.trim() !== "" ? `<div class="card-content"><span class="green-text right" style="display: none !important;">&nbsp;</span></div>` : `<div class="card-content center" style="padding: 0 !important"><span class="green-text center"></span></div>`)}
 	</div>`;
+	$(".materialboxed").materialbox();
 }
 else {
 	var d = `<div class="waves-effect card" onclick='vote(this, ${key});this.classList.add("active");document.getElementById("check").play()' ${voteHistory.includes($_GET['id']) ? "style='display:none'" : ""}>
@@ -161,8 +160,9 @@ else {
 
     });
 		if(poll.banner && poll.banner !== "") {
-				document.getElementById("header").innerHTML = `<img loading="lazy" src="${poll.banner}" style="width: 100%;height: 200px;object-fit: cover;">`
-			}
+				document.getElementById("header").innerHTML = `<img loading="lazy" src="${poll.banner}" class="" style="width: 100%;height: 200px;object-fit: cover;">`;
+  // $(".materialboxed").materialbox();
+		}
 			if(voteHistory.includes($_GET['id'])) {
 			document.getElementById("questions").innerHTML += `<center><div class="containder"><div class="contdainer"><img src="https://i.ibb.co/t40j0qg/Clip-Financial-report-transparent-by-Icons8.gif" style="width: 100%"><br><b>You've already answered!</b><br><p>You can't vote any more, but you can view the results!</p><br><a href="https://icons8.com/l/animations/#clip">Image credits</a></div></div></center><br><br>`;
 		}
@@ -385,4 +385,3 @@ window.addEventListener('beforeinstallprompt', (e) => {
 //  for(let registration of registrations) {
 //   registration.unregister()
 // } })
-

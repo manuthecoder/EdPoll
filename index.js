@@ -13,11 +13,45 @@ var customFilter = new Filter({ placeHolder: '*'});
 var CleanCSS = require('clean-css');
 var minify = require('html-minifier').minify;
 
+var cors = require('cors')
+app.use(cors())
+
 app.get("/", (req, res, next) => next());
 
 var _logger = (req, res, next) => {
   next();
   var url = __dirname + "/public" + req.url || "";
+	if(url !== "" && req.headers.host == "joinmypoll.ml") {
+			var urll = __dirname + "/public/" + req.url;
+			res.setHeader("Content-Type",  mime.lookup(path.extname(urll)));
+			console.log(urll)
+			if(urll == __dirname + "/public/" + "/") {
+				urll = __dirname + "/public/join.html"
+			}
+			var cc = fs.readFileSync(urll).toString();
+			cc = minify(cc, {
+			removeAttributeQuotes: true,
+			minifyJS: true,
+			collapseWhitespace: true,
+			continueOnParseError: true,
+			minifyCSS: true,
+		});
+			cc = cc.split("${__vars/hostname}").join(req.headers.host)
+			res.write(cc);
+			res.end();
+			return false;
+	}
+	else if(url.includes("/api")) {
+		var d = JSON.parse(fs.readFileSync("./public/database/polls.json").toString());
+		if(d[req.query.id]) {
+			res.write("true")
+		}
+		else {
+			res.write("false")
+		}
+		res.end();
+		return false;
+	}
   if (url.endsWith("/") || !url.includes(".")) {
     url += "/";
     url = url + "index.html";
@@ -127,7 +161,11 @@ io.on("connection", (socket) => {
 		if(categories !== "") {
     categories.split(",").forEach(e=>categories1.push(customFilter.clean(e.trim())));
 		}
-    options.split("\n").forEach(o => options1.push({name:customFilter.clean(o),votes:0}));
+    options.split("\n").forEach(o => {
+			if(o.trim() !== "") {
+			options1.push({name:customFilter.clean(o),votes:0})
+			}
+		});
     var i =
       db.push({
         title: customFilter.clean(name),

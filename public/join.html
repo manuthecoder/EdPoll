@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@materializecss/materialize@1.1.0-alpha/dist/css/materialize.min.css">
+		<link rel="shortcut icon" href=https://image.flaticon.com/icons/png/512/5455/5455405.png>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <title>Join</title>
+    <style>
+			nav a {
+  color: gray !important;
+}
+nav {
+  box-shadow: 0 0 10px #ccc !important;
+  position: fixed;
+  top: 0;
+  z-index: 1;
+  left: 0;
+	background: white !important
+}
+.btn {
+	box-shadow: none !important
+}
+      input:focus {
+        border-color: #aaa !important;
+        box-shadow: inset 0px -21px 0px -20px #aaa !important;
+      }
+      .loading {
+
+        line-height: 1 !important;
+        padding: 0 !important;
+        animation: cr 2s infinite linear;
+      }
+      @keyframes cr {
+        0% {
+          transform: rotate(-360deg)
+        }
+      }
+      @media (prefers-color-scheme: dark) {
+        body {
+          color: white;
+          background: #263238
+        }
+				nav {
+					 background: #37474f !important;
+					 box-shadow: none !important;
+				}
+				nav a {
+					color: #fff !important;
+				}
+        input{
+          color: white;
+        }
+        #app {
+          box-shadow: none !important;
+          background: #37474f;
+					
+        }
+        button.blue {
+          background: #607d8b !important
+        }
+        input:focus {
+          border-color: #b0bec5 !important;
+          box-shadow: inset 0px -21px 0px -20px #b0bec5 !important;
+        }
+      }
+      .bar {
+        position: fixed;
+				z-index: 9999999999999;
+        top: 0;
+        left: 0;
+        width: 10%;
+        display: none;
+        background:blue;
+        transition: all .2s;
+        height: 3px;
+      }
+      #app {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -40%);
+        width: 400px;
+        padding: 30px;
+        border-radius: 4px;
+      }
+      @media only screen and (max-width: 500px) {
+        #app {
+          width: 100%;
+          border-radius: 0;
+        }
+				@media (prefers-color-scheme: dark) {
+					body {
+						background: #37474f
+					}
+				}
+      }
+      #app .btn {
+        border-radius: 999px;
+        line-height: 50px !important;
+        box-shadow: none !important;
+        height: auto !important;
+        width: 100%;
+        text-transform: none !important;
+      }
+      .waves-light .waves-ripple {
+        background: rgba(255, 255, 255, .5) !important;
+        transition: all .7s !important;
+      }
+
+      ::-webkit-scrollbar {
+        display: none
+      }
+      /* Chrome, Safari, Edge, Opera */
+      input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
+      /* Firefox */
+      input[type=number] {
+        -moz-appearance: textfield;
+      }
+      .error {
+        float: right;
+        margin-top: -40px;
+      }
+      /* .btn {
+        display: none
+      } */
+    </style>
+  </head>
+  <body>
+		<nav class="" style="z-index: 9 !important">
+      <ul>
+        <li>
+          <a href="https://${__vars/hostname}">EdPoll</a>
+        </li>
+      </ul>
+      <ul class="right">
+        <li>
+          <a
+            href="./add"
+            class="btn blue waves-effect waves-light"
+            style="color: white !important; border-radius: 5px"
+            >Create</a
+          >
+        </li>
+      </ul>
+    </nav>
+    <div class="bar" id="bar"></div>
+    <div id="app" class="z-depth-3 center">
+      <h5>
+        <b>Join a poll</b>
+      </h5>
+      <p>
+      Enter the code to join your poll!
+      </p>
+      <!-- <br> -->
+      <form onsubmit="submitForm();return false;">
+        <div class="input-field">
+          <label>Type here...</label>
+          <input type="number" required autofocus id="join_id" value=1> 
+          <div class="error" id="error"></div>
+
+        </div>
+        <button class="btn blue waves-effect waves-light" id="btn">
+          Join
+        </button>
+      </form>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@materializecss/materialize@1.1.0-alpha/dist/js/materialize.min.js"></script>
+    <script>
+      window.onerror = function(msg, url, linenumber) {
+        alert('Error message: '+msg+'\nURL: '+url+'\nLine Number: '+linenumber);
+        return true;
+      }
+      var id = document.getElementById("join_id");
+      var btn = document.getElementById("btn");
+      var error = document.getElementById("error");
+      var typingTimer; 
+      var doneTypingInterval = 1000;  //time in ms, 5 second for example
+      //on keyup, start the countdown
+      id.onkeyup = function () {
+        clearTimeout(typingTimer);
+        typingTimer = setTimeout(checkIfPollExists, doneTypingInterval);
+      };
+
+      //on keydown, clear the countdown 
+      id.onkeydown = function () {
+        clearTimeout(typingTimer);
+      };
+
+      function submitForm() {
+        btn.innerHTML = "Loading..."
+        btn.disabled = true
+        checkIfPollExists();
+
+      }
+      function checkIfPollExists() {
+        btn.disabled = true;
+        document.getElementById("bar").style.display = "block";
+        document.getElementById("bar").style.transitionDuration = "0s"
+        document.getElementById("bar").style.width = 0;
+        document.getElementById("bar").style.opacity = "1";
+       setTimeout(() =>  document.getElementById("bar").style.transitionDuration = "20s", 200)
+        setTimeout(() => {
+          document.getElementById("bar").style.width = "100%";
+        }, 201)
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            document.getElementById("bar").style.display = "none";
+            document.getElementById("bar").style.display = "block";
+            document.getElementById("bar").style.width = 0;
+            document.getElementById("bar").style.transitionDuration = ".2s";
+            setTimeout(() => {
+              document.getElementById("bar").style.width = "100%";
+              setTimeout(() => {
+                document.getElementById("bar").style.opacity = "0";
+              }, 200)
+            })
+
+
+            var e = (this.responseText).toString();
+            if(e == "true") {
+              // btn.innerHTML = "Poll exists :D"
+              btn.disabled = false;
+              error.innerHTML = ` <i class="material-icons green-text">check</i>`;
+              window.location = "https://beta.manuthecoder.repl.co/v/"+ id.value
+              return "true"
+            }
+            else {
+              btn.disabled = true;
+              btn.innerHTML = "Join";
+              error.innerHTML = ` <i class="material-icons red-text">warning</i>`;
+              return "false"
+            }
+          }
+        };
+        xhttp.open("GET", "https://beta.manuthecoder.repl.co/api/?id="+id.value, true);
+        xhttp.send();
+      }
+			if ('serviceWorker' in navigator) {
+  navigator.serviceWorker
+    .register('joinSW.js')
+    .then(() => { console.log('Service Worker Registered'); });
+}
+
+    </script>
+  </body>
+</html>
