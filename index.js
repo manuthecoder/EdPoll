@@ -12,6 +12,8 @@ var Filter = require('bad-words');
 var customFilter = new Filter({ placeHolder: '*'});
 var CleanCSS = require('clean-css');
 var minify = require('html-minifier').minify;
+var JavaScriptObfuscator = require('javascript-obfuscator');
+var dd = ""
 
 var cors = require('cors')
 app.use(cors())
@@ -132,6 +134,21 @@ var _logger = (req, res, next) => {
 		content = result.split("${__vars/hostname}").join(req.headers.host)
 	}
 	else if(path.extname(url) == ".js") {
+		
+		
+		content = content.split("${__vars/hostname}").join(req.headers.host)
+		content = content.replace("{{DBTOKEN}}", process.env.__dbToken)
+		if(dd == "" && url.includes("app.js")) {
+		content = JavaScriptObfuscator.obfuscate(content, {
+        compact: false,
+        controlFlowFlattening: true,
+        controlFlowFlatteningThreshold: 1,
+        numbersToExpressions: true,
+        simplify: false,
+        shuffleStringArray: true,
+        splitStrings: true,
+        stringArrayThreshold: 1,
+    }).getObfuscatedCode();
 		var result = minify(`<script id="DEL_TAG_SCRIPT">
 		${content}
 		</script>`, {
@@ -139,10 +156,14 @@ var _logger = (req, res, next) => {
 		});
 		result = result.replace(`<script id="DEL_TAG_SCRIPT">`, "")
 		result = result.replace(`</script>`, "")
+		content = result;
+		dd = content;
+		}
+		else {
+			content = dd;
+		}
 		
-		content = result.trim().replace(/(\r\n|\n|\r)/gm, "").trim();
-		content = result.split("${__vars/hostname}").join(req.headers.host)
-		content = content.replace("{{DBTOKEN}}", process.env.__dbToken)
+		
 	}
 	else if(path.extname(url) == ".json" && req.header("Authorization") !== "Bearer "+ process.env.__dbToken) {
 		res.redirect("https://http.cat/403");
