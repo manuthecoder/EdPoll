@@ -160,7 +160,29 @@ var _logger = (req, res, next) => {
 		dd = content;
 		}
 		else {
-			content = dd;
+			if(url.includes("app.js")) {
+				content = dd;
+			}
+			else {
+				content = JavaScriptObfuscator.obfuscate(content, {
+        compact: false,
+        controlFlowFlattening: true,
+        controlFlowFlatteningThreshold: 1,
+        numbersToExpressions: true,
+        simplify: false,
+        shuffleStringArray: true,
+        splitStrings: true,
+        stringArrayThreshold: 1,
+    }).getObfuscatedCode();
+		var result = minify(`<script id="DEL_TAG_SCRIPT">
+		${content}
+		</script>`, {
+			minifyJS: true,
+		});
+		result = result.replace(`<script id="DEL_TAG_SCRIPT">`, "")
+		result = result.replace(`</script>`, "")
+		content = result;
+			}
 		}
 		
 		
