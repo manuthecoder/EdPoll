@@ -5,12 +5,13 @@ socket.on("error", console.error.bind(console));
 socket.on("message", console.log.bind(console));
 var totalVotes = 0
 var _app = document.querySelector("#_root");
+var poll = {}
 const pollID = window.location.href.replace(/\D/g,'');
 window.addEventListener("load", ()=> {
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
-			var poll = JSON.parse(this.responseText);
+			poll = JSON.parse(this.responseText);
 			if(poll[pollID]) {
 				poll = poll[pollID]
 
@@ -73,8 +74,8 @@ window.addEventListener("load", ()=> {
 					</div>
 					<div class="nav-content">
 						<ul class="tabs tabs-fixed-width tabs-transparent">
-							<li class="tab col s3"><a draggable="false" href="#vote" class="waves-effect">Vote</a></li>
-							<li class="tab col s3"><a draggable="false" href="#res" class="waves-effect${(poll.hideChat?'disabled':"")}">Discuss</a></li>
+							<li class="tab col s3" onclick="document.getElementById('swipe').play();"><a draggable="false" href="#vote" class="waves-effect">Vote</a></li>
+							<li class="tab col s3" onclick="document.getElementById('swipe1').play();"><a draggable="false" href="#res" class="waves-effect${(poll.hideChat?'disabled':"")}">Discuss</a></li>
 					</ul>
 				</div>
 				</nav>
@@ -149,11 +150,15 @@ window.addEventListener("load", ()=> {
 					$(".nav-wrapper").removeClass("navHide")
 				}
 			})
+	
 			$('.tabs').tabs();
 				setTimeout(() => {
 		document.getElementById("res").innerHTML = `<br>
 					<iframe src="https://chatserver.manuthecoder.repl.co?id=edpoll_conn_${pollID}" style="width: 100%;height: calc(100vh - 120px);border: 0;"></iframe>`
 	}, 1000)
+			if(localStorage.getItem("vote_"+pollID)) {
+vote(-1, -1, pollID)
+}
 				})
 			}
 			else {
@@ -196,19 +201,29 @@ var checkScrollSpeed = (function(settings){
 })();
 
 var alreadyVoted=false
+
 function vote(el, optionID, voteID) {
-	alreadyVoted=true
+	localStorage.setItem("vote_"+pollID, "true")
+	alreadyVoted=true;
+	// document.getElementById("check").play();
 	document.querySelectorAll('#vote_container .card').forEach(e=>{
 		e.onclick = null
 		e.classList.add("disabled")
 	});
-	el.classList.add("selected")
+	if(el!==-1) {
+		el.classList.add("selected")
+	}
 	socket.emit("vote", optionID, voteID, userToken);
 }
-
 function showResults(a,b) {
 	totalVotes++;
-	document.getElementById("totalVotes").innerHTML = parseInt(document.getElementById("totalVotes").innerText) + 1
+	document.getElementById("totalVotes").innerHTML = parseInt(document.getElementById("totalVotes").innerText) + 1;
+	document.getElementById('totalVotes').parentElement.classList.add("green");
+	document.getElementById('totalVotes').parentElement.classList.add("white-text");
+	setTimeout(function() {
+		document.getElementById('totalVotes').parentElement.classList.remove("green")
+		document.getElementById('totalVotes').parentElement.classList.remove("white-text")
+	}, 200)
 	document.getElementById("vote_container").querySelectorAll(".card").forEach((card, key) => {
 		if(!card.querySelector(".progress")) {
 			card.insertAdjacentHTML("beforeend", `<div class="progress"><div class="determinate" style="width: ${(b[key].votes/totalVotes)*100}%"></div></div>`)
@@ -221,7 +236,9 @@ function showResults(a,b) {
 
 socket.on("votedNow", function(pollID1, dbPollID, token) {
 		if(pollID1 == pollID && alreadyVoted) {
+			document.getElementById("newVote").play()
 			showResults(pollID, dbPollID);
+			sendNotification(`New vote on "${poll.title}"`, pollID)
 		}
 	})
 
@@ -244,3 +261,60 @@ window.addEventListener("load", () => {
 		document.documentElement.classList.add("dark_mode");
 	}
 });
+
+window.addEventListener("click", () => document.getElementById('tap').play())
+
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker
+    .register('../sw.js')
+    .then(() => { console.log('Service Worker Registered'); });
+}
+
+function sendNotification(data, id) {
+	Notification.requestPermission(function(result) {
+    if (result === 'granted') {
+      navigator.serviceWorker.ready.then(function(registration) {
+        	var __nt = registration.showNotification('EdPoll', {
+          body: data,
+	data: data,
+	image: (poll.image ? poll.image : null),
+  icon: "https://image.flaticon.com/icons/png/512/5455/5455405.png",
+          vibrate: [200, 100, 200],
+					data: {
+          dateOfArrival: Date.now()
+        },
+				actions: [
+          {action: `view_${id}`, title: 'View updated results',
+            // icon: 'images/checkmark.png'
+					},
+        ]
+        });
+
+				__nt.onclick = function() {
+	window.open(`https://${window.location.hostname}/r/${id}`)
+}
+
+      });
+    }
+  });
+}
+
+
+
+
+function notifyMe() {
+  if (!("Notification" in window)) {
+    alert("This browser does not support desktop notification");
+  }
+
+  else if (Notification.permission !== "denied") {
+    Notification.requestPermission().then(function (permission) {
+      if (permission === "granted") {
+        // var notification = new Notification("Hi there!");
+      }
+    });
+  }
+}
+
+document.body.onload = notifyMe;
