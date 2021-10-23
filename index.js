@@ -173,12 +173,12 @@ var _logger = (req, res, next) => {
 		result = result.replace(`<script id="DEL_TAG_SCRIPT">`, "")
 		result = result.replace(`</script>`, "")
 		content = result;
-		// cache[url] = content;
+		cache[url] = content;
 		}
 		
 		}
 		else {
-			// content = cache[url];
+			content = cache[url];
 		}
 		
 		

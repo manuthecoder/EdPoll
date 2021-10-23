@@ -156,7 +156,7 @@ window.addEventListener("load", ()=> {
 		document.getElementById("res").innerHTML = `<br>
 					<iframe src="https://chatserver.manuthecoder.repl.co?id=edpoll_conn_${pollID}" style="width: 100%;height: calc(100vh - 120px);border: 0;"></iframe>`
 	}, 1000)
-			if(localStorage.getItem("vote_"+pollID)) {
+			if(localStorage.getItem("vote_"+pollID) || window.location.href.includes("/r/")) {
 vote(-1, -1, pollID)
 }
 				})
