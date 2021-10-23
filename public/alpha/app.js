@@ -1,9 +1,11 @@
 window.onerror = function (msg, url, linenumber) {
-  alert(
+  M.toast({html: 
     "Error message: " + msg + "\nURL: " + url + "\nLine Number: " + linenumber
-  );
+	});
   return true;
 };
+// REMOVE THIS!
+localStorage.clear();
 var resolvePWD, pollPWD;
 var socket = io();
 socket.emit("message", "READY");
@@ -62,6 +64,7 @@ xhttp.onreadystatechange = function () {
       desc: (json.desc ? json.desc : ""),
       banner: json.image,
 			pwd: (json.pwd ? json.pwd : ""),
+			disableChat: (json.disableChat ? true : false),
     };
 		if(poll.banner) {
 			poll.banner = poll.banner.replace("?w=500", "?w=1000")
@@ -69,7 +72,7 @@ xhttp.onreadystatechange = function () {
 		
 		document.title = poll.title
 		document.body.classList.remove("loading");
-		const promise1 = new Promise((resolve, reject) => {
+		const password_promise = new Promise((resolve, reject) => {
 			resolvePWD = resolve
 			pollPWD = poll.pwd
 			if(localStorage.getItem(`pwd_${poll.id}`) == true) {
@@ -79,13 +82,16 @@ xhttp.onreadystatechange = function () {
 			if(poll.pwd !== "") {
 				document.getElementById("skip").style.display = "none";
 				document.getElementById("questions").innerHTML = `
-				<h4>This poll is password-protected</h4>
-				<p>Enter the password to vote!</p>
-				<div class="input-field">
-					<label>Enter password to vote...</label>
-					<input type="password" id="passwordInput" onkeyup="if(event.keyCode == 13) {document.getElementById('a').click()}">
+				<div class="">
+					<h4>This poll is password-protected</h4>
+					<p>Enter the password to vote!</p>
+					<div class="input-field input-border">
+						<label>Enter password to vote...</label>
+						<input type="password" id="passwordInput" onkeyup="if(event.keyCode == 13) {document.getElementById('a').click()}">
+					</div>
+					<button id='a' onclick="if(document.getElementById('passwordInput').value == pollPWD) { resolvePWD(true);localStorage.setItem('pwd_${poll.id}', 'true') } else { M.toast({html: 'Incorrect password'}) }" class="btn red darken-3 waves-effect waves-light btn-round">Continue <i class="material-icons right">arrow_right</i></button>
 				</div>
-				<button id='a' onclick="if(document.getElementById('passwordInput').value == pollPWD) { resolvePWD(true);localStorage.setItem('pwd_${poll.id}', 'true') } else { M.toast({html: 'Incorrect password'}) }" class="btn red darken-3 waves-effect waves-light">Submit</button>`;
+				`;
 				window.scrollTo(0, 0)
 			}
 			else {
@@ -93,7 +99,7 @@ xhttp.onreadystatechange = function () {
 			}
 
 		});
-				promise1.then((value) => {
+				password_promise.then((value) => {
 	if(value === true) {
 		document.getElementById("social").innerHTML = ""
 		document.getElementById("title").innerHTML = ""
@@ -101,7 +107,7 @@ xhttp.onreadystatechange = function () {
 		document.getElementById("chips").innerHTML = ""
 		document.getElementById("desc").innerHTML = ""
 		document.getElementById("social").innerHTML += `
-<div class="card"><div class="card-content"><h5><b>Live Chat</b> <span class="new badge right" id="unread_indicator">NEW!</span></h5><iframe allow="notifications" style="border: 0;height: 300px;width: 100%" loading="lazy" src="https://Smartlist-Events-Chat.manuthecoder.repl.co/?room=pollApp${poll.id}&name=Anonymous" id="chat">Error loading chat :(</iframe></div></div>
+<div class="card" id="chat1"><div class="card-content"><h5><b>Live Chat</b> <span class="new badge right" id="unread_indicator">NEW!</span></h5><iframe style="border: 0;height: 300px;width: 100%" loading="lazy" src="https://Smartlist-Events-Chat.manuthecoder.repl.co/?room=pollApp${poll.id}&name=Anonymous" id="chat">Error loading chat :(</iframe></div></div>
 
 <div class="card"><div class="card-content"><h5><b id="totalVotes">${poll.totalVotes}</b></h5><p>Total votes</p><br><hr><img class="right materialboxed" src="https://api.qrserver.com/v1/create-qr-code/?size=900x900&data=https%3A%2F%2F${window.location.hostname}%2Fv%2F${poll.id}" style="position: relative;top: 5px;" width="30px"><h5>Share</h5><br>
 <a href="javascript:void(0)" class="tooltipped fa fa-code js-textareacopybtn" data-position="bottom" data-tooltip="Embed" onclick="c_embed(${poll.id})"></a>
@@ -115,6 +121,8 @@ xhttp.onreadystatechange = function () {
 <br>
 
 </div></div>`;
+document.getElementById("chat1").style.display = "none";
+if(poll.disableChat == true) {document.getElementById('chat1').insertAdjacentHTML('afterend', `<div class="card"><div class="card-content center">Chat disabled for this poll</div></div>`);document.getElementById('chat1').remove()}
 				if(window.location.href.includes("/e/") || (window.self !== window.top)) {
 					document.getElementById("social").remove();
 					document.getElementsByTagName("footer")[0].remove()
@@ -136,7 +144,6 @@ document.getElementById("questions").innerHTML = ""
 if(e.name.includes("![")) {
   var url = e.name.split("![")[1].split("]")[0];
   var p = `<img src="${url}" class="materialboxed">`
-
   e.name = e.name.replace(`![${url}]`, "")
 	
 	var d = `<div class="waves-effect card" onclick='vote(this, ${key});this.classList.add("active");document.getElementById("check").play()' ${voteHistory.includes($_GET['id']) ? "style='display:none'" : ""}>
@@ -160,7 +167,7 @@ else {
 
     });
 		if(poll.banner && poll.banner !== "") {
-				document.getElementById("header").innerHTML = `<img loading="lazy" src="${poll.banner}" class="" style="width: 100%;height: 200px;object-fit: cover;">`;
+				document.getElementById("header").innerHTML = `<img loading="lazy" src="${poll.banner}" class="" style="width: 100%;height: 100px;object-fit: cover;">`;
   // $(".materialboxed").materialbox();
 		}
 			if(voteHistory.includes($_GET['id'])) {
@@ -191,6 +198,9 @@ var ee;
 var ed = 1
 var alreadyVoted = false;
 function vote(el, id) {
+	if(document.getElementById("chat1")) {
+		document.getElementById("chat1").style.display = "block";
+	}
 	document.getElementById("desc").innerHTML += "<br><b>Leave this tab open to recieve notifications for new answers</b>"
 	document.getElementById("loader").style.display = "block"
 	window.scrollTo(0,0)

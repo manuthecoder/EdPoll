@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html>
+  <head>
+		<script>
+				if(window.location.href.includes("/e/") || (window.self !== window.top)) {
+				document.documentElement.classList.add("iframe")
+			}
+		</script>
+		<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@materializecss/materialize@1.0.0/dist/css/materialize.min.css"
+    />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons"
+      rel="stylesheet">
+		<link rel="manifest" href="../manifest.webmanifest">
+		<base href="/v/">
+    <link
+      rel="shortcut icon"
+      href="https://image.flaticon.com/icons/png/512/5455/5455405.png"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://i.ibb.co/4jQj7tF/Untitled.png"
+    />
+    <link
+      rel="favicon"
+      type="image/png"
+      href="https://i.ibb.co/4jQj7tF/Untitled.png"
+    />
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href="https://i.ibb.co/4jQj7tF/Untitled.png"
+    />
+    <title>Loading...</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="${__vars/title} |  EdPoll" />
+    <meta
+      name="description"
+      content="${__vars/description}  | EdPoll is a simple polling app for schools, offices, and your daily lives! Click on the link above to get started!"
+    />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta property="og:url" content="https://${__vars/hostname}" />
+    <meta property="og:title" content="${__vars/title} | Vote Now on EdPoll!" />
+    <meta
+      property="og:description"
+      content="${__vars/title}"
+    />
+    <meta property="og:site_name" content="EdPoll" />
+    <meta property="og:image" content="${__vars/banner}" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://pollapp.ml/v/1" />
+    <meta property="twitter:title" content="${__vars/title} | ${__vars/id} | EdPoll" />
+    <meta
+      property="twitter:description"
+      content="${__vars/description}  | EdPoll is a simple polling app for schools, offices, and your daily lives! Click on the link above to get started!"
+    />
+    <meta property="twitter:image" content="${__vars/banner}" />
+    <style>
+			/* fallback */
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://fonts.gstatic.com/s/materialicons/v99/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format('woff2');
+}
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}
+.iframe #social {
+	display: none !important;
+}
+.iframe footer {
+	display: none !important
+}
+.iframe .alert {
+	display: none !important;
+}
+      hr {
+        border: 0;
+        height: 0;
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+        border-bottom: 1px solid rgba(255, 255, 255, 1);
+      }
+      .fa {
+        display: inline-block;
+        padding-left: 10px;
+        padding-top: 10px;
+        cursor: unset;
+        border-radius: 2px;
+        padding-right: 13px;
+        padding-bottom: 10px;
+        font-size: 30px !important;
+        width: 50px;
+        text-align: center;
+        text-decoration: none;
+        margin: 5px 2px;
+      }
+
+      * {
+        font-family: "Poppins", sans-serif;
+      }
+
+      .fa:hover {
+        transform: scale(1.05);
+      }
+
+      .fa:active {
+        transform: scale(0.97);
+      }
+      .disabled {
+        opacity: 1 !important;
+      }
+      .fa-facebook {
+        background: #3b5998;
+        color: white;
+      }
+
+      .fa-twitter {
+        background: #55acee;
+        color: white;
+      }
+
+      .fa-google {
+        background: #dd4b39;
+        color: white;
+      }
+
+      .fa-linkedin {
+        background: #007bb5;
+        color: white;
+      }
+
+      .fa-youtube {
+        background: #bb0000;
+        color: white;
+      }
+
+      .fa-instagram {
+        background: #125688;
+        color: white;
+      }
+
+      .fa-pinterest {
+        background: #cb2027;
+        color: white;
+      }
+			.progress {
+				border-radius: 0 !important
+			}
+      .fa-trash {
+        background: #f54245;
+        color: white;
+      }
+
+      .fa-snapchat-ghost {
+        background: #fffc00;
+        color: white;
+        text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+      }
+
+      .fa-id-card {
+        background: #00aff0;
+        color: white;
+      }
+
+      .fa-skype {
+        background: #00aff0;
+        color: white;
+      }
+
+      .fa-android {
+        background: #a4c639;
+        color: white;
+      }
+
+      .fa-dribbble {
+        background: #ea4c89;
+        color: white;
+      }
+
+      .fa-vimeo {
+        background: #45bbff;
+        color: white;
+      }
+
+      .fa-tumblr {
+        background: #2c4762;
+        color: white;
+      }
+
+      .fa-book {
+        background: #00b489;
+        color: white;
+      }
+.iframe .col {
+	width: 100% !important
+}
+.dark_mode .grey {
+	background: rgba(200, 200, 200, .1) !important
+}
+      .fa-address-book {
+        background: #45bbff;
+        color: white;
+      }
+
+      .fa-stumbleupon {
+        background: #eb4924;
+        color: white;
+      }
+
+      button[disabled] {
+        background: #ccc !important;
+      }
+
+      .fa-link {
+        background: #f40083;
+        color: white;
+      }
+
+      .fa-yahoo {
+        background: #430297;
+        color: white;
+      }
+			.active {
+				background: rgba(200, 200, 200, .5) !important
+			}
+      .fa-soundcloud {
+        background: #ff5500;
+        color: white;
+      }
+			.new::after {
+				display: none !important
+			}
+      .fa-reddit {
+        background: #ff5700;
+        color: white;
+      }
+
+      .fa-envelope {
+        background: #ff6600;
+        color: white;
+      }
+
+      .new {
+        content: "New" !important;
+      }
+
+      .card {
+        transition: all 0s !important;
+      }
+			.indeterminate {
+				background: #1565c0 !important
+			}
+			.progress {
+				background: #e3f2fd
+			}
+			.dark_mode .indeterminate {
+				background: white !important
+			}
+    </style>
+  </head>
+<div class="progress" style="position: fixed;top: 0;left: 0;z-index: 99999" id="loader">
+	<div class="indeterminate"></div>
+</div>
+  <body class="loading">
+		<div id="feedback" class="modal">
+			<div class="modal-content">
+				<a href="javascript:void(0)" class="right btn-floating btn-flat waves-effect modal-close" style="box-shadow: none !important;background: #eee;">
+					<i class="material-icons">close</i>
+				</a>
+				<h5>Feedback</h5>
+				<p>You may also contact us via this form. <b>Please provide a valid email, so that we can contact you. </b></p>
+				<form action="https://formspree.io/f/mnqllrne" method="post">
+				<div class="input-field">
+					<label for="email">Your Email</label>
+					<input name="Email" id="email" type="email">
+				</div>
+				<div class="input-field">
+					<label>Feedback</label>
+					<textarea name="feedback" class="materialize-textarea" id="f" cols="30" rows="10" style="min-height: 300px;"></textarea></div>
+				<button type="submit" class="btn blue darken-2 waves-effect">Submit</button>
+		</form>
+			</div>
+		</div>
+    <nav class="white" style="z-index: 9 !important">
+      <ul>
+        <li>
+          <a href="https://${__vars/hostname}">EdPoll</a>
+        </li>
+      </ul>
+      <ul class="right">
+				<li><a class="hide-on-small-only modal-trigger btn grey lighten-3 waves-effect" href="#feedback">
+				<i class="material-icons left" style="">feedback</i>	
+				Feedback
+				</a></li>
+        <li>
+          <a
+            href="javascript:void(0)"
+            class="btn blue-grey darken-4 waves-effect waves-light"
+            onclick="dark_mode()"
+            style="
+              padding: 0 7px !important;
+              color: white !important;
+              border-radius: 5px;
+              margin-right: 0 !important;
+            "
+            ><i class="material-icons">dark_mode</i></a
+          >
+          <a
+            href="../add"
+            class="btn blue waves-effect waves-light"
+            style="color: white !important; border-radius: 5px"
+            >Create</a
+          >
+        </li>
+      </ul>
+    </nav>
+		<div class="add-button"></div>
+    <script src="../components.js"></script>
+		<audio src="https://padlet-uploads.storage.googleapis.com/446844750/f84dfa8a5cf0e025612f3517c2619e99/hero_simple_celebration_03.wav" id="check" preload="none"></audio>
+		<audio src="https://padlet-uploads.storage.googleapis.com/446844750/0a02d7e08fe5b8a5d41b26ccda4f2404/Tada_sound.mp3" id="tada" preload="none"></audio>
+    <div class="container">
+			<br />
+			<div class="alert hide waves-effect" onclick="this.remove();$('#feedback').modal('open');localStorage.setItem('feedback', 'true')" style="background: rgba(227, 242, 253, .3);border: 1px solid #1565c0;padding:10px;border-radius: 5px;width: 100%;display:none">
+				<h5>Hey there!</h5>
+				<p>We've redesigned our app, and we would love to hear your feedback! <b>You may also contact us via email at: manuthecoder@protonmail.com</b></p>
+			</div>
+			<div id="header"></div>
+      <h3>
+        <b id="title"></b>
+      </h3>
+      <h6 id="date"></h6>
+			<p id="desc"></p>
+      <div id="chips" style="margin-top: 20px !important;"></div>
+      <br />
+			<div class="row" id="app">
+				<div class="col s12 m8">
+      
+
+      <div id="questions">
+        <div class="cardLoading"></div>
+        <div class="cardLoading"></div>
+        <div class="cardLoading"></div>
+        <div class="cardLoading"></div>
+        <div class="cardLoading"></div>
+        <div class="cardLoading"></div>
+        <div class="cardLoading"></div>
+      </div>
+
+      <button
+        id="skip"
+        class="btn blue darken-3 waves-effect waves-light right"
+        onclick="vote(1, -1);this.remove()"
+      >
+        Skip to results <i class="material-icons right">arrow_right</i>
+      </button>
+      <br />
+      <br />
+    </div>
+		<div class="col s12 m4" id="social">
+			<div class="cardLoading" style="height: 400px;"></div>
+			<div class="cardLoading" style="height: 400px;"></div>
+		</div>
+		</div>
+		</div>
+		 <!-- <script src="/socket.io/socket.io.js"></script> -->
+		 <script src="https://cdn.socket.io/3.1.3/socket.io.min.js" integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh" crossorigin="anonymous"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@materializecss/materialize@1.0.0/dist/js/materialize.min.js"
+      type="text/javascript"
+    ></script>
+    <script src="app.js"></script>
+    <footer class="page-footer blue" style="padding: 0 !important">
+      <div class="footer-copyright">
+        <div class="container">
+          © Copyright 2021 All rights reserved
+          <a
+            class="grey-text text-lighten-4 right"
+            href="https://manuthecoder.ml"
+            >A swag app by Manu!</a
+          >
+        </div>
+      </div>
+    </footer>
+		<script>
+			$(".modal").modal();
+			if(localStorage.getItem('feedback')) {
+				document.getElementsByClassName("alert")[0].remove()
+			}
+			else {
+				document.getElementsByClassName("alert")[0].style.display = "block"
+
+			}
+		</script>
+  </body>
+</html>
