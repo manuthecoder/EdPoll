@@ -7,7 +7,6 @@ const app = express();
 const httpserver = http.Server(app);
 const io = socketio(httpserver);
 var mime = require("mime-types");
-const date = require("date-and-time");
 var Filter = require("bad-words");
 var customFilter = new Filter({ placeHolder: "*" });
 var CleanCSS = require("clean-css");
@@ -247,8 +246,11 @@ io.on("connection", (socket) => {
     console.error(e);
   });
   socket.on("addPoll", (data) => {
-    console.log("New Poll Added!");
+    // console.log("New Poll Added!");
     var db = JSON.parse(fs.readFileSync("./public/database/polls.json"));
+		Object.keys(data).map(function(key, index) {
+			// data[key] = customFilter.clean(index);
+		});
     db.push(data);
     var i = db.length;
     fs.writeFileSync(

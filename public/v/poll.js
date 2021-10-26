@@ -1,6 +1,61 @@
+const banner = `
+<div class="card">
+<div class="card-content">
+<form
+  action="https://formspree.io/f/mnqllrne"
+  method="POST"
+	target="_blank"
+>
+		<h5><b>Feedback</b></h5>
+		<p>Hi! My name is Manu, and I'm the creator of this app. I would like feedback or suggestions on what I could improve.</p>
+      <p>
+      <label style="background: transparent !important">
+        <input name="yes_or_no" type="radio" checked value="Yes!"/>
+        <span>Yes :D</span>
+      </label>
+    </p>
+    <p>
+      <label style="background: transparent !important">
+        <input name="yes_or_no" type="radio" value="No"/>
+        <span>No :(</span>
+      </label>
+    </p>
+	<div class="input-field input-border">
+		<label style="background:#303030!important">Any suggestions</label>
+		<textarea name="suggestions" class="materialize-textarea" style="background:transparent!important;margin-left:0!important"></textarea>
+	</div>
+  <!-- your other form fields go here -->
+  <button type="submit" class="btn blue-grey darken-3 waves-effect btn-round">Send</button>
+</form>
+</div>
+</div>
+
+<script>
+    var form = document.getElementById("my-form");
+    
+    async function handleSubmit(event) {
+      event.preventDefault();
+      var status = document.getElementById("my-form-status");
+      var data = new FormData(event.target);
+      fetch(event.target.action, {
+        method: form.method,
+        body: data,
+        headers: {
+            'Accept': 'application/json'
+        }
+      }).then(response => {
+        status.innerHTML = "Thanks for your submission!";
+        form.reset()
+      }).catch(error => {
+        status.innerHTML = "Oops! There was a problem submitting your form"
+      });
+    }
+    form.addEventListener("submit", handleSubmit)
+</script>
+`
 const userToken = _e.getUuidv4();
 var socket = io();
-socket.emit("message", "READY");
+socket.emit("message", "Poll app initializing");
 socket.on("error", console.error.bind(console));
 socket.on("message", console.log.bind(console));
 var totalVotes = 0;
@@ -116,6 +171,7 @@ window.addEventListener("load", () => {
 							<div id="vote_container"></div>
 						</div>
 						<div class="col s12 m4">
+						${banner}
 							<div class="card">
 								<div class="card-content">
 								<h5 style="margin-top: 0" id="totalVotes">${totalVotes}</h5>
@@ -125,23 +181,23 @@ window.addEventListener("load", () => {
 							<div class="card">
 								<div class="card-content">
 									<h5 style="margin-top: 0">Share</h5>
-									<a class="btn pink btn-floating" href="https://api.qrserver.com/v1/create-qr-code/?size=900x900&data=https%3A%2F%2F${
+									<a class="btn pink btn-floating waves-effect waves-light" href="https://api.qrserver.com/v1/create-qr-code/?size=900x900&data=https%3A%2F%2F${
                     window.location.hostname
                   }%2Fv%2F${pollID}">
 										<i class="material-icons">qr_code_2</i>
 									</a>
-									<a class="btn blue btn-floating" href="http://www.facebook.com/sharer.php?u=https%3A%2F%2F${
+									<a class="btn blue btn-floating waves-effect waves-light" href="http://www.facebook.com/sharer.php?u=https%3A%2F%2F${
                     window.location.hostname
                   }%2Fv%2F${pollID}">
 										<i class="material-icons">facebook</i>
 									</a>
-									<a class="btn red btn-floating" href="mailto:user@gmail.com?body=https%3A%2F%2F${
+									<a class="btn red btn-floating waves-effect waves-light" href="mailto:user@gmail.com?body=https%3A%2F%2F${
                     window.location.hostname
                   }%2Fv%2F${pollID}">
 										<i class="material-icons">email</i>
 									</a>
 
-									<a class="btn green btn-floating" href="https://classroom.google.com/share?url=https%3A%2F%2F${
+									<a class="btn green btn-floating waves-effect waves-light" href="https://classroom.google.com/share?url=https%3A%2F%2F${
                     window.location.hostname
                   }%2Fv%2F${pollID}">
 										<i class="material-icons">school</i>
@@ -244,6 +300,7 @@ ${categories} <div class="chip">Created on: ${poll.date}</div>
             });
           }
         });
+				socket.emit("message", "Poll app initialized successfully!");
       } else {
         // 404
         _root.innerHTML = "404";

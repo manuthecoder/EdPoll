@@ -16,6 +16,7 @@ nav {
 .waves-ripple {
   transition: transform .8s cubic-bezier(0.4, 0, 0.2, 1), opacity .4s !important
 }
+::-webkit-scrollbar {display:none}
 .waves-effect:not(.waves-light, .dark_mode .waves-effect) .waves-ripple {
   background: rgba(0, 0, 0, .2) !important
 }
