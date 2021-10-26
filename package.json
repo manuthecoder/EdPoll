@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "bad-words": "^3.0.4",
+    "canvas": "^2.8.0",
     "clean-css": "^5.1.5",
     "cors": "^2.8.5",
     "date-and-time": "^2.0.0",

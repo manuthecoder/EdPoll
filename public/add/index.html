@@ -1,389 +1,421 @@
 <!DOCTYPE html>
 <html>
   <head>
-		<title>Add</title>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@materializecss/materialize@1.0.0/dist/css/materialize.min.css"
-    />
-    <link
-      href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet"
-    />
-    <link
-      rel="shortcut icon"
-      href="https://image.flaticon.com/icons/png/512/5455/5455405.png"
-    />
-		<script 	src="https://${__vars/hostname}/socket.io/socket.io.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
-      rel="stylesheet"
-      href="https://${__vars/hostname}/v/style.css"
-    />
-			<script src="https://cdn.socket.io/3.1.3/socket.io.min.js" integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh" crossorigin="anonymous"></script>
-    	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-		    <style>.fa { display: inline-block; padding-left: 10px; padding-top: 10px; cursor: unset;border-radius: 2px;padding-right: 13px; padding-bottom: 10px; font-size: 25px !important; width: 50px; text-align: center; text-decoration: none; margin: 5px 2px; } * { font-family: 'Poppins', sans-serif ; } .fa:hover { transform: scale(1.05) }.fa:active { transform: scale(.97) } .fa-facebook { background: #3B5998; color: white; } .fa-twitter { background: #55ACEE; color: white; } .fa-google { background: #dd4b39; color: white; } .fa-linkedin { background: #007bb5; color: white; } .fa-youtube { background: #bb0000; color: white; } .fa-instagram { background: #125688; color: white; } .fa-pinterest { background: #cb2027; color: white; } .fa-code { background: #f54245; color: white; } .fa-snapchat-ghost { background: #fffc00; color: white; text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; } .fa-id-card { background: #00aff0; color: white; } .fa-skype { background: #00aff0; color: white; } .fa-android { background: #a4c639; color: white; } .fa-dribbble { background: #ea4c89; color: white; } .fa-vimeo { background: #45bbff; color: white; } .fa-tumblr { background: #2c4762; color: white; } .fa-book { background: #00b489; color: white; } .fa-address-book { background: #45bbff; color: white; } .fa-stumbleupon { background: #eb4924; color: white; } button[disabled] {background:#ccc !important} .fa-link { background: #f40083; color: white; } .fa-yahoo { background: #430297; color: white; } .fa-soundcloud { background: #ff5500; color: white; } .fa-reddit { background: #ff5700; color: white; } .fa-envelope { background: #ff6600; color: white; }
-        .new {content: "New" !important}
-        .js-copytextarea {caret-color: transparent !important}
-				.modal {
-				max-height: 100vh !important;
-				margin: auto !important;
-				height: 100vh !important;
-				min-height: 100vh !important;
-				position: fixed !important;
-				top: 0 !important;
-				left: auto !important;
-				right: 0 !important;
-				width: 500px !important;
-				animation: s .3s forwards;
-			}
-			.tabs {
-				background: transparent !important
-			}
-			@keyframes s {
-				0% {
-					transform: translateX(300px)
-				}
-				100% {
-					transform: translateX(0)
-				}
-			}
-			@media only screen and (max-width: 992px) {
-				.modal {
-					width: 100% !important
-				}
-			}
-			#test1, #test2, #test3, #test4 {
-				padding-top: 20px !important
-			}
-        </style>
-  </head>
-  <body style="margin-top: 55px !important">
-    <nav class="white" style="z-index: 9 !important">
-      <ul>
-        <li>
-          <a href="https://${__vars/hostname}">EdPoll</a>
-        </li>
-      </ul>
-      <ul class="right">
-        <li>
-          <a
-            href="javascript:void(0)"
-            class="btn blue-grey darken-4 waves-effect waves-light"
-            onclick="dark_mode()"
-            style="
-              padding: 0 7px !important;
-              color: white !important;
-              border-radius: 5px;
-              margin-right: 0 !important;
-            "
-            ><i class="material-icons">dark_mode</i></a
-          >
-          <a
-            href="https://edpoll.ga/add"
-            class="btn grey waves-effect waves-light"
-            style="color: white !important; pointer-events: none;border-radius: 5px"
-            >Create</a
-          >
-        </li>
-      </ul>
-    </nav>
-    <style>
-			.select_image {
-				height: 100px;
-				object-fit: cover;
-				width: 100%;
-			}
-			.select_image:hover {
-				transform: scale(1.01)
-			}
-			.select_image:active {
-				transform: scale(.99)
-			}
-      .dark_mode body {
-        background: #212121 !important;
-        color: white;
+    <title>Create</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src=https://cdn.socket.io/3.1.3/socket.io.min.js integrity=sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh crossorigin=anonymous></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@materializecss/materialize@1.1.0-alpha/dist/css/materialize.min.css">
+		<style>
+			:root {--bg-color: #fff;--navbar-color:#000}
+	#present {
+		position: fixed;
+		top: 0 !important;
+		left: 0 !important;
+		width: 100vw !important;
+		height: 100vh !important;
+		max-height: 100vh !important;
+		min-height: 100vh !important;
+	}
+	input:focus + label,textarea:focus + label {color: #000 !important}
+	textarea {margin-left: 0 !important}
+      * {
+        box-sizing: border-box;
       }
-			.chip {
-				line-height: 30px !important;
-			}
-      .dark_mode .card {
-        background: rgba(255, 255, 255, 0.1) !important;
+      .option {
+        padding: 0 10px!important;
+        line-height: 50px!important;
+        max-height: unset !important;
+        height: auto !important;
+        outline: 0;
+        display: block;
+        border-radius: 4px !important;
+        border: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-shadow: 0 0 10px #ddd !important;
+        margin-bottom: 10px;
       }
-      .dark_mode .waves-effect .waves-ripple {
-        background: rgba(255, 255, 255, 0.3) !important;
+      .option:focus {
+        box-shadow: 0 0 10px #ccc !important;
       }
-      .dark_mode nav,
-      .dark_mode footer {
-        background: #303030 !important;
+      .waves-ripple {
+        transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s !important;
+      }
+      .waves-effect:not(.waves-light, ._darkTheme .waves-effect) .waves-ripple {
+        background: rgba(0, 0, 0, 0.2) !important;
+      }
+      ._darkTheme .waves-ripple { background: rgba(255, 255, 255, 0.2) !important; }
+      .waves-light .waves-ripple { background: rgba(255, 255, 255, 0.2) !important; }
+
+
+      nav {
+        z-index: 9999999;
         box-shadow: none !important;
+        background: rgba(200, 200, 200, 0.2) !important;
+        backdrop-filter: blur(10px);
+
+        /* border-bottom: 1px solid #505050; */
+
+        position: fixed;
+        top: 0;
+        left: 0;
       }
-      .dark_mode nav a {
-        color: #fff !important;
+      body {
+        padding-top: 130px;
       }
-      .dark_mode input {
-        color: white !important;
+
+
+      nav a, .tabs .tab a{
+        color: #000 !important;
+        background: transparent !important;
+
       }
-    </style>
-    <script defer>
-      function dark_mode() {
-        if (document.documentElement.classList.contains("dark_mode")) {
-          document.documentElement.classList.remove("dark_mode");
-          localStorage.setItem("dark_mode", "false");
-        } else {
-          document.documentElement.classList.add("dark_mode");
-          localStorage.setItem("dark_mode", "true");
+
+      /* Black color to the text */
+
+      .tabs .indicator {
+        background-color: #505050 !important;
+      }
+
+      /* Color of underline */
+
+      .collapsible {
+        box-shadow: none !important;
+        border: 0 !important;
+      }
+
+      .modal {z-index: 999999999999999999999999999999999999999999999999 !important}
+
+      @media only screen and (min-width: 992px) {
+        .bottom-sheet {
+          width: 50% !important;
+          margin: auto !important
         }
       }
-      window.addEventListener("load", () => {
-        if (
-          localStorage.getItem("dark_mode") &&
-          localStorage.getItem("dark_mode") == "true"
-        ) {
-          document.documentElement.classList.add("dark_mode");
+
+      .bottom-sheet {max-height: 90vh !mportant;height: 90vh !important;min-height: 90vh !important}
+
+      #c2 .chip {
+        display: block;
+        border-radius: 4px;
+        padding: 10px 15px;
+        height: auto;
+      }
+      .chip:focus {
+        background: #37474f !important
+      }
+
+			.input-field {
+  max-width: 100%;
+  overflow: visible !important
+}
+.input-border input,.input-border textarea {
+  border: 1px solid #aaa !important;
+  border-radius: 3px !important;
+  padding-left: 10px !important;
+  width: 100%;
+  display: block;
+  max-width: 100%;
+
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+._darkTheme .input-border label {background:var(--bg-color)!important}
+.input-border input:hover,.input-border textarea:hover {
+  border: 1px solid #303030 !important;
+}
+.input-border label,.input-border textarea {
+  margin-left: 10px !important;
+  background: white;
+  transition: all .2s !important;
+  padding: 0 4px;
+  display: inline-block;
+}
+.input-border input:focus,.input-border textarea:focus {
+  border-color: var(--navbar-color) !important;
+  box-shadow: 0px 0px 0px 1px var(--navbar-color) inset !important;
+}
+._darkTheme .input-border input:focus,._darkTheme .input-border textarea:focus {
+  border-color: var(--font-color) !important;
+  box-shadow: 0px 0px 0px 1px var(--font-color) inset !important;
+}
+.input-border .input-field input:focus + label.active,.input-border .input-field textarea:focus + label.active {
+  color: var(--navbar-color) !important;
+}
+.input-border label.active {
+  margin-left: 7px !important;
+  margin-top: 8px !important
+}
+    </style>
+  </head>
+  <body>
+<div class="modal" id="present">
+	Test
+</div>
+    <nav class="nav-extended">
+      <div class="nav-wrapper">
+        <ul id="nav-mobile" class="">
+          <li><a href="#">EdPoll</a></li>
+        </ul>
+        <ul class="right">
+          <li><a href="#">Create</a></li>
+        </ul>
+      </div>
+      <div class="nav-content">
+        <ul class="tabs tabs-fixed-width tabs-transparent"> 
+          <li class="tab col s3"><a href="#p1" class="waves-effect">Poll</a></li>
+          <li class="tab col s3"><a href="#p2" class="waves-effect">Wordcloud</a></li>
+        </ul>
+      </div>
+    </nav>
+    <div class="modal bottom-sheet" id="selectFile">
+      <div class="modal-content">
+        <h5>
+          <b>Select File</b>
+        </h5>
+        <br>
+        <h6>
+          Upload a file...
+        </h6>
+        <br>
+        <input autocomplete="off" type="file" oninput="fileChange(this, function(e){document.getElementById('url__i').value=(e);})" accept="image/*">
+        <br><br><div class="divider">
+
+        </div><br>
+        <h6>
+          ... or paste URL here
+        </h6>
+        <div class="input-field input-border">
+          <label>Paste URL here...</label>
+          <input autocomplete="off" id="url__i" type="text">
+        </div>
+
+        <a class="btn btn-round blue darken-3 waves-effect waves-light ">Continue <i class="material-icons right">arrow_forward</i></a>
+      </div>
+    </div>
+    <div class="container" id='app'>
+      <div id="p1" class="col s12">
+        <!-- <form id="pollForm"> -->
+          <h5>
+            <b>Create</b>
+          </h5>
+          <div class="input-field input-border">
+            <input autocomplete="off" type="text" id="poll__name">
+            <label>Poll Title</label>
+          </div>
+					<div id="c2container">
+          	<div class="chips" id="c2"></div>
+					</div>
+          <div class="row grey lighten-3" style='padding:10px;border-radius:4px;'>
+            <div class="col s12">
+              <h6>
+                Add file
+              </h6>
+            </div>
+            <div class="col s6 input-field input-border">
+              <input autocomplete="off" id="alt" type="text">
+              <label style="background:#eee!important;">Text</label>
+            </div>
+            <div class="col s6">
+              <input autocomplete="off" type="file" oninput="fileChange(this, function(e){uploadImage(e,document.getElementById('alt').value)})" accept="image/*">
+            </div>
+          </div>
+          <ul class="collapsible">
+            <li>
+              <div class="collapsible-header waves-effect"><i class="material-icons">more_horiz</i>More</div>
+              <div class="collapsible-body">
+                <div class="chips" id="c1"></div>
+                <div class="input-field input-border">
+                  <label>Poll Description</label>
+                  <textarea class="materialize-textarea" id="poll__description" style="min-height: 100px;margin-left:0 !important"></textarea>
+                </div>
+                <div class="input-field input-border">
+                  <label>Poll Password</label>
+                  <input autocomplete="off" type="password" id="poll__password">
+                </div>
+
+                <div class="input-field input-border">
+                  <label>Poll header image</label>
+                  <input autocomplete="off" type="url" id="poll__image" class="validate">
+                </div>
+              </div>
+            </li>
+          </ul>
+
+          <input autocomplete="off" type="hidden" id="categories">
+          <button class="btn blue-grey waves-effect waves-light darken-3" id="submitBTN">
+            Create
+          </button>
+        <!-- </form> -->
+
+      </div>
+      <div id="p2" class="col s12">
+				<h5><b>Create wordcloud</b></h5>
+        <!-- Coming soon! -->
+				<div class="input-field input-border">
+					<input autocomplete="off" type="text" id="wc__name">
+					<label>Title</label>
+				</div>
+				<div class="input-field input-border">
+					<textarea type="text" id="wc__description" class="materialize-textarea" style="margin-left:0 !important"></textarea>
+					<label>Description (optional)</label>
+				</div>
+				<div class="input-field input-border">
+					<input autocomplete="off" type="text" id="wc__image">
+					<label>Image (optional)</label>
+				</div>
+				<div class="input-field input-border">
+					<input autocomplete="off" type="password" id="wc__password">
+					<label>Password (optional)</label>
+				</div>
+				<button id="addWordcloud" class="btn blue-grey darken-3 waves-effect waves-light"><i class="material-icons left">add</i>Create</button>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@materializecss/materialize@1.1.0-alpha/dist/js/materialize.min.js"></script>
+    <script>
+      var categories = [];
+      var id = 0;
+      var choices = [];
+      var socket = io();
+
+      $(".tabs").tabs();
+      $('.collapsible').collapsible()
+      $('.modal').modal();
+
+      var elems = document.querySelectorAll('#c1');
+      var instances = M.Chips.init(elems, {
+        // specify options here
+        placeholder: "Categories...",
+        onChipAdd() {
+          var instance = M.Chips.getInstance(document.querySelector("#c1"));
+          categories = [];
+          instance.chipsData.forEach(e=>categories.push(e.tag))
+        },
+        onChipDelete() {
+          var instance = M.Chips.getInstance(document.querySelector("#c1"));
+          categories = [];
+          instance.chipsData.forEach(e=>categories.push(e.tag))
         }
       });
-    </script>
-    <div class="container" id="app" style="display: none">
-      <br />
-      <h3>
-        <b>Add a poll</b>
-      </h3>
-			<div id="chip"></div>
 
-			<form action="" onsubmit="return addPoll(event)">
-				<div class="input-field">
-					<label>Name</label>
-					<input type="text" name="name" id="name" onkeyup="saveValue();localStorage.setItem('name', this.value)" required autocomplete="off">
-				</div>
-				<div class="input-field">
-					<label>Options</label>
-					<textarea class="materialize-textarea" style="min-height: 300px;" name="options" id="options" required autocomplete="off" onfocus="$('#d1').show()" onblur="$('#d1').show()"></textarea>
-					<p class="red white-text" style="display: none;padding: 10px;" id="d1">Press "Enter" for each option</p>
-				</div>
-					<a href="#image" class="modal-trigger btn blue-grey darken-3 waves-effect waves-light" style="width: 100%;" onclick="image1 = true">
-					Add image...
-				</a>
-			</form>
-			
+      var instances = M.Chips.init(document.getElementById('c2'), {
+        // specify options here
+        placeholder: "Poll answers",
+        onChipAdd() {
+          var instance = M.Chips.getInstance(document.querySelector("#c2"));
+          choices = [];
+          instance.chipsData.forEach(e=>choices.push(e))
+          var i;
+          for(i = 0; i < choices.length; i++){
+            if(choices[i]['tag']) {
+              choices[i].name = choices[i]['tag'];
+              delete choices[i]['tag']
+            }
+            choices[i].votes = 0;
+          }
 
-  <ul class="collapsible" style="box-shadow: none !important;border: 0 !important">
-    <li>
-      <div class="collapsible-header waves-effect"><i class="material-icons">arrow_drop_down</i>Advanced</div>
-      <div class="collapsible-body">
-					<div class="input-field">
-					<label>Categories (Optional)</label>
-					<input type="text" name="cat" id="categories" autocomplete="off" onfocus="$('#p1').show()" onblur="$('#p1').hide()">
-					<p class="red white-text" style="display: none;padding: 10px;" id="p1">Seperate categories with commas</p>
-				</div>
-				<div class="input-field">
-					<label>Description/Directions</label>
-					<textarea class="materialize-textarea" style="min-height: 100px;" name="desc" id="desc" required autocomplete="off">
-						Fill out the poll below!
-					</textarea>
-				</div>
-				<div class="input-field">
-					<label>Poll Password (Optional)</label>
-					<input type="text" name="pwd" id="pwd" autocomplete="off">
-				</div>
+          console.log(choices)
+        },
+        onChipDelete() {
+          var instance = M.Chips.getInstance(document.querySelector("#c2"));
+          choices = [];
+          instance.chipsData.forEach(e=>choices.push(e))
+          var i;
+          for(i = 0; i < choices.length; i++){
+            if(choices[i]['tag']) {
+              choices[i].name = choices[i]['tag'];
+              delete choices[i]['tag']
+            }
+            choices[i].votes = 0;
+          }
 
-				<a href="#image" class="modal-trigger btn blue-grey darken-3 waves-effect waves-light" style="width: 100%;" onclick="image1 = false">
-					Select header image...
-				</a>
+          console.log(choices)
+        }
+      });
 
-				
-			</div>
-    </li>
-  </ul>
-        
-				
-				
-				
-				<br>
-				<br>
-				<button onclick="addPoll(event);" class="blue btn darken-3 waves-effect waves-light btn-large" type="submit" id="btn">
-					Create
-				</button>
-				<br><br><br><br>
-			</form>
-    </div>
-		<div class="modal modal-fixed-footer" id="image">
-			<div class="modal-content">
-				<a href="javascript:void(0)" class="right btn-floating btn-flat waves-effect modal-close hide-on-large-only" style="box-shadow: none !important;background: #eee;position: fixed;top: 10px;right: 10px;">
-					<i class="material-icons">close</i>
-				</a>
 
-  <div class="row">
-    <div class="col s12">
-      <ul class="tabs tabs-fixed-width" style="position: -webkit-sticky; position: sticky; top: 0;">
-        <li class="tab col s3"><a class="active waves-effect" href="#test1">Select header image</a></li>
-        <li class="tab col s3"><a class="waves-effect" href="#test2">Upload</a></li>
-        <li class="tab col s3"><a class="waves-effect" href="#test4">URL</a></li>
-      </ul>
-    </div>
-    <div id="test1" class="col s12">
-			<img src="https://picsum.photos/800/1000" class="select_image" onclick="selectImage(this)"> <img src="https://images.unsplash.com/photo-1453928582365-b6ad33cbcf64?w=500" class="select_image" onclick="selectImage(this)"> <img src="https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?w=500" class="select_image" onclick="selectImage(this)"> <img src="https://images.unsplash.com/photo-1526675849333-144a81e4670d?w=500" class="select_image" onclick="selectImage(this)"> <img src="https://images.unsplash.com/photo-1566470235028-bec698904f61?w=500" class="select_image" onclick="selectImage(this)"> <img src="https://images.unsplash.com/photo-1610878785620-3ab2d3a2ae7b?w=500" class="select_image" onclick="selectImage(this)"> <img src="https://images.unsplash.com/photo-1568725386896-a38b401cbd8c?w=500" class="select_image" onclick="selectImage(this)"> <img src="https://images.unsplash.com/photo-1589271243979-3153ef0dcbd7?w=500" class="select_image" onclick="selectImage(this)"> <img src="https://images.unsplash.com/photo-1603397830143-1a78752fb208?w=500" class="select_image" onclick="selectImage(this)"> <img src="https://images.unsplash.com/photo-1532307227439-64b2c0117889?w=500" class="select_image" onclick="selectImage(this)"> <img src="https://images.unsplash.com/photo-1512187849-463fdb898f21?w=500" class="select_image" onclick="selectImage(this)"> <img src="https://images.unsplash.com/photo-1598511757337-fe2cafc31ba0?w=500" class="select_image" onclick="selectImage(this)"> <img src="https://images.unsplash.com/photo-1581073598026-26753e28b782?w=500" class="select_image" onclick="selectImage(this)"> <img src="https://images.unsplash.com/photo-1485001564903-56e6a54d46ef?w=500" class="select_image" onclick="selectImage(this)"> <img src="https://images.unsplash.com/photo-1552777969-557c49688622?w=500" class="select_image" onclick="selectImage(this)"> <img src="https://images.unsplash.com/photo-1559847580-a4ea81d30549?w=500" class="select_image" onclick="selectImage(this)"> <img src="https://images.unsplash.com/photo-1557256728-cd9dbea73286?w=500" class="select_image" onclick="selectImage(this)"> <img src="https://images.unsplash.com/photo-1611775021817-1280f283352e?w=500" class="select_image" onclick="selectImage(this)"> <img src="https://images.unsplash.com/photo-1567021892994-278ad3f489f4?w=500" class="select_image" onclick="selectImage(this)"> <img src="https://images.unsplash.com/photo-1528912599607-dc5f96f6c1d8?w=500" class="select_image" onclick="selectImage(this)"> <img src="https://images.unsplash.com/photo-1512360893-6cfbebd8da30?w=500" class="select_image" onclick="selectImage(this)"> <img src="https://images.unsplash.com/photo-1610815555435-780e58c3c4ed?w=500" class="select_image" onclick="selectImage(this)"> <img src="https://images.unsplash.com/photo-1626358177385-c3be17336ed6?w=500" class="select_image" onclick="selectImage(this)"> <img src="https://images.unsplash.com/photo-1519376108558-7b6471e87264?w=500" class="select_image" onclick="selectImage(this)"> <img src="https://images.unsplash.com/photo-1488998427799-e3362cec87c3?w=500" class="select_image" onclick="selectImage(this)"> <img src="https://media.istockphoto.com/vectors/abstract-blurred-colorful-background-vector-id1185382671?k=20&m=1185382671&s=612x612&w=0&h=QvHSiV0uDYhl69m1rpIt0aYbk4vmpl9kjVcfkMkgyfw=" class="select_image" onclick="selectImage(this)"> <img src="https://www.colorbook.io/imagecreator.php?hex=f93c29&width=500&height=300" class="select_image" onclick="selectImage(this)"> <img src="https://www.colorbook.io/imagecreator.php?hex=C91F37&width=500&height=300" class="select_image" onclick="selectImage(this)"> <img src="https://www.colorbook.io/imagecreator.php?hex=8E44AD&width=500&height=300" class="select_image" onclick="selectImage(this)"> <img src="https://www.colorbook.io/imagecreator.php?hex=BE90D4&width=500&height=300" class="select_image" onclick="selectImage(this)"> <img src="https://www.colorbook.io/imagecreator.php?hex=4D8FAC&width=500&height=300" class="select_image" onclick="selectImage(this)"> <img src="https://www.colorbook.io/imagecreator.php?hex=59ABE3&width=500&height=300" class="select_image" onclick="selectImage(this)"> <img src="https://www.colorbook.io/imagecreator.php?hex=4B77BE&width=500&height=300" class="select_image" onclick="selectImage(this)"> <img src="https://www.colorbook.io/imagecreator.php?hex=1F4788&width=500&height=300" class="select_image" onclick="selectImage(this)"> <img src="https://www.colorbook.io/imagecreator.php?hex=003171&width=500&height=300" class="select_image" onclick="selectImage(this)"> <img src="https://www.colorbook.io/imagecreator.php?hex=044F67&width=500&height=300" class="select_image" onclick="selectImage(this)"> <img src="https://www.colorbook.io/imagecreator.php?hex=006442&width=500&height=300" class="select_image" onclick="selectImage(this)"> <img src="https://www.colorbook.io/imagecreator.php?hex=16A085&width=500&height=300" class="select_image" onclick="selectImage(this)"> <img src="https://www.colorbook.io/imagecreator.php?hex=D9B611&width=500&height=300" class="select_image" onclick="selectImage(this)"> <img src="https://www.colorbook.io/imagecreator.php?hex=95A5A6&width=500&height=300" class="select_image" onclick="selectImage(this)"> <img src="https://www.colorbook.io/imagecreator.php?hex=ABB7B7&width=500&height=300" class="select_image" onclick="selectImage(this)"> <img src="https://www.colorbook.io/imagecreator.php?hex=BFBFBF&width=500&height=300" class="select_image" onclick="selectImage(this)"> <img src="https://www.colorbook.io/imagecreator.php?hex=CA6924&width=500&height=300" class="select_image" onclick="selectImage(this)"> <img src="https://www.colorbook.io/imagecreator.php?hex=F9690E&width=500&height=300" class="select_image" onclick="selectImage(this)"> <img src="https://www.colorbook.io/imagecreator.php?hex=A17917&width=500&height=300" class="select_image" onclick="selectImage(this)"> <img src="https://www.colorbook.io/imagecreator.php?hex=26C281&width=500&height=300" class="select_image" onclick="selectImage(this)">
-		</div>
-    <div id="test2" class="col s12">
-			<div class="file-field input-field">
-                <div class="btn blue-grey darken-3 waves-effect waves-light">
-                  <span style="color: white !important">Click to upload</span>
-                  <input type="file" id="input_img" onchange="fileChange(this, function(e) {if(image1 === false) {document.getElementById('url').value = e;} else {document.getElementById('options').value += `\n![${e}]`;$('.modal').modal('close')} })" accept="image/*" required>
-                </div>
-                <div class="file-path-wrapper">
-                  <input class="file-path validate" type="text" placeholder="Upload a file...">
-                </div>
-						</div>
-		</div>
-    <div id="test4" class="col s12">
-			<div class="input-field">
-					<label for="url">URL</label>
-					<input type="text" id="url" onkeyup="if(event.keyCode == 13) {document.getElementById('save').click()}">
-				</div>
-		</div>
-  </div>
-        
-			</div>
-			<div class="modal-footer">
-				<a href="javascript:void(0)" id='save' class="btn green darken-3 waves-effect waves-light modal-close" onclick="if(image1 === true) {document.getElementById('options').value += `\n![${document.getElementById('url').value}]`;}">
-					<i class="material-icons left">save</i> Save
-				</a>
-			</div>
-		</div>
-		<script src="../components.js"></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/@materializecss/materialize@1.0.0/dist/js/materialize.min.js"
-      type="text/javascript"
-    ></script>
-    <footer class="page-footer blue" style="padding: 0 !important">
-      <div class="footer-copyright">
-        <div class="container">
-          © Copyright 2021 All rights reserved
-          <a
-            class="grey-text text-lighten-4 right"
-            href="https://manuthecoder.ml"
-            >A swag app by Manu!</a
-          >
-        </div>
-      </div>
-    </footer>
-		<script>
-			var image1 = false
-			function searchImage(el, event) {
-				event.preventDefault();
-				  var xhttp = new XMLHttpRequest();
-					xhttp.onreadystatechange = function() {
-						if (this.readyState == 4 && this.status == 200) {
-							alert(1)
-						alert( this.responseText );
-						}
-					};
-					xhttp.open("GET", "https://serpapi.com/search.json?q="+encodeURIComponent(document.getElementById('search').value), true);
-					xhttp.send();
+      function fileChange(el, callback = function (e) { }) {
+        var file = el;
+        var form = new FormData();
+        form.append("image", file.files[0])
+
+        var settings = {
+          "url": "https://api.imgbb.com/1/upload?key=5e97a7dae2b850713c9da081460622cf",
+          "method": "POST",
+          "timeout": 0,
+          "processData": false,
+          "mimeType": "multipart/form-data",
+          "contentType": false,
+          "data": form
+        };
+
+
+        $.ajax(settings).done(function (response) {
+          console.log(response);
+          var jx = JSON.parse(response);
+          callback(jx.data.url)
+
+        });
+      }
+      function uploadImage(d,t) {
+        var dd = M.Chips.getInstance(document.querySelector("#c2"));
+        dd.addChip({ tag: t, image: d});
+      }
+
+      $("#submitBTN").click( e => {
+        // e.preventDefault();
+        var form = $(this);
+        var url = form.attr('action');
+        var data = {
+          type: "Poll",
+          title: document.getElementById('poll__name').value,
+          categories: categories,
+          desc: document.getElementById('poll__description').value,
+          pwd: document.getElementById('poll__password').value,
+          options: choices,
+          image: document.getElementById('poll__image').value,
+          date: `${new Date().getMonth()}/${new Date().getDate()}/${new Date().getFullYear()} at ${new Date().getHours()}:${new Date().getMinutes()}`,
+        };
+
+        console.log(data)
+
+        socket.emit("addPoll", data)
+        socket.on("newPollAdded", (e)=> {
+          id = e;
+					history.pushState(null,null,`https://${window.location.hostname}/j/${e}`)
+          $("#app").load("https://www.edpoll.ga/add/view.html");
+					$(".nav-content *").addClass("hide")
+        })
+      });
+			if(window.location.href.includes("/j/")) {
+				id = window.location.href.replace(/\D/g,'');
+				$("#app").load("https://www.edpoll.ga/add/view.html");
+				$(".nav-content *").addClass("hide")
 			}
-			function selectImage(e) {
-				if(image1 === false) {
-					var url = document.getElementById("url");
-					url.value = e.src;
-					url.focus();
-				}
-				else {
-					document.getElementById("options").value += `\n![${e.src}]`;
-					document.getElementById("options").focus
-				}
-				$(".modal").modal('close');
-			}
-			var socket = io();
-			var name = document.getElementById('name');
-			var options = document.getElementById('options');
-			var desc = document.getElementById('desc');
-			var url = document.getElementById('url');
-			var categories = document.getElementById('categories');
-			function addPoll(e) {
-				// document.getElementById("btn").innerHTML = "Loading..."
-				e.preventDefault();
-				socket.emit("addPoll", document.getElementById('name').value, options.value, categories.value, desc.value, url.value, document.getElementById('pwd').value)
-				localStorage.clear();
-				socket.on("newPollAdded", (data) => {
-				// window.location.href = "../j/" + data
-				history.pushState(null, null, "../j/" + data);
-				id = data
-				$("#app").load("view.html");
-				socket.off("newPollAdded")
+			$(".modal").modal();
+
+			$("#addWordcloud").click(() => {
+				var data = {
+          type: "Wordcloud",
+          title: document.getElementById('wc__name').value,
+          desc: document.getElementById('wc__description').value,
+          pwd: document.getElementById('wc__password').value,
+					responses: [],
+          image: document.getElementById('wc__image').value,
+          date: `${new Date().getMonth()}/${new Date().getDate()}/${new Date().getFullYear()} at ${new Date().getHours()}:${new Date().getMinutes()}`,
+        }
+				socket.on("newPollAdded", (e)=> {
+          id = e;
+					history.pushState(null,null,`https://${window.location.hostname}/j/${e}`)
+          $("#app").load("https://www.edpoll.ga/add/view.html");
+					$(".nav-content *").addClass("hide")
+        })
+				socket.emit("addPoll", data);
 			})
-			}
-
-		function fileChange(el, callback = function (e) { }) {
-  var file = el;
-  var form = new FormData();
-  form.append("image", file.files[0])
-
-  var settings = {
-    "url": "https://api.imgbb.com/1/upload?key=5e97a7dae2b850713c9da081460622cf",
-    "method": "POST",
-    "timeout": 0,
-    "processData": false,
-    "mimeType": "multipart/form-data",
-    "contentType": false,
-    "data": form
-  };
-
-
-  $.ajax(settings).done(function (response) {
-    console.log(response);
-    var jx = JSON.parse(response);
-    callback(jx.data.url)
-
-  });
-}
-			function saveValue() {
-				document.getElementById("chip").innerHTML = `	<div class="chip">
-				<i class="material-icons left">sync</i>
-				Saving...</div>`
-				setTimeout(() => {
-									document.getElementById("chip").innerHTML = `	<div class="chip">
-									<i class="material-icons left">done_all</i>
-									Saved to browser</div>`
-				}, 200)
-				// localStorage.setItem("name", name.value)
-				localStorage.setItem("options", options.value)
-				localStorage.setItem("desc", desc.value)
-				localStorage.setItem("categories", categories.value);;
-			}
-			options.onkeyup =  saveValue;
-			desc.onkeyup =  saveValue;
-			categories.onkeyup =  saveValue;
-			document.getElementById('name').value = localStorage.getItem("name") || ""
-			options.value = localStorage.getItem("options") || ""
-			desc.value = localStorage.getItem("desc") || "Fill out the poll below!"
-			categories.value = localStorage.getItem("categories") || ""
-			function hasNumber(myString) {
-  return /\d/.test(myString);
-}
-var id = 0;
-if(hasNumber(window.location.href)) {
-	id = window.location.href.replace(/\D/g, "")
-	$("#app").load("https://" + window.location.hostname + "/add/view.html", () => {
-		document.getElementById("app").style.display = "block"
-
-	})
-}
-else {
-	document.getElementById("app").style.display = "block"
-}
-
-$(".modal").modal({
-	onOpenEnd: function() {
-		document.getElementById("url").value = ""
-		document.getElementById("url").focus()
-	}
-})
-			 $(document).ready(function(){
-    $('.collapsible').collapsible();
-  });
-        $(document).ready(function(){
-    $('.tabs').tabs();
-  });
-		</script>
+    </script>
   </body>
 </html>

@@ -11,7 +11,7 @@ self.addEventListener('install', (e) => {
       '/sw.js',
 			'/components.js',
 			'/add/index.html',
-			'/add/view.html',
+			// '/add/view.html',
 			'/app/index.html',
 			'/socket.io/socket.io.js'
     ])),

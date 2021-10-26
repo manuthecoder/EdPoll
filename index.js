@@ -65,13 +65,14 @@ var _logger = (req, res, next) => {
 		res.end();
 		return false;
 	}
+  res.setHeader("Content-Type", mime.lookup(path.extname(url)));
   if (url.endsWith("/") || !url.includes(".")) {
     url += "/";
     url = url + "index.html";
   }
   console.log(url);
 	var isPoll = false;
-  if (url.includes("/v/") && url !== "/home/runner/beta/public/v/poll.css" && url !== "/home/runner/beta/public/v/poll.js") {
+  if (url.includes("/v/") && url !== "/home/runner/beta/public/v/poll.css" &&"/home/runner/beta/public/v/style.css" && url !== "/home/runner/beta/public/v/poll.js") {
 		isPoll = true;
     var $_GET = url.split("/v/");
     req.query.id = $_GET[1];
@@ -79,7 +80,7 @@ var _logger = (req, res, next) => {
     url = $_GET[0] + "/v/index.html";
     url = url;
   }
-	if (url.includes("/e/") && url !== "/home/runner/beta/public/v/poll.css" && url !== "/home/runner/beta/public/v/poll.js") {
+	if (url.includes("/e/") && url !== "/home/runner/beta/public/v/poll.css" &&"/home/runner/beta/public/v/style.css" && url !== "/home/runner/beta/public/v/poll.js") {
 		isPoll = true;
     var $_GET = url.split("/e/");
     req.query.id = $_GET[1];
@@ -110,7 +111,6 @@ var _logger = (req, res, next) => {
 		res.redirect("https://"+req.headers.host+"/v/404");
 		return false;
 	}
-  res.setHeader("Content-Type", mime.lookup(path.extname(url)));
 	var content = fs.readFileSync(url, { encoding: "utf-8" }).toString();
 	if(isPoll == true) {
 		var dbPolls = JSON.parse(fs.readFileSync(__dirname + "/public/database/polls.json"));
@@ -173,12 +173,12 @@ var _logger = (req, res, next) => {
 		result = result.replace(`<script id="DEL_TAG_SCRIPT">`, "")
 		result = result.replace(`</script>`, "")
 		content = result;
-		cache[url] = content;
+		// cache[url] = content;
 		}
 		
 		}
 		else {
-			content = cache[url];
+			// content = cache[url];
 		}
 		
 		
@@ -198,43 +198,30 @@ io.on("connection", (socket) => {
 	socket.on("message", function(e) {
 		console.log(e)
 	})	
-	socket.on("error", function(e) {
+	socket.on("addWord1", function(a,b,c) {
+		var db = JSON.parse(fs.readFileSync("./public/database/polls.json"));
+			db[a].responses.push(c)
+			fs.writeFileSync(
+      "./public/database/polls.json",
+      JSON.stringify(db),
+      "utf-8"
+    );
+		io.emit("addWord", a,b,c);
+	})
+	socket.on("error", (e) => {
 		console.error(e)
 	})
-  socket.on("addPoll", (name, options, categories, desc, image, pwd) => {
+  socket.on("addPoll", (data) => {
 		console.log("New Poll Added!");
-		// if(socket) {}
-		// else {
-		// 	console.log("Error!")
-		// 	return false
-		// }
     var db = JSON.parse(fs.readFileSync("./public/database/polls.json"));
-    var categories1 = [], options1 = [];
-		if(categories !== "") {
-    categories.split(",").forEach(e=>categories1.push((e.toString().trim())));
-		}
-    options.split("\n").forEach(o => {
-			if(o.trim() !== "") {
-			options1.push({name:(o.toString()),votes:0});
-			}
-		});
-    var i =
-      db.push({
-        title: (name.toString()),
-        date: `${date.format(new Date(), "ddd, MMM DD YYYY")}`,
-        categories: categories1,
-        options: options1,
-        desc: (desc.toString()),
-        image: (image),
-        pwd: pwd,
-      }) - 1;
-    var item = db[i];
+		db.push(data)
+		var i = db.length;
 		fs.writeFileSync(
       "./public/database/polls.json",
       JSON.stringify(db),
       "utf-8"
     );
-    io.emit("newPollAdded", i);
+    socket.emit("newPollAdded", i);
   });
   socket.on("votedNow", (a, b) => io.emit("votedNow", a, b));
   socket.on("confetti", (id) => io.emit("confetti", id));
