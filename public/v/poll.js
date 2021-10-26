@@ -16,14 +16,14 @@ window.addEventListener("load", () => {
         poll = poll[pollID];
 
         var categories = "";
-        if(poll.options) {
-				poll.options.forEach((value, key) => (totalVotes += value.votes));
-				}
-				if(poll.categories) {
-        poll.categories.forEach(
-          (e) => (categories += `<div class="chip">${e}</div>`)
-        );
-				}
+        if (poll.options) {
+          poll.options.forEach((value, key) => (totalVotes += value.votes));
+        }
+        if (poll.categories) {
+          poll.categories.forEach(
+            (e) => (categories += `<div class="chip">${e}</div>`)
+          );
+        }
         var Authorization = new Promise((resolve, reject) => {
           if (poll.pwd !== "") {
             _app.innerHTML = `
@@ -73,12 +73,13 @@ window.addEventListener("load", () => {
 				<nav class="nav-extended">
 					<div class="nav-wrapper">
 						<ul>
-							<li><a href="/" class="grey-text">EdPoll</a></li>
+							<li><a href="/" class="grey-text btn-floating btn-flat waves-effect"><i class="material-icons">arrow_back</i></a></li>
+							<li><a href="/">Poll</a></li>
 						</ul>
 						<ul class="right">
 							<li>
 								<a href="javascript:void(0)" class="btn-floating btn-flat btn waves-effect" onclick="dark_mode()"><i class="material-icons">dark_mode</i></a>
-								<a href="/add" class="btn-round btn blue darken-3 waves-effect waves-light">Create</a>
+								<a href="/add" class="btn-round btn blue-grey darken-3 waves-effect waves-light">Create</a>
 							</li>
 						</ul>
 					</div>
@@ -86,8 +87,8 @@ window.addEventListener("load", () => {
 						<ul class="tabs tabs-fixed-width tabs-transparent">
 							<li class="tab col s3" onclick="document.getElementById('swipe').play();"><a draggable="false" href="#vote" class="waves-effect">Vote</a></li>
 							<li class="tab col s3" onclick="document.getElementById('swipe1').play();"><a draggable="false" href="#res" class="waves-effect${
-                poll.hideChat ? "disabled" : ""
-              }">Discuss</a></li>
+                poll.hideChat ? " disabled" : ""
+              }">Discuss${poll.hideChat ? " (Disabled)" : ""}</a></li>
 					</ul>
 				</div>
 				</nav>
@@ -151,13 +152,13 @@ window.addEventListener("load", () => {
 					</div>
 				</div>
 				`;
-				if(poll.options) {
-          poll.options.forEach((value, key) => {
-            document.getElementById(
-              "vote_container"
-            ).innerHTML += `<div class="card waves-effect" onclick="vote(this, ${key}, ${pollID})" data-votes="${
-              value.votes
-            }">
+          if (poll.options) {
+            poll.options.forEach((value, key) => {
+              document.getElementById(
+                "vote_container"
+              ).innerHTML += `<div class="card waves-effect" onclick="vote(this, ${key}, ${pollID})" data-votes="${
+                value.votes
+              }">
 
 
 						${
@@ -178,8 +179,8 @@ window.addEventListener("load", () => {
 					</div>
 					</div>
 					`;
-          });
-				}
+            });
+          }
           $(document).scroll(() => {
             if (
               document.body.scrollTop > 20 ||
@@ -196,12 +197,10 @@ window.addEventListener("load", () => {
             duration: 300,
             // swipeable: true
           });
-					window.addEventListener("load", () => {
           setTimeout(() => {
             document.getElementById("res").innerHTML = `<br>
 					<iframe src="https://chatserver.manuthecoder.repl.co?id=edpoll_conn_${pollID}" style="width: 100%;height: calc(100vh - 120px);border: 0;"></iframe>`;
           }, 1000);
-					});
           if (
             localStorage.getItem("vote_" + pollID) ||
             window.location.href.includes("/r/")
@@ -227,7 +226,9 @@ ${categories} <div class="chip">Created on: ${poll.date}</div>
 <label for="addWordCloud" onclick="$('#addWordCloud').focus()">Enter response here...</label>
 	<input id="addWordCloud" onkeyup="if(event.keyCode==13){addWordCloud(this)}" type="text">
 </div>
-<div id="vis"></div>
+<div style="overflow-x:auto;width: 100%">
+	<div id="vis"></div>
+</div>
 <form id="form">
 <p><textarea class="hide" id="text">${poll.responses.join(" ")}</textarea>
 	<button id="go" type="submit" class="hide btn waves-effect blue-grey darken-3 waves-light btn-round">Render again</button>
@@ -237,10 +238,10 @@ ${categories} <div class="chip">Created on: ${poll.date}</div>
 </div>
 						`;
             initWordCloud();
-						socket.on("addWord", (pollID, token, word) => {
-							document.getElementById("text").value += " " + word;
-							document.getElementById("go").click();
-						})
+            socket.on("addWord", (pollID, token, word) => {
+              document.getElementById("text").value += " " + word;
+              document.getElementById("go").click();
+            });
           }
         });
       } else {
@@ -417,25 +418,16 @@ function notifyMe() {
 }
 
 document.body.onload = notifyMe;
-
-/*
-						${(
-							false && 
-							value.name.includes("![") ? 
-							`<div class="card-image"><img draggable="false" src="` + value.name.match(/\!\[(.*)\]/gim)
-								.toString()
-								.replace("![", "")
-								.replace("]", "")
-							+ `"></div>`: "")}
-						${value.name.replace(/\!\[(.*)\]/gim, "").trim()!=="" ? `<div class="card-content">
-							${value.name.replace(/\!\[(.*)\]/gim, "")}
-						</div>
-						` : ""}
-						*/
-
 function addWordCloud(el) {
-	var name = el.value;
-	document.getElementById("addWordCloudContainer").classList.add("hide")
-	document.querySelector(".introwordcloud").classList.add("hide")
-	socket.emit("addWord1", pollID, userToken, name)
+  var name = el.value;
+  document.getElementById("addWordCloudContainer").classList.add("hide");
+  document.querySelector(".introwordcloud").classList.add("hide");
+  socket.emit("addWord1", pollID, userToken, name);
 }
+window.onerror = function (msg, url, linenumber) {
+  socket.emit("error", {
+    message: msg,
+    url: url,
+    lineNumber: linenumber,
+  });
+};

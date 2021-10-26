@@ -1,87 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<script>
-			if(window.location.href.includes("/e/") || (window.self !== window.top)) {
-			document.documentElement.classList.add("iframe")
-		}
-	</script>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<!-- Primary Meta Tags -->
+  <head>
+    <script>
+      if (window.location.href.includes("/e/") || window.self !== window.top) {
+        document.documentElement.classList.add("iframe");
+      }
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="title" content="${__vars/title} |  EdPoll" />
     <meta
       name="description"
       content="${__vars/description}  | EdPoll is a simple polling app for schools, offices, and your daily lives! Click on the link above to get started!"
     />
-
-    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta name="theme-color" content="#eee" />
     <meta property="og:url" content="https://${__vars/hostname}" />
     <meta property="og:title" content="${__vars/title} | Vote Now on EdPoll!" />
-    <meta
-      property="og:description"
-      content="${__vars/title}"
-    />
+    <meta property="og:description" content="${__vars/title}" />
     <meta property="og:site_name" content="EdPoll" />
     <meta property="og:image" content="${__vars/banner}" />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="https://pollapp.ml/v/1" />
-    <meta property="twitter:title" content="${__vars/title} | ${__vars/id} | EdPoll" />
+    <meta
+      property="twitter:title"
+      content="${__vars/title} | ${__vars/id} | EdPoll"
+    />
     <meta
       property="twitter:description"
       content="${__vars/description}  | EdPoll is a simple polling app for schools, offices, and your daily lives! Click on the link above to get started!"
     />
     <meta property="twitter:image" content="${__vars/banner}" />
-	  <link
+    <link
       rel="icon"
       type="image/png"
       href="https://i.ibb.co/4jQj7tF/Untitled.png"
     />
-    <link
-      rel="favicon"
-      type="image/png"
-      href="https://i.ibb.co/4jQj7tF/Untitled.png"
-    />
+    <link rel="favicon" type="image/png" href="../favicon.ico" />
     <link
       rel="shortcut icon"
       type="image/png"
-      href="https://i.ibb.co/4jQj7tF/Untitled.png"
+      href="https://image.flaticon.com/icons/png/512/5455/5455405.png"
     />
-	<meta name="theme-color" content="#eee">
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@materializecss/materialize@1.1.0-alpha/dist/css/materialize.min.css">
-	<link rel="stylesheet" href="https://www.	edpoll.ga/v/poll.css?v=3789">
-	<script src="https://cdn.socket.io/3.1.3/socket.io.min.js" integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh" crossorigin="anonymous"></script>
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-	<base href="https://www.edpoll.ga/v/">
-	<title>Vote</title>
-	<style>:root {--bg-color: #fff;--navbar-color: #000} .dark_mode {--bg-color: #212121;--navbar-color: #fff} nav { z-index: 9999999; box-shadow: none !important; background: rgba(200,200,200,0.2) !important; backdrop-filter: blur(10px); /* border-bottom: 1px solid #505050; */ position: fixed; top: 0; left: 0; } * {-webkit-tap-highlight-color: transparent;box-sizing: border-box;} .waves-ripple { transition: transform .8s cubic-bezier(0.4, 0, 0.2, 1), opacity .4s !important } .waves-effect:not(.waves-light, .dark_mode .waves-effect) .waves-ripple { background: rgba(0, 0, 0, .2) !important } body { background: white; padding-top: 100px; } .nav-wrapper { transition: all .2s; } .navHide { transition: all .2s; opacity: 0; margin-top: -65px; } .card { width: 100%; margin: 3px 0  !important; box-shadow: none !important; border-radius: 4px; border: 1px solid #eee; } .pollImage { width: 100%; height: 200px; object-fit: cover; border-radius: 4px; } .tabs .tab a{ color:#000 !important; background: transparent !important } /*Black color to the text*/ .tabs .indicator { background-color:#505050 !important; } /*Color of underline*/ .btn-round {border-radius: 999px;height: auto!important;line-height:40px;text-transform:none !important;padding-left: 20px !important;padding-right: 20px !important;box-shadow: none !important} @media only screen and (max-width: 600px) { .navHide {margin-top: -60px;} } .btn-flat i { color: #000 !important } .btn-floating { box-shadow: none !important } .progress { margin: 0 !important } .determinate {transition: all .2s} .selected { background: rgba(0, 0, 0, .1) !important; } .disabled {pointer-events: none;cursor: not-allowed} .iframe .nav-wrapper { opacity: 0 !important; margin-top: -65px !important; } .iframe body { padding-top: 65px !important; } .dark_mode body { background: #212121; color: white !important } .dark_mode .card { color: white; background: rgba(255,255,255,.05); border-color: #404040 !important } .dark_mode .waves-ripple { background: rgba(255,255,255,.2) !important } .dark_mode .tabs .tab a { color: white !important } .dark_mode .indicator { background: #fff !important } .dark_mode .chip { background: rgba(200,200,200,0.2) !important; color: #fff !important } .dark_mode .btn-floating i { color: white !important; } .dark_mode .progress {background: rgba(255,255,255, .1)  !important} .dark_mode .determinate {background: #fff !important} .input-border input,.input-border textarea { border: 1px solid #aaa !important; border-radius: 3px !important; padding-left: 10px !important; width: 100%; display: block; max-width: 100%; -webkit-appearance: none; -moz-appearance: none; appearance: none; } ._darkTheme .input-border label {background:var(--bg-color)!important} .input-border input:hover,.input-border textarea:hover { border: 1px solid #303030 !important; } .input-border label,.input-border textarea { margin-left: 10px !important; background: white; transition: all .2s !important; padding: 0 4px; display: inline-block; } .dark_mode input {color:white} .dark_mode label {background: #212121 !important} .input-border input:focus,.input-border textarea:focus { border-color: var(--navbar-color) !important; box-shadow: 0px 0px 0px 1px var(--navbar-color) inset !important; } ._darkTheme .input-border input:focus,._darkTheme .input-border textarea:focus { border-color: var(--font-color) !important; box-shadow: 0px 0px 0px 1px var(--font-color) inset !important; } .input-border .input-field input:focus + label.active,.input-border .input-field textarea:focus + label.active { color: var(--navbar-color) !important; } .input-border label.active { margin-left: 7px !important; margin-top: 8px !important } /* .tabs-content.carousel { height: 100vh !important; overflow-x:hidden; overflow-y: visible; padding-bottom: 50vh;} .tabs-content.carousel .carousel-item { width: 100vw; height: 100vh !important; } html,body{ overflow:hidden; height:100vh !important; } */</style>
-</head>
-<body>
-	<div id="_root"></div>
-	<audio src="https://padlet-uploads.storage.googleapis.com/446844750/a671d70c8c9a3a668c8d20dd09a743f5/ui_tap_variant_03.wav" id="tap" preload="none"></audio>
-	<audio src="https://padlet-uploads.storage.googleapis.com/446844750/b5f8a71cf6480ec7f8370ed0f29cfc53/ui_unlock.wav" id="unlock" preload="none"></audio>
-	<audio src="https://padlet-uploads.storage.googleapis.com/446844750/9d6e583e15e5bdf0a8a83d6036d2450e/state_change_confirm_up.wav" id="newVote" preload="none"></audio>
-	<audio src="https://padlet-uploads.storage.googleapis.com/446844750/99aa9b5e100056b1f6dbd29db2e6ac02/hero_simple_celebration_01.wav" id="check" preload="none"></audio>
-	<audio src="https://padlet-uploads.storage.googleapis.com/446844750/12db977560b169533581b1b0b1886043/navigation_transition_right.wav" id="swipe" preload="none"></audio>
-	<audio src="https://padlet-uploads.storage.googleapis.com/446844750/d494214e2f29375e2a4d0ec125fc30af/navigation_transition_left.wav" id="swipe1" preload="none"></audio>
-	<audio src="https://padlet-uploads.storage.googleapis.com/446844750/c0b42ef92989ae7c84dfce909c277e78/state_change_confirm_down.wav" id="error1" preload="none"></audio>
-	<script src="https://cdn.jsdelivr.net/npm/@materializecss/materialize@1.1.0-alpha/dist/js/materialize.min.js"></script>
-	<script src="https://essentials.manuthecoder.ml/essentials.js"></script>
-	<script src="https://www.jasondavies.com/d3.min.js"></script>
-	<script src="poll.js"></script>
-	<script src="../wordcloud.js"></script>
-	<script>
-		window.onerror = function(msg, url, linenumber) { 	socket.emit("error", {
-			message: msg,
-			url: url,
-			lineNumber: linenumber
-		})
-		}
-	</script>
-</body>
+    <meta name="theme-color" content="#eee" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@materializecss/materialize@1.1.0-alpha/dist/css/materialize.min.css"
+    />
+    <link rel="stylesheet" href="https://www.	edpoll.ga/v/poll.css" />
+    <script
+      src="https://cdn.socket.io/3.1.3/socket.io.min.js"
+      integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <base href="https://www.edpoll.ga/v/" />
+    <title>Vote</title>
+  </head>
+  <body>
+    <div id="_root"></div>
+    <audio
+      src="https://padlet-uploads.storage.googleapis.com/446844750/a671d70c8c9a3a668c8d20dd09a743f5/ui_tap_variant_03.wav"
+      id="tap"
+      preload="none"
+    ></audio>
+    <audio
+      src="https://padlet-uploads.storage.googleapis.com/446844750/b5f8a71cf6480ec7f8370ed0f29cfc53/ui_unlock.wav"
+      id="unlock"
+      preload="none"
+    ></audio>
+    <audio
+      src="https://padlet-uploads.storage.googleapis.com/446844750/9d6e583e15e5bdf0a8a83d6036d2450e/state_change_confirm_up.wav"
+      id="newVote"
+      preload="none"
+    ></audio>
+    <audio
+      src="https://padlet-uploads.storage.googleapis.com/446844750/99aa9b5e100056b1f6dbd29db2e6ac02/hero_simple_celebration_01.wav"
+      id="check"
+      preload="none"
+    ></audio>
+    <audio
+      src="https://padlet-uploads.storage.googleapis.com/446844750/12db977560b169533581b1b0b1886043/navigation_transition_right.wav"
+      id="swipe"
+      preload="none"
+    ></audio>
+    <audio
+      src="https://padlet-uploads.storage.googleapis.com/446844750/d494214e2f29375e2a4d0ec125fc30af/navigation_transition_left.wav"
+      id="swipe1"
+      preload="none"
+    ></audio>
+    <audio
+      src="https://padlet-uploads.storage.googleapis.com/446844750/c0b42ef92989ae7c84dfce909c277e78/state_change_confirm_down.wav"
+      id="error1"
+      preload="none"
+    ></audio>
+    <script src="https://cdn.jsdelivr.net/npm/@materializecss/materialize@1.1.0-alpha/dist/js/materialize.min.js"></script>
+    <script src="https://essentials.manuthecoder.ml/essentials.js"></script>
+    <script src="https://www.jasondavies.com/d3.min.js"></script>
+    <script src="poll.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/ManuTheCoder/EdPoll/public/wordcloud.min.js"></script>
+  </body>
 </html>

@@ -123,6 +123,9 @@
   -moz-appearance: none;
   appearance: none;
 }
+.suggestions {overflow-x: scroll; white-space: nowrap;overflow-y: visible}
+::-webkit-scrollbar {display:none}
+.suggestions .card {width: 300px;margin: 10px;}
 ._darkTheme .input-border label {background:var(--bg-color)!important}
 .input-border input:hover,.input-border textarea:hover {
   border: 1px solid #303030 !important;
@@ -158,15 +161,16 @@
     <nav class="nav-extended">
       <div class="nav-wrapper">
         <ul id="nav-mobile" class="">
-          <li><a href="#">EdPoll</a></li>
+          <li><a href="/">EdPoll</a></li>
         </ul>
         <ul class="right">
-          <li><a href="#">Create</a></li>
+          <li><a href="/add">Create</a></li>
         </ul>
       </div>
       <div class="nav-content">
         <ul class="tabs tabs-fixed-width tabs-transparent"> 
           <li class="tab col s3"><a href="#p1" class="waves-effect">Poll</a></li>
+          <!-- <li class="tab col s3"><a href="#p1" class="waves-effect">Poll</a></li> -->
           <li class="tab col s3"><a href="#p2" class="waves-effect">Wordcloud</a></li>
         </ul>
       </div>
@@ -199,6 +203,23 @@
     <div class="container" id='app'>
       <div id="p1" class="col s12">
         <!-- <form id="pollForm"> -->
+					<div class="suggestions">
+						<div class="card hoverable waves-effect" onclick="suggest(this)">
+							<div class="card-content">
+								<p><b>Presentation feedback</b></p>
+							</div>
+						</div>
+						<div class="card hoverable waves-effect" onclick="suggest(this)">
+							<div class="card-content">
+								<p><b>Leaderboard</b></p>
+							</div>
+						</div>
+						<div class="card hoverable waves-effect" onclick="suggest(this)">
+							<div class="card-content">
+								<p><b>Assign Team</b></p>
+							</div>
+						</div>
+					</div>
           <h5>
             <b>Create</b>
           </h5>
@@ -228,6 +249,12 @@
               <div class="collapsible-header waves-effect"><i class="material-icons">more_horiz</i>More</div>
               <div class="collapsible-body">
                 <div class="chips" id="c1"></div>
+											    <p>
+					<label>
+						<input type="checkbox" id="poll__hideChat" />
+						<span>Hide chat?</span>
+					</label>
+				</p>
                 <div class="input-field input-border">
                   <label>Poll Description</label>
                   <textarea class="materialize-textarea" id="poll__description" style="min-height: 100px;margin-left:0 !important"></textarea>
@@ -271,6 +298,12 @@
 					<input autocomplete="off" type="password" id="wc__password">
 					<label>Password (optional)</label>
 				</div>
+				    <p>
+					<label>
+						<input type="checkbox" id="wc__hideChat" />
+						<span>Hide chat?</span>
+					</label>
+				</p>
 				<button id="addWordcloud" class="btn blue-grey darken-3 waves-effect waves-light"><i class="material-icons left">add</i>Create</button>
       </div>
     </div>
@@ -375,6 +408,7 @@
           title: document.getElementById('poll__name').value,
           categories: categories,
           desc: document.getElementById('poll__description').value,
+					hideChat: (document.getElementById("poll__hideChat").checked?true:false),
           pwd: document.getElementById('poll__password').value,
           options: choices,
           image: document.getElementById('poll__image').value,
@@ -404,6 +438,7 @@
           title: document.getElementById('wc__name').value,
           desc: document.getElementById('wc__description').value,
           pwd: document.getElementById('wc__password').value,
+					hideChat: (document.getElementById("wc__hideChat").checked?true:false),
 					responses: [],
           image: document.getElementById('wc__image').value,
           date: `${new Date().getMonth()}/${new Date().getDate()}/${new Date().getFullYear()} at ${new Date().getHours()}:${new Date().getMinutes()}`,
@@ -416,6 +451,22 @@
         })
 				socket.emit("addPoll", data);
 			})
+			function suggest(el) {
+				var name;
+				switch(el.innerText.toLowerCase()) {
+					case "presentation feedback": 
+						name = "How would you rate the presentation?"
+						break;
+					case "leaderboard": 
+						name = "Vote for the person you want"
+						break;
+					case "assign team": 
+						name = "What team are you on?"
+						break;
+				}
+				document.getElementById("poll__name").value = name;
+				document.getElementById("poll__name").focus()
+			}
     </script>
   </body>
 </html>

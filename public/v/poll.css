@@ -1,5 +1,6 @@
 :root {--bg-color: #fff;--navbar-color: #000}
 .dark_mode {--bg-color: #212121;--navbar-color: #fff}
+nav a {background:transparent!important}
 nav {
 	z-index: 9999999;
 	box-shadow: none !important;
@@ -18,6 +19,7 @@ nav {
 .waves-effect:not(.waves-light, .dark_mode .waves-effect) .waves-ripple {
   background: rgba(0, 0, 0, .2) !important
 }
+.dark_mode nav a {color:white!important}
 body {
 	background: white;
 	padding-top: 100px;
@@ -151,3 +153,7 @@ body {
   margin-top: 8px !important
 }
 /* .tabs-content.carousel { height: 100vh !important; overflow-x:hidden; overflow-y: visible; padding-bottom: 50vh;} .tabs-content.carousel .carousel-item { width: 100vw; height: 100vh !important; } html,body{ overflow:hidden; height:100vh !important; } */
+.tab a.disabled {opacity: .5 !important}
+.btn-floating {margin-left: 10px;}
+.btn-floating.btn-flat {background: transparent !important}
+.btn-floating .waves-ripple{top:50%!important;left: 50%!important;}
