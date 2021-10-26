@@ -22,36 +22,13 @@ const banner = `
     </p>
 	<div class="input-field input-border">
 		<label style="background:#303030!important">Any suggestions</label>
-		<textarea name="suggestions" class="materialize-textarea" style="background:transparent!important;margin-left:0!important"></textarea>
+		<textarea name="suggestions" class="materialize-textarea" style="background:transparent!important;margin-left:0!important;padding-top: 15px!important;"></textarea>
 	</div>
   <!-- your other form fields go here -->
   <button type="submit" class="btn blue-grey darken-3 waves-effect btn-round">Send</button>
 </form>
 </div>
 </div>
-
-<script>
-    var form = document.getElementById("my-form");
-    
-    async function handleSubmit(event) {
-      event.preventDefault();
-      var status = document.getElementById("my-form-status");
-      var data = new FormData(event.target);
-      fetch(event.target.action, {
-        method: form.method,
-        body: data,
-        headers: {
-            'Accept': 'application/json'
-        }
-      }).then(response => {
-        status.innerHTML = "Thanks for your submission!";
-        form.reset()
-      }).catch(error => {
-        status.innerHTML = "Oops! There was a problem submitting your form"
-      });
-    }
-    form.addEventListener("submit", handleSubmit)
-</script>
 `
 const userToken = _e.getUuidv4();
 var socket = io();
