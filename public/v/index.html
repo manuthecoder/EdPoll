@@ -6,6 +6,7 @@
         document.documentElement.classList.add("iframe");
       }
     </script>
+		<link rel="manifest" href="../manifest.webmanifest">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="title" content="${__vars/title} |  EdPoll" />
@@ -103,5 +104,12 @@
     <script src="https://cdn.jsdelivr.net/gh/ManuTheCoder/EdPoll/public/d3.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/ManuTheCoder/EdPoll/public/wordcloud.min.js"></script>
     <script src="poll.js"></script>
+		<script>
+			if ('serviceWorker' in navigator) {
+				window.addEventListener('load', function() {
+					navigator.serviceWorker.register('/sw.js');
+				});
+			}
+		</script>
   </body>
 </html>

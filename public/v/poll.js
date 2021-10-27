@@ -189,7 +189,7 @@ window.addEventListener("load", () => {
             poll.options.forEach((value, key) => {
               document.getElementById(
                 "vote_container"
-              ).innerHTML += `<div class="card waves-effect" onclick="vote(this, ${key}, ${pollID})" data-votes="${
+              ).innerHTML += `<div class="card waves-effect" onkeyup="if(event.keyCode==13) this.click();" tabindex="0" onclick="vote(this, ${key}, ${pollID})" data-votes="${
                 value.votes
               }">
 
@@ -264,7 +264,7 @@ ${categories} <div class="chip">Created on: ${poll.date}</div>
 </div>
 <form id="form">
 <p><textarea class="hide" id="text">${poll.responses.join(" ")}</textarea>
-	<button id="go" type="submit" class="hide btn waves-effect blue-grey darken-3 waves-light btn-round">Render again</button>
+	<button id="go" type="submit" class="btn waves-effect blue-grey darken-3 waves-light btn-round">Render wordcloud again</button>
 </div>
 <div id="angles" style="display: none"></div>
 </form>

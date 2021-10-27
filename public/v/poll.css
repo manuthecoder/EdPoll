@@ -158,3 +158,4 @@ body {
 .btn-floating {margin-left: 10px;}
 .btn-floating.btn-flat {background: transparent !important}
 .btn-floating .waves-ripple{top:50%!important;left: 50%!important;}
+.card:focus{outline: 0!important;border-color: rgba(200,200,200,.8) !important}
