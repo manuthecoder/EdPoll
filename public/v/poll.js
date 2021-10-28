@@ -325,7 +325,7 @@ document.getElementById("vote").innerHTML = `
 <div id="noteContainer" style="padding: 0 10px;"></div>
 </center>
 <div style="height: 200px;width: 100%"></div>
-<div id="noteBar" class="noteBar z-depth-2" style="padding: 0 20px;width: 90vw;position:fixed;bottom:10px;left: 50%;transform:translateX(-50%);border-radius: 4px;" onclick="this.classList.remove('noteBarCollapse');document.getElementById('noteInput').focus()">
+<div id="noteBar" class="noteBar z-depth-2" style="background:var(--bg-color);padding: 0 20px;width: 90vw;position:fixed;bottom:10px;left: 50%;transform:translateX(-50%);border-radius: 4px;" onclick="this.classList.remove('noteBarCollapse');document.getElementById('noteInput').focus()">
 	<div class="input-field input-border">
   	<textarea type="text" onkeyup="if( !event.shiftKey && event.keyCode==13){this.value=this.value.trim();socket.emit('addBulletinNote', this.value, ${pollID});document.getElementById('noteBar').classList.add('noteBarCollapse')}" id='noteInput' class="materialize-textarea" style="margin-left: 0!important" placeholder="Shift+Enter for multiple lines"></textarea>
     <label style="pointer-events: none">Enter your response here...</label>
