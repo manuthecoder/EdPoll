@@ -1,0 +1,22 @@
+{
+  "name": "EdPoll",
+  "description": "edpoll is a free polling app",
+  "website": "https://github.com/ManuTheCoder/EdPoll",
+  "repository": "https://github.com/ManuTheCoder/EdPoll",
+  "logo": "https://node-js-sample.herokuapp.com/node.svg",
+  "success_url": "/",
+  "keywords": [
+    "node",
+    "express",
+    "socket.io",
+    "realtime",
+    "websocket"
+  ],
+  "scripts": {
+  },
+  "addons": [
+  ],
+  "env": {
+    "BUILDPACK_URL": "https://github.com/heroku/heroku-buildpack-nodejs"
+  }
+}
