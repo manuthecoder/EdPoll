@@ -1,3 +1,11 @@
+function char_convert(str) {
+str = str.replace(/&/g, "&amp;");
+  str = str.replace(/>/g, "&gt;");
+  str = str.replace(/</g, "&lt;");
+  str = str.replace(/"/g, "&quot;");
+  str = str.replace(/'/g, "&#039;");
+	return str;
+}
 const banner = `
 <div class="card">
 <div class="card-content">
@@ -53,7 +61,7 @@ window.addEventListener("load", () => {
         }
         if (poll.categories) {
           poll.categories.forEach(
-            (e) => (categories += `<div class="chip">${e}</div>`)
+            (e) => (categories += `<div class="chip">${char_convert(e)}</div>`)
           );
         }
         var Authorization = new Promise((resolve, reject) => {
@@ -137,7 +145,7 @@ window.addEventListener("load", () => {
                 )}" class="pollImage">`
               : ""
           }
-					<h3 class="truncate"><b>${poll.title}</b></h3>
+					<h3 class="truncate"><b>${char_convert(poll.title)}</b></h3>
 					<p class="truncate">${poll.desc == "" ? "" : poll.desc}</p>
 					${categories} <div class="chip">Created on: ${poll.date}</div>
 					<br>
@@ -204,7 +212,7 @@ window.addEventListener("load", () => {
 						${
               value.name.trim() !== ""
                 ? `<div class="card-content">
-							${value.name}
+							${char_convert(value.name)}
 						</div>
 						`
                 : ""
@@ -250,9 +258,9 @@ ${
     : ""
 }
 <div class="introwordcloud">
-			<h3 class="truncate"><b>${poll.title}</b></h3>
-			<p class="truncate">${poll.desc == "" ? "" : poll.desc}</p>
-${categories} <div class="chip">Created on: ${poll.date}</div>
+			<h3 class="truncate"><b>${char_convert(poll.title)}</b></h3>
+			<p class="truncate">${poll.desc == "" ? "" : char_convert(poll.desc)}</p>
+${categories} <div class="chip">Created on: ${char_convert(poll.date)}</div>
 			</div>
 
 <div class="input-field input-border" id="addWordCloudContainer">
@@ -373,7 +381,7 @@ socket.on("votedNow", function (pollID1, dbPollID, token) {
   if (pollID1 == pollID && alreadyVoted) {
     document.getElementById("newVote").play();
     showResults(pollID, dbPollID);
-    sendNotification(`New vote on "${poll.title}"`, pollID);
+    sendNotification(`New vote on "${char_convert(poll.title)}"`, pollID);
   }
 });
 

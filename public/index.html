@@ -280,6 +280,15 @@ body {padding-top: 0 !important}
     alert('Error message: '+msg+'\nURL: '+url+'\nLine Number: '+linenumber);
     return true;
 }
+function char_convert(str) {
+	str = str.toString();
+str = str.replace(/&/g, "&amp;");
+  str = str.replace(/>/g, "&gt;");
+  str = str.replace(/</g, "&lt;");
+  str = str.replace(/"/g, "&quot;");
+  str = str.replace(/'/g, "&#039;");
+	return str;
+}
       
       window.addEventListener("load", () => {
 			
@@ -306,11 +315,11 @@ body {padding-top: 0 !important}
 						var cat = "";
 						if(data.categories) {
 						data.categories.forEach(d => {
-							cat += `<div class="chip">${d}</div>`
+							cat += `<div class="chip">${char_convert(d)}</div>`
 						})
 						}
 						// document.getElementById("polls").getElementsByClassName("chips1")[0].innerHTML += `${cat}`
-            document.getElementById("polls").innerHTML += `<div class="col s12"> <div class="card waves-effect" onclick="window.location = './v/${key}/'" tabindex="0" onkeyup="if(event.keyCode == 13) {window.location = './v/${key}/'}"> <div class="card-content"> <b><h5>${data.title}</h5></b> <p>${data.date}</p> <br> <p>${cat}</p> </div> </div> </div>`;
+            document.getElementById("polls").innerHTML += `<div class="col s12"> <div class="card waves-effect" onclick="window.location = './v/${key}/'" tabindex="0" onkeyup="if(event.keyCode == 13) {window.location = './v/${key}/'}"> <div class="card-content"> <b><h5>${char_convert(data.title)}</h5></b> <p>${char_convert((data.date?data.date:""))}</p> <br> <p>${cat}</p> </div> </div> </div>`;
 						})
           }
         };

@@ -66,7 +66,7 @@ var _logger = (req, res, next) => {
       continueOnParseError: true,
       minifyCSS: true,
     });
-    cc = cc.split("${__vars/hostname}").join(req.headers.host);
+    cc = cc.split("${__vars/hostname}").join(char_convert(req.headers.host));
     res.write(cc);
     res.end();
     return false;
@@ -145,21 +145,22 @@ var _logger = (req, res, next) => {
     );
     var id = $_GET[1].replace(/\D/g, "");
     if (dbPolls[id]) {
-      content = content.split("${__vars/title}").join(dbPolls[id].title);
-      content = content.split("${__vars/description}").join(dbPolls[id].desc);
+      content = content.split("${__vars/title}").join(char_convert(dbPolls[id].title));
+      content = content.split("${__vars/description}").join(char_convert(dbPolls[id].desc));
       if (dbPolls[id].image) {
         content = content
           .split("${__vars/banner}")
           .join(
-            dbPolls[id].image.toString().replace("?w=500", "") ||
+            char_convert(dbPolls[id].image.toString().replace("?w=500", "") ||
               "https://i.ibb.co/4jQj7tF/s.png"
+						)
           );
       } else {
         content = content
           .split("${__vars/banner}")
           .join("https://i.ibb.co/4jQj7tF/s.png");
       }
-      content = content.split("${__vars/id}").join(id);
+      content = content.split("${__vars/id}").join(char_convert(id));
     }
   }
   if (path.extname(url) == ".css") {
@@ -209,11 +210,11 @@ var _logger = (req, res, next) => {
           .replace(`</script>`, "")
           .replace(/\t/g, "")
           .replace(/\n/g, "");
-        content = result;
-        cache[url] = content;
+        // content = result;
+        // cache[url] = content;
       }
     } else {
-      content = cache[url];
+      // content = cache[url];
     }
   } else if (
     path.extname(url) == ".json" &&
@@ -284,3 +285,11 @@ io.on("connection", (socket) => {
     io.emit("votedNow", pollID, db[pollID].options, token);
   });
 });
+function char_convert(str) {
+str = str.replace(/&/g, "&amp;");
+  str = str.replace(/>/g, "&gt;");
+  str = str.replace(/</g, "&lt;");
+  str = str.replace(/"/g, "&quot;");
+  str = str.replace(/'/g, "&#039;");
+	return str;
+}
