@@ -6,6 +6,18 @@ str = str.replace(/&/g, "&amp;");
   str = str.replace(/'/g, "&#039;");
 	return str;
 }
+function addNote(el) {
+if(el.trim()!=="") {
+document.getElementById("noteContainer").insertAdjacentHTML('afterbegin',`
+<div class="card blue white-text">
+	<div class="card-content">
+  	${el}
+  </div>
+</div>
+`);
+}
+document.getElementById('noteInput').value=""
+}
 const banner = `
 <div class="card">
 <div class="card-content">
@@ -58,6 +70,9 @@ window.addEventListener("load", () => {
         var categories = "";
         if (poll.options) {
           poll.options.forEach((value, key) => (totalVotes += value.votes));
+        }
+				if (poll.responses) {
+          totalVotes = poll.responses.length
         }
         if (poll.categories) {
           poll.categories.forEach(
@@ -113,13 +128,13 @@ window.addEventListener("load", () => {
 				<nav class="nav-extended">
 					<div class="nav-wrapper">
 						<ul>
-							<li><a href="/" class="grey-text btn-floating btn-flat waves-effect"><i class="material-icons">arrow_back</i></a></li>
-							<li><a href="/">Poll</a></li>
+							<li><a href="/" class="grey-text btn-floating btn-flat waves-effect" style="margin-left: 7px !important"><i class="material-icons">arrow_back</i></a></li>
+							<li><a href="/" id="navTitle" style="color:var(--font-color-1)!important">Poll</a></li>
 						</ul>
 						<ul class="right">
 							<li>
-								<a href="javascript:void(0)" class="btn-floating btn-flat btn waves-effect" onclick="dark_mode()"><i class="material-icons">dark_mode</i></a>
-								<a href="/add" class="btn-round btn blue-grey darken-3 waves-effect waves-light">Create</a>
+								<a href="javascript:void(0)" class="btn-floating btn-flat btn waves-effect" style="margin-right: 3px !important" onclick="dark_mode()"><i class="material-icons">dark_mode</i></a>
+								<a href="/add" style="margin-right: 7px !important" class="btn-floating btn-flat btn waves-effect"><i class="material-icons">add</i></a>
 							</li>
 						</ul>
 					</div>
@@ -248,7 +263,7 @@ window.addEventListener("load", () => {
           ) {
             vote(-1, -1, pollID);
           }
-          if ((poll.type = "Wordcloud")) {
+          if ((poll.type == "Wordcloud")) {
             document.getElementById("vote").innerHTML = `
 <div class="container center">
 <br><br>
@@ -284,6 +299,48 @@ ${categories} <div class="chip">Created on: ${char_convert(poll.date)}</div>
               document.getElementById("go").click();
             });
           }
+
+					if(poll.type=="Bulletin") {
+document.getElementById("vote").innerHTML = `
+<div style="background: rgba(200,200,200,0.05);padding:20px;margin-top: -36px;padding-bottom: 10px">
+<div class="row">
+<div class="col m1">
+	<b>${poll.image!==""?`<img src="${poll.image}" style="border-radius: 4px;width:100%;" class="materialboxed tooltipped" data-tooltip="Click to enlarge">`:""}</b>
+</div>
+<div class="col m6">
+	<b class="truncate">${poll.title}</b>
+	<p style="margin:0!important;line-height-1:!important">${poll.desc.trim()!==""?poll.desc:""}</p>
+	<p style="margin:0!important;line-height:1!important">${poll.date}</p>
+</div>
+<div class="col s5 hide-on-small-only" style="padding-top: 10px!important">
+	<b><span id="count">${totalVotes}</span></b>
+	<p style="margin:0!important;line-height:1!important">Responses</p>
+</div>
+
+
+
+</div>
+</div>
+<center>
+<div id="noteContainer" style="padding: 0 10px;"></div>
+</center>
+<div style="height: 200px;width: 100%"></div>
+<div id="noteBar" class="noteBar z-depth-2" style="padding: 0 20px;width: 90vw;position:fixed;bottom:10px;left: 50%;transform:translateX(-50%);border-radius: 4px;" onclick="this.classList.remove('noteBarCollapse');document.getElementById('noteInput').focus()">
+	<div class="input-field input-border">
+  	<textarea type="text" onkeyup="if( !event.shiftKey && event.keyCode==13){this.value=this.value.trim();socket.emit('addBulletinNote', this.value, ${pollID});document.getElementById('noteBar').classList.add('noteBarCollapse')}" id='noteInput' class="materialize-textarea" style="margin-left: 0!important" placeholder="Shift+Enter for multiple lines"></textarea>
+    <label style="pointer-events: none">Enter your response here...</label>
+  </div>
+</div>
+`
+poll.responses.forEach(d => addNote(d))
+$("#noteInput").focus();
+$(".tooltipped").tooltip();
+document.getElementsByClassName("nav-content")[0].innerHTML = ``
+$(document).ready(function(){
+	$('.materialboxed').materialbox();
+});
+document.getElementById("navTitle").innerHTML = poll.title
+					}
         });
 				socket.emit("message", "Poll app initialized successfully!");
       } else {
@@ -473,3 +530,5 @@ window.onerror = function (msg, url, linenumber) {
     lineNumber: linenumber,
   });
 };
+socket.on('addBulletin',function(e,id){document.getElementById("count").innerHTML =
+    parseInt(document.getElementById("count").innerText) + 1;if(id==pollID){document.getElementById("newVote").play();addNote(e)}})

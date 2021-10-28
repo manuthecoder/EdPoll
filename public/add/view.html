@@ -54,12 +54,14 @@
 		</div>
 			<div class='center' style="position: fixed;top: 50%;left: 50%;transform:translate(-50%,-50%)">
 				<h1>edpoll.ga/${id}</h1>
-				<p><b id="count">0</b> votes</p>
+				${(poll.type=="Poll"?`<p><b id="count">0</b> votes</p>`:"")}
 			</div>
 		`
 	}
 	socket.on("vote", function() {
+		if(db.type=="Poll") {
 	document.getElementById("count").innerHTML = parseInt(document.getElementById("count").innerHTML)+1
+		}
 	})
 	$(".modal").modal();
 </script>

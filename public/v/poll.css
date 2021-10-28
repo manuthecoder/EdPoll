@@ -1,8 +1,8 @@
-:root {--bg-color: #fff;--navbar-color: #000}
-.dark_mode {--bg-color: #212121;--navbar-color: #fff}
+:root {--bg-color: #fff;--navbar-color: #000;--font-color-1:#000}
+.dark_mode {--bg-color: #212121;--navbar-color: #fff;--font-color-1:#fff}
 nav a {background:transparent!important}
 nav {
-	z-index: 9999999;
+	z-index: 99;
 	box-shadow: none !important;
 	background: rgba(200,200,200,0.2) !important;
 	backdrop-filter: blur(10px);
@@ -20,13 +20,18 @@ nav {
 .waves-effect:not(.waves-light, .dark_mode .waves-effect) .waves-ripple {
   background: rgba(0, 0, 0, .2) !important
 }
-.dark_mode nav a {color:white!important}
+.dark_mode nav a {color:gray!important}
 body {
 	background: white;
 	padding-top: 100px;
 }
 .nav-wrapper {
 	transition: all .2s;
+}
+.nav-wrapper.navHideAlways {
+		transition: all .2s;
+	opacity: 0 !important;
+	margin-top: -65px !important;
 }
 .navHide {
 	transition: all .2s;
@@ -159,3 +164,73 @@ body {
 .btn-floating.btn-flat {background: transparent !important}
 .btn-floating .waves-ripple{top:50%!important;left: 50%!important;}
 .card:focus{outline: 0!important;border-color: rgba(200,200,200,.8) !important}
+
+
+
+#noteContainer .card {
+  width: auto;
+  display: inline-block;
+  border: none !important;
+  box-shadow: none !important;
+  max-width: 300px;
+  animation: newCard 0.4s forwards;
+  vertical-align: middle;
+  margin: 7px 5px !important;
+}
+@keyframes newCard {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2)
+  }
+  100% {
+    transform: scale(1)
+  }
+}
+
+#noteContainer {
+  display: grid;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+@media only screen and (max-width: 992px) {
+  #noteContainer .card {
+    width: 100%;
+    max-width: 100%;
+    display: block
+  }
+}
+.dark_mode .noteBar {
+	background: #404040!important
+}
+.dark_mode .noteBar label {
+	background: #404040 !important
+}
+.noteBar .input-field textarea:focus + label {
+	color: #000 !important
+}
+.dark_mode .noteBar .input-field textarea:focus + label {
+	color: #fff !important
+}
+textarea {background:transparent!important;padding-top: 15px!important;min-height: 70px !important;}
+.dark_mode textarea {color:#fff!important}
+.noteBar {transition: all .2s;}
+.noteBarCollapse {
+	transform: scale(.9);
+	margin-bottom: -120px;
+	/* opacity: .5 !important; */
+}
+.noteBarCollapse::before {
+	text-align: center;
+	content: "+ Add a response";
+	display: block;	
+	cursor: pointer;
+	padding: 10px;
+}
+.noteBarCollapse::before:hover {
+	background: rgba(200,200,200,.1)
+}
+nav a {margin-left: 0 !important;margin-right: 0 !important}

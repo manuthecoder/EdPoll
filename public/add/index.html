@@ -153,6 +153,7 @@ label {pointer-events:none}
   margin-left: 7px !important;
   margin-top: 8px !important
 }
+.tabContent {height: 100vh !important}
     </style>
   </head>
   <body>
@@ -173,6 +174,7 @@ label {pointer-events:none}
           <li class="tab col s3"><a href="#p1" class="waves-effect">Poll</a></li>
           <!-- <li class="tab col s3"><a href="#p1" class="waves-effect">Poll</a></li> -->
           <li class="tab col s3"><a href="#p2" class="waves-effect">Wordcloud</a></li>
+          <li class="tab col s3"><a href="#p3" class="waves-effect">Bulletin</a></li>
         </ul>
       </div>
     </nav>
@@ -201,8 +203,9 @@ label {pointer-events:none}
         <a class="btn btn-round blue darken-3 waves-effect waves-light ">Continue <i class="material-icons right">arrow_forward</i></a>
       </div>
     </div>
-    <div class="container" id='app'>
-      <div id="p1" class="col s12">
+    <div class="" id='app'>
+      <div id="p1" class="col s12 tabContent">
+				<div class="container">
         <!-- <form id="pollForm"> -->
 					<div class="suggestions">
 						<div class="card hoverable waves-effect" onclick="suggest(this)">
@@ -222,8 +225,9 @@ label {pointer-events:none}
 						</div>
 					</div>
           <h5>
-            <b>Create</b>
+            <b>Poll</b>
           </h5>
+					<p>Simple multiple-choice poll</p>
           <div class="input-field input-border">
             <input autocomplete="off" type="text" id="poll__name">
             <label>Poll Title</label>
@@ -281,8 +285,24 @@ label {pointer-events:none}
         <!-- </form> -->
 
       </div>
-      <div id="p2" class="col s12">
+      </div>
+			<div id="p3" class="col s12 tabContent">
+				<div class="container">
+				<h5><b>Create bulletin</b></h5>
+				<p>Let students create free responses for your question</p>
+
+				<div class="input-field input-border"><input id="bb__name" type="text"><label for="bb__name">Title</label></div>
+				<div class="input-field input-border"><input id="bb__desc" type="text"><label for="bb__desc">Description</label></div>
+				<div class="input-field input-border"><input id="bb__image" type="url"><label for="bb__image">Image URL (optional)</label></div>
+				<div class="input-field input-border"><input id="bb_password" type="text"><label for="bb_password">Password (optional)</label></div>
+
+				<button class="btn blue-grey darken-3 waves-effect waves-light btn-round" id="addBulletin">Create</button>
+				</div>
+			</div>
+      <div id="p2" class="col s12 tabContent">
+				<div class="container">
 				<h5><b>Create wordcloud</b></h5>
+				<p>Responses will be organized into a wordcloud</p>
         <!-- Coming soon! -->
 				<div class="input-field input-border">
 					<input autocomplete="off" type="text" id="wc__name">
@@ -308,6 +328,7 @@ label {pointer-events:none}
 				</p>
 				<button id="addWordcloud" class="btn blue-grey darken-3 waves-effect waves-light"><i class="material-icons left">add</i>Create</button>
       </div>
+      </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@materializecss/materialize@1.1.0-alpha/dist/js/materialize.min.js"></script>
@@ -317,7 +338,10 @@ label {pointer-events:none}
       var choices = [];
       var socket = io();
 
-      $(".tabs").tabs();
+      $(".tabs").tabs({
+				swipeable: true,
+				// duration: 500
+			});
       $('.collapsible').collapsible()
       $('.modal').modal();
 
@@ -371,7 +395,6 @@ label {pointer-events:none}
           console.log(choices)
         }
       });
-
 
       function fileChange(el, callback = function (e) { }) {
         var file = el;
@@ -443,6 +466,24 @@ label {pointer-events:none}
 					hideChat: (document.getElementById("wc__hideChat").checked?true:false),
 					responses: [],
           image: document.getElementById('wc__image').value,
+          date: `${new Date().getMonth()}/${new Date().getDate()}/${new Date().getFullYear()} at ${new Date().getHours()}:${new Date().getMinutes()}`,
+        }
+				socket.on("newPollAdded", (e)=> {
+          id = e;
+					history.pushState(null,null,`https://${window.location.hostname}/j/${e}`)
+          $("#app").load("https://www.edpoll.ga/add/view.html");
+					$(".nav-content *").addClass("hide")
+        })
+				socket.emit("addPoll", data);
+			})
+			$("#addBulletin").click(() => {
+				var data = {
+          type: "Bulletin",
+          title: document.getElementById('bb__name').value,
+          desc: document.getElementById('bb__desc').value,
+          pwd: document.getElementById('bb_password').value,
+					responses: [],
+          image: document.getElementById('bb__image').value,
           date: `${new Date().getMonth()}/${new Date().getDate()}/${new Date().getFullYear()} at ${new Date().getHours()}:${new Date().getMinutes()}`,
         }
 				socket.on("newPollAdded", (e)=> {

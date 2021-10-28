@@ -16,29 +16,6 @@ var cache = {},
   joinCache = {};
 var cors = require("cors");
 
-function _0xfdad(_0x593cb3, _0x20c6a2) {
-  var _0xfdad50 = _0x20c6();
-  return (
-    (_0xfdad = function (_0x44ee78, _0x883683) {
-      _0x44ee78 = _0x44ee78 - 0x177;
-      var _0x54a425 = _0xfdad50[_0x44ee78];
-      return _0x54a425;
-    }),
-    _0xfdad(_0x593cb3, _0x20c6a2)
-  );
-}
-function includeFile(_0x471ee1) {
-  var _0xf0943c = _0xfdad;
-  eval(fs[_0xf0943c(0x177)](_0x471ee1, _0xf0943c(0x178)));
-}
-function _0x20c6() {
-  var _0x291615 = ["readFileSync", "utf-8"];
-  _0x20c6 = function () {
-    return _0x291615;
-  };
-  return _0x20c6();
-}
-
 app.use(cors());
 
 app.get("/", (req, res, next) => next());
@@ -242,6 +219,17 @@ io.on("connection", (socket) => {
       "utf-8"
     );
     io.emit("addWord", a, b, c);
+  });
+	socket.on("addBulletinNote", function (c, pollid) {
+		console.log((c))
+    var db = JSON.parse(fs.readFileSync("./public/database/polls.json"));
+    db[pollid].responses.push(c);
+    fs.writeFileSync(
+      "./public/database/polls.json",
+      JSON.stringify(db),
+      "utf-8"
+    );
+    io.emit("addBulletin",c,pollid);
   });
   socket.on("error", (e) => {
     console.error(e);
