@@ -1,22 +1,28 @@
+// REMOVE THIS
+// localStorage.clear();
+
 function char_convert(str) {
-str = str.replace(/&/g, "&amp;");
+  str = str.replace(/&/g, "&amp;");
   str = str.replace(/>/g, "&gt;");
   str = str.replace(/</g, "&lt;");
   str = str.replace(/"/g, "&quot;");
   str = str.replace(/'/g, "&#039;");
-	return str;
+  return str;
 }
 function addNote(el) {
-if(el.trim()!=="") {
-document.getElementById("noteContainer").insertAdjacentHTML('afterbegin',`
+  if (el.trim() !== "") {
+    document.getElementById("noteContainer").insertAdjacentHTML(
+      "afterbegin",
+      `
 <div class="card blue white-text">
 	<div class="card-content">
   	${el}
   </div>
 </div>
-`);
-}
-document.getElementById('noteInput').value=""
+`
+    );
+  }
+  document.getElementById("noteInput").value = "";
 }
 const banner = `
 <div class="card">
@@ -49,7 +55,7 @@ const banner = `
 </form>
 </div>
 </div>
-`
+`;
 const userToken = _e.getUuidv4();
 var socket = io();
 socket.emit("message", "Poll app initializing");
@@ -71,8 +77,8 @@ window.addEventListener("load", () => {
         if (poll.options) {
           poll.options.forEach((value, key) => (totalVotes += value.votes));
         }
-				if (poll.responses) {
-          totalVotes = poll.responses.length
+        if (poll.responses) {
+          totalVotes = poll.responses.length;
         }
         if (poll.categories) {
           poll.categories.forEach(
@@ -128,7 +134,7 @@ window.addEventListener("load", () => {
 				<nav class="nav-extended">
 					<div class="nav-wrapper">
 						<ul>
-							<li><a href="/" class="grey-text btn-floating btn-flat waves-effect" style="margin-left: 7px !important"><i class="material-icons">arrow_back</i></a></li>
+							<li><a href="/" class="grey-text btn-floating btn-flat waves-effect" style="margin-left: 7px !important"><i class="material-icons" onclick="document.getElementById('cancelAudio').play()">arrow_back</i></a></li>
 							<li><a href="/" id="navTitle" style="color:var(--font-color-1)!important">Poll</a></li>
 						</ul>
 						<ul class="right">
@@ -140,14 +146,14 @@ window.addEventListener("load", () => {
 					</div>
 					<div class="nav-content">
 						<ul class="tabs tabs-fixed-width tabs-transparent">
-							<li class="tab col s3" onclick="document.getElementById('swipe').play();"><a draggable="false" href="#vote" class="waves-effect">Vote</a></li>
-							<li class="tab col s3" onclick="document.getElementById('swipe1').play();"><a draggable="false" href="#res" class="waves-effect${
+							<li class="tab col s3" onclick="document.getElementById('swipe').play();"><a onclick='window.location.hash="#vote"' draggable="false" href="#vote" class="waves-effect">Vote</a></li>
+							<li class="tab col s3" onclick="document.getElementById('swipe1').play();"><a onclick='window.location.hash="#talk"' draggable="false" href="#talk" class="waves-effect${
                 poll.hideChat ? " disabled" : ""
-              }">Discuss${poll.hideChat ? " (Disabled)" : ""}</a></li>
+              }">Talk [New!]${poll.hideChat ? " (Disabled)" : ""}</a></li>
 					</ul>
 				</div>
 				</nav>
-				<div id="res" class="col s12"></div>
+				<div id="talk" class="col s12"></div>
 				<div id="vote" class="col s12">
 				<div class="container">
 					<br>
@@ -254,16 +260,16 @@ window.addEventListener("load", () => {
             // swipeable: true
           });
           setTimeout(() => {
-            document.getElementById("res").innerHTML = `<br>
+            document.getElementById("talk").innerHTML = `<br>
 					<iframe src="https://chatserver.manuthecoder.repl.co?id=edpoll_conn_${pollID}" style="width: 100%;height: calc(100vh - 120px);border: 0;"></iframe>`;
           }, 1000);
           if (
             localStorage.getItem("vote_" + pollID) ||
             window.location.href.includes("/r/")
           ) {
-            vote(-1, -1, pollID);
+            vote(-1, -1, pollID, false);
           }
-          if ((poll.type == "Wordcloud")) {
+          if (poll.type == "Wordcloud") {
             document.getElementById("vote").innerHTML = `
 <div class="container center">
 <br><br>
@@ -279,8 +285,8 @@ ${categories} <div class="chip">Created on: ${char_convert(poll.date)}</div>
 			</div>
 
 <div class="input-field input-border" id="addWordCloudContainer">
-<label for="addWordCloud" onclick="$('#addWordCloud').focus()">Enter response here...</label>
-	<input id="addWordCloud" onkeyup="if(event.keyCode==13){addWordCloud(this)}" type="text">
+	<input id="addWordCloud" autocomplete="off" maxlength="10" data-length="10" onkeyup="if(event.keyCode==13){addWordCloud(this)}" type="text">
+	<label for="addWordCloud" onclick="$('#addWordCloud').focus()">Enter response here...</label>
 </div>
 <div style="overflow-x:auto;width: 100%">
 	<div id="vis"></div>
@@ -293,6 +299,8 @@ ${categories} <div class="chip">Created on: ${char_convert(poll.date)}</div>
 </form>
 </div>
 						`;
+
+            $("#addWordCloud").characterCounter();
             initWordCloud();
             socket.on("addWord", (pollID, token, word) => {
               document.getElementById("text").value += " " + word;
@@ -300,16 +308,22 @@ ${categories} <div class="chip">Created on: ${char_convert(poll.date)}</div>
             });
           }
 
-					if(poll.type=="Bulletin") {
-document.getElementById("vote").innerHTML = `
+          if (poll.type == "Bulletin") {
+            document.getElementById("vote").innerHTML = `
 <div style="background: rgba(200,200,200,0.05);padding:20px;margin-top: -36px;padding-bottom: 10px">
 <div class="row">
 <div class="col m1">
-	<b>${poll.image!==""?`<img src="${poll.image}" style="border-radius: 4px;width:100%;" class="materialboxed tooltipped" data-tooltip="Click to enlarge">`:""}</b>
+	<b>${
+    poll.image !== ""
+      ? `<img src="${poll.image}" style="border-radius: 4px;width:100%;" class="materialboxed tooltipped" data-tooltip="Click to enlarge">`
+      : ""
+  }</b>
 </div>
 <div class="col m6">
 	<b class="truncate">${poll.title}</b>
-	<p style="margin:0!important;line-height-1:!important">${poll.desc.trim()!==""?poll.desc:""}</p>
+	<p style="margin:0!important;line-height-1:!important">${
+    poll.desc.trim() !== "" ? poll.desc : ""
+  }</p>
 	<p style="margin:0!important;line-height:1!important">${poll.date}</p>
 </div>
 <div class="col s5 hide-on-small-only" style="padding-top: 10px!important">
@@ -327,22 +341,23 @@ document.getElementById("vote").innerHTML = `
 <div style="height: 200px;width: 100%"></div>
 <div id="noteBar" class="noteBar z-depth-2" style="background:var(--bg-color);padding: 0 20px;width: 90vw;position:fixed;bottom:10px;left: 50%;transform:translateX(-50%);border-radius: 4px;" onclick="this.classList.remove('noteBarCollapse');document.getElementById('noteInput').focus()">
 	<div class="input-field input-border">
-  	<textarea type="text" onkeyup="if( !event.shiftKey && event.keyCode==13){this.value=this.value.trim();socket.emit('addBulletinNote', this.value, ${pollID});document.getElementById('noteBar').classList.add('noteBarCollapse')}" id='noteInput' class="materialize-textarea" style="margin-left: 0!important" placeholder="Shift+Enter for multiple lines"></textarea>
+  	<textarea data-length="300" maxlength="300" type="text" onkeyup="if( !event.shiftKey && event.keyCode==13){this.value=this.value.trim();socket.emit('addBulletinNote', this.value, ${pollID});document.getElementById('noteBar').classList.add('noteBarCollapse')}" id='noteInput' class="materialize-textarea" style="margin-left: 0!important" placeholder="Shift+Enter for multiple lines"></textarea>
     <label style="pointer-events: none">Enter your response here...</label>
   </div>
 </div>
-`
-poll.responses.forEach(d => addNote(d))
-$("#noteInput").focus();
-$(".tooltipped").tooltip();
-document.getElementsByClassName("nav-content")[0].innerHTML = ``
-$(document).ready(function(){
-	$('.materialboxed').materialbox();
-});
-document.getElementById("navTitle").innerHTML = poll.title
-					}
+`;
+            $("#noteInput").characterCounter();
+            poll.responses.forEach((d) => addNote(d));
+            $("#noteInput").focus();
+            $(".tooltipped").tooltip();
+            document.getElementsByClassName("nav-content")[0].innerHTML = ``;
+            $(document).ready(function () {
+              $(".materialboxed").materialbox();
+            });
+            document.getElementById("navTitle").innerHTML = poll.title;
+          }
         });
-				socket.emit("message", "Poll app initialized successfully!");
+        socket.emit("message", "Poll app initialized successfully!");
       } else {
         // 404
         _root.innerHTML = "404";
@@ -386,7 +401,12 @@ var checkScrollSpeed = (function (settings) {
 
 var alreadyVoted = false;
 
-function vote(el, optionID, voteID) {
+function vote(el, optionID, voteID, c = true) {
+  confetti({
+    particleCount: 100,
+    spread: 70,
+    origin: { y: 0.6 },
+  });
   localStorage.setItem("vote_" + pollID, "true");
   alreadyVoted = true;
   // document.getElementById("check").play();
@@ -397,24 +417,29 @@ function vote(el, optionID, voteID) {
   if (el !== -1) {
     el.classList.add("selected");
   }
-  socket.emit("vote", optionID, voteID, userToken);
+  socket.emit("vote", optionID, voteID, userToken, c.toString());
 }
-function showResults(a, b) {
-  totalVotes++;
-  document.getElementById("totalVotes").innerHTML =
-    parseInt(document.getElementById("totalVotes").innerText) + 1;
-  document.getElementById("totalVotes").parentElement.classList.add("green");
-  document
-    .getElementById("totalVotes")
-    .parentElement.classList.add("white-text");
-  setTimeout(function () {
+function showResults(a, b, c = true) {
+  if (c == true || c == "true") {
+    totalVotes++;
+    document.getElementById("newVote").play();
+    if (document.getElementById("totalVotes")) {
+      document.getElementById("totalVotes").innerHTML =
+        parseInt(document.getElementById("totalVotes").innerText) + 1;
+    }
+    document.getElementById("totalVotes").parentElement.classList.add("green");
     document
       .getElementById("totalVotes")
-      .parentElement.classList.remove("green");
-    document
-      .getElementById("totalVotes")
-      .parentElement.classList.remove("white-text");
-  }, 200);
+      .parentElement.classList.add("white-text");
+    setTimeout(function () {
+      document
+        .getElementById("totalVotes")
+        .parentElement.classList.remove("green");
+      document
+        .getElementById("totalVotes")
+        .parentElement.classList.remove("white-text");
+    }, 200);
+  }
   document
     .getElementById("vote_container")
     .querySelectorAll(".card")
@@ -422,22 +447,38 @@ function showResults(a, b) {
       if (!card.querySelector(".progress")) {
         card.insertAdjacentHTML(
           "beforeend",
-          `<div class="progress"><div class="determinate" style="width: ${
+          `<div class="progress"><div class="determinate tooltipped" data-tooltip="${
+            b[key].votes
+          } votes | ${(b[key].votes / totalVotes) * 100}%" style="width: ${
             (b[key].votes / totalVotes) * 100
           }%"></div></div>`
         );
       } else {
+        card
+          .querySelector(".determinate")
+          .setAttribute(
+            "data-tooltip",
+            `${b[key].votes} votes | ${(b[key].votes / totalVotes) * 100}%`
+          );
         card.querySelector(".determinate").style.width = `${
           (b[key].votes / totalVotes) * 100
         }%`;
       }
+      $(".tooltipped").tooltip();
+      socket.emit("message", totalVotes);
     });
 }
 
-socket.on("votedNow", function (pollID1, dbPollID, token) {
+socket.on("votedNow", function (pollID1, dbPollID, token, c) {
+  if (pollID1 == pollID) {
+    socket.emit("message", c);
+    if (c === true || c == "true") {
+      totalVotes++;
+      // alert(1)
+    }
+  }
   if (pollID1 == pollID && alreadyVoted) {
-    document.getElementById("newVote").play();
-    showResults(pollID, dbPollID);
+    showResults(pollID, dbPollID, c.toString() !== "false" ? true : false);
     sendNotification(`New vote on "${char_convert(poll.title)}"`, pollID);
   }
 });
@@ -530,5 +571,11 @@ window.onerror = function (msg, url, linenumber) {
     lineNumber: linenumber,
   });
 };
-socket.on('addBulletin',function(e,id){document.getElementById("count").innerHTML =
-    parseInt(document.getElementById("count").innerText) + 1;if(id==pollID){document.getElementById("newVote").play();addNote(e)}})
+socket.on("addBulletin", function (e, id) {
+  document.getElementById("count").innerHTML =
+    parseInt(document.getElementById("count").innerText) + 1;
+  if (id == pollID) {
+    document.getElementById("newVote").play();
+    addNote(e);
+  }
+});

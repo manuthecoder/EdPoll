@@ -2,7 +2,10 @@ nav a {
   color: gray !important;
 }
 nav {
-  box-shadow: 0 0 10px rgba(0,0,0,0.1) !important;
+  box-shadow: none !important;
+	background: rgba(255,255,255,.1);
+	border-bottom: 1px solid #aaa;
+	backdrop-filter: blur(10px);
   position: fixed;
   top: 0;
   z-index: 1;

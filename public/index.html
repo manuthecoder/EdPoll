@@ -1,378 +1,268 @@
 <!DOCTYPE html>
 <html>
   <head>
-		<title>Home</title>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@materializecss/materialize@1.0.0/dist/css/materialize.min.css"
-    />
-		<link rel="manifest" href="manifest.webmanifest">
-		<meta name="theme-color" content="#fff">
-		<link rel="dns-prefetch" href="https://fonts.googleapis.com/" >
-		<link rel="dns-prefetch" href="https://i.ibb.co/" >
-		<link rel="dns-prefetch" href="https://image.flaticon.com/" >
-		<link rel="dns-prefetch" href="https://beta.manuthecoder.repl.co/" >
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp">
+    <meta name="viewport" content="width=device-width">
+    <title>EdPoll</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@materializecss/materialize@1.1.0-alpha/dist/css/materialize.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#fff">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com/" >
+    <link rel="dns-prefetch" href="https://i.ibb.co/" >
+    <link rel="dns-prefetch" href="https://image.flaticon.com/" >
+    <link rel="dns-prefetch" href="https://beta.manuthecoder.repl.co/" >
 
     <link
-      href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet"
-    />
+          href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet"
+          />
     <link
-      rel="shortcut icon"
-      href="https://image.flaticon.com/icons/png/512/5455/5455405.png"
-    />
-		<script 	src="https://${__vars/hostname}/socket.io/socket.io.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
-      rel="stylesheet"
-      href="https://${__vars/hostname}/v/style.css"
-    />
+          rel="shortcut icon"
+          href="https://image.flaticon.com/icons/png/512/5455/5455405.png"
+          />
+    <meta name="title" content="EdPoll">
+    <meta name="description" content="EdPoll is a polling app for both schools and offices! Create website">
+    <meta property="og:url" content="https://edpoll.ga">
+    <meta property="og:title" content="EdPoll">
+    <meta property="og:description" content="EdPoll is a polling app for both schools and offices! Create your own poll now - No signup required!">
+    <meta property="og:image" content="https://i.ibb.co/4jQj7tF/s.png">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300&display=swap" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
-		<!-- Primary Meta Tags -->
-<meta name="title" content="EdPoll">
-<meta name="description" content="EdPoll is a polling app for both schools and offices! Create website">
-<meta property="og:url" content="https://edpoll.ga">
-<meta property="og:title" content="EdPoll">
-<meta property="og:description" content="EdPoll is a polling app for both schools and offices! Create your own poll now - No signup required!">
-<meta property="og:image" content="https://i.ibb.co/4jQj7tF/s.png">
-<style>* { -webkit-tap-highlight-color: transparent; box-sizing: border-box; } .disabled { pointer-events: none; opacity: 0.5; } .iframe nav { display: none !important; } .iframe body { margin-top: 0 !important; } .iframe .col.s12.m4 { padding-top: 65px !important; } *:not(.material-icons, .fa) { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif !important; } .btn { box-shadow: none !important; text-transform: none !important; } .waves-effect .waves-ripple { transition: all 0.4s !important; } .progress { margin: 0 !important; } nav a { color: gray !important; } nav { box-shadow: 0 0 10px #ccc !important; position: fixed; top: 0; z-index: 1; left: 0; } body { margin-top: 60px; } .loading h3 { width: 100%; height: 50px; border-radius: 100px; background: #eee; animation: loading 1s infinite; color: transparent !important; } .loading #date { width: 75%; height: 30px; border-radius: 100px; background: #eee; animation: loading 2s infinite; color: transparent !important; } .loading .cardLoading { width: 100%; height: 70px; border-radius: 10px; margin-bottom: 10px; background: #eee; animation: loading 1s infinite linear; } @keyframes loading { 0% { background: #eee; } 50% { background: #ddd; } 100% { background: #eee; } } .card { width: 100%; } * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; } .disabled { pointer-events: none; opacity: 0.5; } .btn { box-shadow: none !important; text-transform: none !important; } .waves-effect .waves-ripple { transition: all 0.4s !important; } .progress { margin: 0 !important; } nav a { color: gray !important; } nav { box-shadow: 0 0 10px #ccc !important; position: fixed; top: 0; z-index: 1; left: 0; } body { margin-top: 65px; } .loading h3 { width: 100%; height: 50px; border-radius: 100px; background: rgba(200, 200, 200, 0.3); animation: loading 1s infinite; color: transparent !important; } .loading #date { width: 75%; height: 30px; border-radius: 100px; background: rgba(200, 200, 200, 0.3); animation: loading 2s infinite; color: transparent !important; } .loading .cardLoading { width: 100%; height: 70px; border-radius: 10px; margin-bottom: 10px; background: rgba(200, 200, 200, 0.3); animation: loading 1s infinite linear; } @keyframes loading { 0% { background: rgba(200, 200, 200, 0.3); } 50% { background: rgba(200, 200, 200, 0.6); } 100% { background: rgba(200, 200, 200, 0.3); } } .card { width: 100%; } .progress { background: #b3e5fc !important; transition: all 0.2s !important; } .determinate { background: #0277bd !important; transition: all 0.2s !important; } .dark_mode .progress { background: rgba(255, 255, 255, 0.1) !important; } .dark_mode .determinate { background: white !important; } .dark_mode body, .dark_mode html { background: #212121 !important; color: white; } .dark_mode .card { background: rgba(255, 255, 255, 0.1) !important; } .dark_mode .waves-effect .waves-ripple { background: rgba(255, 255, 255, 0.3) !important; } .dark_mode nav, .dark_mode footer { background: #303030 !important; box-shadow: none !important; } .dark_mode nav a { color: #fff !important; } .dark_mode input { color: white !important; } .dark_mode textarea { color: white !important; } * { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif; } .chip { background: rgba(200, 200, 200, 0.3) !important; } .dark_mode .chip { color: white !important; } .modal { max-height: 100vh !important; opacity: 1 !important; margin: auto !important; height: 100vh !important; min-height: 100vh !important; position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; } @media only screen and (min-width: 992px) { .modal { width: 100% !important } } .modal .btn-floating { background: rgba(200, 200, 200, 0.3) !important; } .modal .btn-floating i { color: black !important; } .dark_mode .modal .btn-floating i { color: white !important; } .fa-code { background: #f54245; color: white; } body { overflow: scroll !important } .iframe #social { display: none !important; } .iframe footer { display: none !important } .iframe .alert { display: none !important; } .dark_mode .modal { background: #333333 !important; } .dark_mode label { color: #fff !important; background: transparent !important } .card img {max-width: 100%} .card img {display:block;}
-
-body {padding-top: 0 !important}
-</style>
-<!-- Twitter -->
-<meta property="twitter:card" content="summary_large_image">
-<meta property="twitter:url" content="https://edpoll.ga">
-<meta property="twitter:title" content="EdPoll">
-<meta property="twitter:description" content="EdPoll is a polling app for both schools and offices! Create your own poll now - No signup required!">
-<meta property="twitter:image" content="https://i.ibb.co/4jQj7tF/s.png">
-  </head>
-  <body style="margin-top: 55px !important">
-    <nav class="white" style="z-index: 9 !important">
-      <ul>
-        <li>
-          <a href="https://${__vars/hostname}">EdPoll</a>
-        </li>
-      </ul>
-      <ul class="right">
-				<li>
-          <a
-            href="./add"
-            class="btn blue waves-effect waves-light btn-round"
-            style="color: white !important; border-radius: 5px"
-            >Create</a
-          >
-        </li>
-      </ul>
-    </nav>
     <style>
-			.cardLoading {
-				border: 5px solid white;
-			}
-			.waves-ripple {
-
-			}
-			.card {
-				transition: all .2s !important;
-				border: 1px solid #eee;
-				box-shadow: none !important
-			}
-      .card:focus {
-				border-color: #aaa !important;
-				/* border: 1px solid black; */
-				outline: 0;
-			}
-			img {
-				box-shadow: 2px 2px 10px rgba(0, 0, 0, .4);
-				border-radius: 4px;
-			}
-      .dark_mode input {
-        color: white !important;
+      .card {border-radius: 4px;background: rgba(255,255,255,.3)!important}
+      .waves-effect:not(.waves-light, ._darkTheme .waves-effect) .waves-ripple {
+        background: rgba(0, 0, 0, .2) !important
       }
-      * {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-          Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+      .btn-flat:hover {background: rgba(200,200,200,.2)!important}
+      .header {height: 100vh;
+        /*background-attachment:fixed;*/
+        background-image: url("data:image/svg+xml,%0A%3Csvg id='visual' viewBox='0 0 3840 2160' width='3840' height='2160' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' version='1.1'%3E%3Crect x='0' y='0' width='3840' height='2160' fill='%23fff'%3E%3C/rect%3E%3Cdefs%3E%3ClinearGradient id='grad1_0' x1='43.8%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='14.444444444444446%25' stop-color='%23ffffff' stop-opacity='1'%3E%3C/stop%3E%3Cstop offset='85.55555555555554%25' stop-color='%23ffffff' stop-opacity='1'%3E%3C/stop%3E%3C/linearGradient%3E%3C/defs%3E%3Cdefs%3E%3ClinearGradient id='grad2_0' x1='0%25' y1='0%25' x2='56.3%25' y2='100%25'%3E%3Cstop offset='14.444444444444446%25' stop-color='%23ffffff' stop-opacity='1'%3E%3C/stop%3E%3Cstop offset='85.55555555555554%25' stop-color='%23ffffff' stop-opacity='1'%3E%3C/stop%3E%3C/linearGradient%3E%3C/defs%3E%3Cg transform='translate(3840, 0)'%3E%3Cpath d='M0 1404C-193.9 1280.2 -387.8 1156.3 -609 1054.8C-830.2 953.3 -1078.8 874.1 -1215.9 702C-1353 529.9 -1378.5 265 -1404 0L0 0Z' fill='%23FBAE3C'%3E%3C/path%3E%3C/g%3E%3Cg transform='translate(0, 2160)'%3E%3Cpath d='M0 -1404C264 -1377.9 528.1 -1351.9 702 -1215.9C875.9 -1079.9 959.8 -834 1061.7 -613C1163.7 -392 1283.9 -196 1404 0L0 0Z' fill='%23FBAE3C'%3E%3C/path%3E%3C/g%3E%3C/svg%3E");
+        background-size:cover}
+      ._darkTheme .waves-ripple {background: rgba(255, 255, 255, .2) !important}
+      .waves-light .waves-ripple {background: rgba(255, 255, 255, .2) !important}
+      .card {width:100%}
+      nav a,nav a i {
+        color: #505050 !important;
+        background: transparent !important;
+      }
+      body {
+        font-family: 'Nunito', sans-serif;
+        /*background: rgb(240,240,255)*/
+      }
+      nav {
+        box-shadow: none !important;
+        border-bottom: 1px solid rgba(0,0,0,0.1);
+        background: rgba(0,0,0,.05);
+        z-index: 9999;
+        backdrop-filter: blur(10px);
+        position: fixed;
+        top: 0
+      }
+      .waves-ripple {
+        transition: transform .8s cubic-bezier(0.4, 0, 0.2, 1), opacity .4s !important
+      }
+      @keyframes bg {0% {background-size:300%} 20% {background-size:300%} 50% {background-size:100%} 100% {background-size: 100%}}
+      @media only screen and (min-width: 992px) {
+        .header {animation: bg 5s forwards;background-position: center;}
       }
     </style>
-		<script src="components.js"></script>
-    <script defer>
-      window.addEventListener("load", () => {
-        if (
-          localStorage.getItem("dark_mode") &&
-          localStorage.getItem("dark_mode") == "true"
-        ) {
-          document.documentElement.classList.add("dark_mode");
-        }
-      });
-    </script>
-    <div
-		id="hero"
-      class="hero-image"
-      style="
-			transition: all .2s;
-         background: linear-gradient(
-            0deg,
-            rgba(0, 0, 0, 0.3),
-            rgba(0, 0, 0, 0.3)
-          ),
-          url(https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs3/100818559/original/4ec2b3722e9e24d6b7050ec5d1f9685825709af5/do-background-anime-style.png);
-        background-size: 130%;
-        background-repeat: no-repeat;
-				background-position:center;background-attachment: fixed;
-      "
-    >
-      <div class="container white-text center" style="padding: 20vh 0">
-        <h2 style="font-size: 50px; color: white !important">
-          Smart &amp; easy group decision making
-        </h2>
-        <p>An immersive polling experience for both schools and offices! <b>No signup required!</b></p>
-        <a
-          class="waves-effect waves-light"
-          style="
-            color: white;
-            min-width: 200px;
-            backdrop-filter: blur(5px);
-            background: transparent;
-            padding: 10px;
-            border: 2px solid #0d47a1;
-            border-radius: 10px;
-						margin: 5px;
-          "
-          href="./add"
-          >Create your own poll!</a
-        >
-
-				<a
-          class="waves-effect waves-light"
-          style="
-            color: white;
-            min-width: 200px;
-            backdrop-filter: blur(5px);
-            background: transparent;
-            padding: 10px;
-            border: 2px solid #0d47a1;
-            border-radius: 10px;
-						margin: 5px;
-          "
-          href="https://joinmypoll.ml/"
-          >Join poll</a
-        >
+  </head>
+  <body>
+    <nav>
+      <ul>
+        <li><a href="/">EdPoll</a></li>
+      </ul>
+      <ul class="right">
+        <a href="/add" class="btn btn-flat waves-effect">Create!</a>
+      </ul>
+    </nav>
+    <div class="header valign-wrapper">
+      <div class="container">
+        <div class="center">
+          <h1>
+            Class decisions never got easier!
+          </h1>
+          <p>
+            Edpoll is a polling app with many features, such as Wordclouds, Polls, and Bulletin boards;
+          </p>
+          <a href="/add" class="btn btn-flat waves-effect">Create your own poll!</a>
+          <a href="//joinmypoll.ml" class="btn btn-flat waves-effect">Join a poll!</a>
+        </div>
       </div>
     </div>
     <div class="container">
-			<br>
-			<h3>
-				<b>Features</b>
-				</h3>
-			<div class="row">
-				<div class="col s12">
-					<br>
-					<div class="row">
-						<div class="col s12 m8">
-					<h5>
-						Create, Manage, and Assign polls!
-					</h5>
-					<p>
-						Create polls on the fly, and present them to your class!
-						<b>No signup required!</b>
-					</p>
-					</div>
-					<div class="col s12 m4">
-						<img src="https://i.ibb.co/JszX1VP/Screenshot-2021-09-08-7-05-20-PM.png" alt="https://i.ibb.co/JszX1VP/Screenshot-2021-09-08-7-05-20-PM.png" style="width: 100%">
-					</div>
-				</div>
-				</div>
-				<div class="col s12">
-					<div class="row">
-						<div class="col s12 m8">
-							<h5>Present your polls</h5>
-							<p>Present your poll to your entire class or team</p>
-						</div>
-						<div class="col s12 m4">
-							<img src="https://i.ibb.co/92pYNmn/Screenshot-2021-09-08-7-07-22-PM.png" alt="https://i.ibb.co/92pYNmn/Screenshot-2021-09-08-7-07-22-PM.png" style="width: 100%">
-						</div>
-					</div>
-				</div>
-				<div class="col s12">
-					<div class="row">
-						<div class="col s12 m8">
-							<h5>Vote</h5>
-							<p>Students can chat with each other. Profanity and spam filter included. No student sign up required!</p>
-						</div>
-						<div class="col s12 m4">
-							<img src="https://i.ibb.co/1qMYHxD/Screenshot-2021-09-08-7-08-48-PM.png" alt="https://i.ibb.co/1qMYHxD/Screenshot-2021-09-08-7-08-48-PM.png" style="width: 100%">
-						</div>
-					</div>
-				</div>
-				<div class="col s12">
-					<div class="row">
-						<div class="col s12 m8">
-							<h5>View Poll Results!</h5>
-							<p>Students get to view poll results live! Confetti included.</p>
-						</div>
-						<div class="col s12 m4">
-							<img src="https://i.ibb.co/Y2Zp2Vq/Screenshot-2021-09-08-7-13-22-PM.png" alt="https://i.ibb.co/Y2Zp2Vq/Screenshot-2021-09-08-7-13-22-PM.png" style="width: 100%">
-						</div>
-					</div>
-				</div>
-				<div class="col s12">
-					<div class="card">
-						<div class="card-content">
-							<h5>Created by a middle school student!</h5>
-							<p>This app was created by a middle school student in the US!</p>
-							<br>
-						</div>
-					</div>
-				</div>
-				<div class="col s12"></div>
-				<div class="col s12"></div>
-			</div>
-      <br />
-			<div class="row">
-				<div class="col s12 m8">
-      <h3>
-        <b>Recent Polls</b>
-      </h3>
-				</div>
-				<div class="col s12 m4">
-					<div class="input-field">
-						<label for="search">Search...</label>
-						<input type="text" id="search"></div>
-				</div>
-			</div>
-      <div class="row loading" id="polls">
-				<div class="cardLoading col s4" style="height: 200px;"></div>
-				<div class="cardLoading col s4" style="height: 200px;"></div>
-				<div class="cardLoading col s4" style="height: 200px;"></div>
-				<div class="cardLoading col s4" style="height: 200px;"></div>
-				<div class="cardLoading col s4" style="height: 200px;"></div>
-				<div class="cardLoading col s4" style="height: 200px;"></div>
-				<div class="cardLoading col s4" style="height: 200px;"></div>
-				<div class="cardLoading col s4" style="height: 200px;"></div>
-				<div class="cardLoading col s4" style="height: 200px;"></div>
-				<div class="cardLoading col s4" style="height: 200px;"></div>
-				<div class="cardLoading col s4" style="height: 200px;"></div>
-				<div class="cardLoading col s4" style="height: 200px;"></div>
-			</div>
+      <br>
+      <h3 class="center">
+        <b>Features</b>
+      </h3><br>
+      <div class="row">
+        <div class="col s12 m4">
+          <div class="card">
+            <div class="card-content center">
+              <i class="material-icons-round" style="font-size: 35px;">poll</i>
+              <br>
+              <b>Poll</b>
+              <br>
+              Simple multiple-choice poll.
+            </div>
+          </div>
+        </div>
+        <div class="col s12 m4">
+          <div class="card">
+            <div class="card-content center">
+              <i class="material-icons-round" style="font-size: 35px;">dashboard</i>
+              <p>
+                <b>Bulletin Board</b>
+                <br>
+                Let students write their own responses
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col s12 m4">
+          <div class="card">
+            <div class="card-content center">
+              <i class="material-icons-round" style="font-size: 35px;">article</i>
+              <p>
+                <b>WordCloud</b>
+                <br>
+                Organize responses into a wordcloud.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="row">
+        <div class="col s12 m4">
+          <div class="card">
+            <div class="card-content center">
+              <i class="material-icons-round" style="font-size: 35px;">password</i>
+              <br>
+              <b>Profanity Filter</b>
+              <br>
+              Profanity and spam filter included
+            </div>
+          </div>
+        </div>
+        <div class="col s12 m4">
+          <div class="card">
+            <div class="card-content center">
+              <i class="material-icons-round" style="font-size: 35px;">local_offer</i>
+              <p>
+                <b>It's Free!</b>
+                <br>
+                Our app is free of cost! No signup required!
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col s12 m4">
+          <div class="card">
+            <div class="card-content center">
+              <i class="material-icons-round" style="font-size: 35px;">gpp_good</i>
+              <p>
+                <b>Secure</b>
+                <br>
+                HTTPS and encrypted polls!
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
-    <script
-      src="https://cdn.jsdelivr.net/npm/@materializecss/materialize@1.0.0/dist/js/materialize.min.js"
-      type="text/javascript"
-    ></script>
+    <br>
+    <h3 class="center">
+      <b>All Polls</b>
+    </h3><br>
+    <div class="container">
+      <div class="row" id="polls">
+        <center>
+          <div class="preloader-wrapper small active">
+            <div class="spinner-layer spinner-green-only">
+              <div class="circle-clipper left">
+                <div class="circle"></div>
+              </div><div class="gap-patch">
+              <div class="circle"></div>
+              </div><div class="circle-clipper right">
+              <div class="circle"></div>
+              </div>
+            </div>
+          </div>
+        </center>
+      </div>
+    </div>
     <footer class="page-footer blue" style="padding: 0 !important">
       <div class="footer-copyright">
         <div class="container">
           © Copyright 2021 All rights reserved
           <a
-            class="grey-text text-lighten-4 right"
-            href="https://manuthecoder.ml"
-            >A swag app by Manu!</a
-          >
+             class="grey-text text-lighten-4 right"
+             href="https://manuthecoder.ml"
+             >A swag app by Manu!</a
+            >
         </div>
       </div>
-		<div class="add-button"></div>
+      <div class="add-button"></div>
 
     </footer>
+    <script src="https://cdn.jsdelivr.net/npm/@materializecss/materialize@1.1.0-alpha/dist/js/materialize.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/ManuTheCoder/JS-Essentials/essentials.min.js"></script>
+    <script src="script.js"></script>
     <script>
-			// const socket = io("wss://" + window.location.hostname);
-      // socket.emit("message", "hi");
-			window.onerror = function(msg, url, linenumber) {
-    alert('Error message: '+msg+'\nURL: '+url+'\nLine Number: '+linenumber);
-    return true;
-}
-function char_convert(str) {
-	str = str.toString();
-str = str.replace(/&/g, "&amp;");
-  str = str.replace(/>/g, "&gt;");
-  str = str.replace(/</g, "&lt;");
-  str = str.replace(/"/g, "&quot;");
-  str = str.replace(/'/g, "&#039;");
-	return str;
-}
-      
+      function char_convert(str) {
+        str = str.toString();
+        str = str.replace(/&/g, "&amp;");
+        str = str.replace(/>/g, "&gt;");
+        str = str.replace(/</g, "&lt;");
+        str = str.replace(/"/g, "&quot;");
+        str = str.replace(/'/g, "&#039;");
+        return str;
+      }
+
       window.addEventListener("load", () => {
-			
+
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
           if (this.readyState == 4 && this.status == 200) {
-						const json = JSON.parse(this.responseText)
-						document.getElementById("polls").innerHTML = "";
-						$(document).ready(function(){
-							$("#search").on("keyup", function() {
-								var value = $(this).val().toLowerCase();
-								if(value.trim() == "") {
-									$("#polls .col.s12").addClass("m4")
-								}
-								$("#polls .col.s12").filter(function() {
-									$(this).removeClass("m4")
-									$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-								});
-							});
-						});
-						document.getElementById("polls").innerHTML = `<div class="chips1 col s12"></div>`
-						// [...new Set(array)]
-						json.forEach((data, key) => {
-						var cat = "";
-						if(data.categories) {
-						data.categories.forEach(d => {
-							cat += `<div class="chip">${char_convert(d)}</div>`
-						})
-						}
-						// document.getElementById("polls").getElementsByClassName("chips1")[0].innerHTML += `${cat}`
-            document.getElementById("polls").innerHTML += `<div class="col s12"> <div class="card waves-effect" onclick="window.location = './v/${key}/'" tabindex="0" onkeyup="if(event.keyCode == 13) {window.location = './v/${key}/'}"> <div class="card-content"> <b><h5>${char_convert(data.title)}</h5></b> <p>${char_convert((data.date?data.date:""))}</p> <br> <p>${cat}</p> </div> </div> </div>`;
-						})
+            const json = JSON.parse(this.responseText)
+            document.getElementById("polls").innerHTML = "";
+            $(document).ready(function(){
+              $("#search").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                if(value.trim() == "") {
+                  $("#polls .col.s12").addClass("m4")
+                }
+                $("#polls .col.s12").filter(function() {
+                  $(this).removeClass("m4")
+                  $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+              });
+            });
+            document.getElementById("polls").innerHTML = `<div class="chips1 col s12"></div>`
+            // [...new Set(array)]
+            json.forEach((data, key) => {
+              var cat = "";
+              if(data.categories) {
+                data.categories.forEach(d => {
+                  cat += `<div class="chip">${char_convert(d)}</div>`
+                })
+              }
+              // document.getElementById("polls").getElementsByClassName("chips1")[0].innerHTML += `${cat}`
+              document.getElementById("polls").innerHTML += `<div class="col s12"> <div class="card waves-effect" onclick="window.location = './v/${key}/'" tabindex="0" onkeyup="if(event.keyCode == 13) {window.location = './v/${key}/'}"> <div class="card-content"> <b><h5>${char_convert(data.title)}</h5></b> <p>${char_convert((data.date?data.date:""))}</p> <br> <p>${cat}</p> </div> </div> </div>`;
+            })
           }
         };
         xhttp.open("GET", "./database/polls.json", true);
-				xhttp.setRequestHeader("Authorization", "Bearer {{DBTOKEN}}");
+        xhttp.setRequestHeader("Authorization", "Bearer {{DBTOKEN}}");
         xhttp.send();
       });
-
-			window.onscroll = function() {scrollFunction()};
-scrollFunction()
-function scrollFunction() {
-	// M.toast({html: document.documentElement.scrollTop })
-	if($(document).width() < 992) {
-document.getElementById("hero").style.backgroundSize = `${document.documentElement.scrollTop/4+250}%`;
-	}
-	else {
-		document.getElementById("hero").style.backgroundSize = `${document.documentElement.scrollTop/55+100}%`;
-	}
-	
-  // if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-  //   document.getElementById("hero").style.backgroundSize = "100%";
-  // } else {
-  //   document.getElementById("hero").style.backgroundSize = document.body.scrollTop + "%";
-  // }
-}
-let deferredPrompt;
-const addBtn = document.querySelector('.add-button');
-addBtn.style.display = 'none';
-
-window.addEventListener('beforeinstallprompt', (e) => {
-  // Prevent Chrome 67 and earlier from automatically showing the prompt
-  e.preventDefault();
-  // Stash the event so it can be triggered later.
-  deferredPrompt = e;
-  // Update UI to notify the user they can add to home screen
-  addBtn.style.display = 'block';
-
-  addBtn.addEventListener('click', () => {
-    // hide our user interface that shows our A2HS button
-    addBtn.style.display = 'none';
-    // Show the prompt
-    deferredPrompt.prompt();
-    // Wait for the user to respond to the prompt
-    deferredPrompt.userChoice.then((choiceResult) => {
-      if (choiceResult.outcome === 'accepted') {
-        console.log('User accepted the A2HS prompt');
-      } else {
-        console.log('User dismissed the A2HS prompt');
-      }
-      deferredPrompt = null;
-    });
-  });
-});
     </script>
   </body>
 </html>

@@ -79,7 +79,9 @@ body {
 .selected {
 	background: rgba(0, 0, 0, .1) !important;
 }
-.disabled {pointer-events: none;cursor: not-allowed}
+.disabled {pointer-events: unset;cursor: not-allowed}
+.progress:hover {transform: scaleY(10)}
+.progress {transition: all .2s;border-radius: 0 !important}
 .iframe .nav-wrapper {
 	opacity: 0 !important;
 	margin-top: -65px !important;
@@ -209,10 +211,16 @@ body {
 .dark_mode .noteBar label {
 	background: #404040 !important
 }
-.noteBar .input-field textarea:focus + label {
+.input-field textarea:focus + label {
 	color: #000 !important
 }
-.dark_mode .noteBar .input-field textarea:focus + label {
+.input-field input:focus + label {
+	color: #000 !important
+}
+.dark_mode .input-field textarea:focus + label {
+	color: #fff !important
+}
+.dark_mode .input-field input:focus + label {
 	color: #fff !important
 }
 textarea {background:transparent!important;padding-top: 15px!important;min-height: 70px !important;}

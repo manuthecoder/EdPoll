@@ -106,7 +106,8 @@
       .chip:focus {
         background: #37474f !important
       }
-
+			textarea {padding-top: 15px !important}
+.input-field {margin-bottom:20px!important;display: block;}
 			.input-field {
   max-width: 100%;
   overflow: visible !important
@@ -137,7 +138,7 @@
   padding: 0 4px;
   display: inline-block;
 }
-label {pointer-events:none}
+.input-field label {pointer-events:none}
 .input-border input:focus,.input-border textarea:focus {
   border-color: var(--navbar-color) !important;
   box-shadow: 0px 0px 0px 1px var(--navbar-color) inset !important;
@@ -153,7 +154,7 @@ label {pointer-events:none}
   margin-left: 7px !important;
   margin-top: 8px !important
 }
-.tabContent {height: 100vh !important}
+.tabContent {height: 100vh !important;overflow-y: scroll;}
     </style>
   </head>
   <body>
@@ -229,7 +230,7 @@ label {pointer-events:none}
           </h5>
 					<p>Simple multiple-choice poll</p>
           <div class="input-field input-border">
-            <input autocomplete="off" type="text" id="poll__name">
+            <input class="cc" data-length="30" maxlength="30" autocomplete="off" type="text" id="poll__name">
             <label>Poll Title</label>
           </div>
 					<div id="c2container">
@@ -263,7 +264,7 @@ label {pointer-events:none}
 				</p>
                 <div class="input-field input-border">
                   <label>Poll Description</label>
-                  <textarea class="materialize-textarea" id="poll__description" style="min-height: 100px;margin-left:0 !important"></textarea>
+                  <textarea data-length="50" maxlength="50" class="cc materialize-textarea" id="poll__description" style="min-height: 100px;margin-left:0 !important"></textarea>
                 </div>
                 <div class="input-field input-border">
                   <label>Poll Password</label>
@@ -291,8 +292,8 @@ label {pointer-events:none}
 				<h5><b>Create bulletin</b></h5>
 				<p>Let students create free responses for your question</p>
 
-				<div class="input-field input-border"><input id="bb__name" type="text"><label for="bb__name">Title</label></div>
-				<div class="input-field input-border"><input id="bb__desc" type="text"><label for="bb__desc">Description</label></div>
+				<div class="input-field input-border"><input data-length="30" maxlength="30" id="bb__name" type="text" class="cc"><label for="bb__name">Title</label></div>
+				<div class="input-field input-border"><input data-length="30" maxlength="30" id="bb__desc" type="text" class="cc"><label for="bb__desc">Description</label></div>
 				<div class="input-field input-border"><input id="bb__image" type="url"><label for="bb__image">Image URL (optional)</label></div>
 				<div class="input-field input-border"><input id="bb_password" type="text"><label for="bb_password">Password (optional)</label></div>
 
@@ -305,11 +306,11 @@ label {pointer-events:none}
 				<p>Responses will be organized into a wordcloud</p>
         <!-- Coming soon! -->
 				<div class="input-field input-border">
-					<input autocomplete="off" type="text" id="wc__name">
+					<input data-length="30" maxlength="30" autocomplete="off" class="cc" type="text" id="wc__name">
 					<label>Title</label>
 				</div>
 				<div class="input-field input-border">
-					<textarea type="text" id="wc__description" class="materialize-textarea" style="margin-left:0 !important"></textarea>
+					<textarea data-length="50" maxlength="50" type="text" id="wc__description" class="cc materialize-textarea" style="margin-left:0 !important"></textarea>
 					<label>Description (optional)</label>
 				</div>
 				<div class="input-field input-border">
@@ -333,6 +334,7 @@ label {pointer-events:none}
 
     <script src="https://cdn.jsdelivr.net/npm/@materializecss/materialize@1.1.0-alpha/dist/js/materialize.min.js"></script>
     <script>
+			$('.cc').characterCounter();
       var categories = [];
       var id = 0;
       var choices = [];

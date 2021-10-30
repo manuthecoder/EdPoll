@@ -187,11 +187,11 @@ var _logger = (req, res, next) => {
           .replace(`</script>`, "")
           .replace(/\t/g, "")
           .replace(/\n/g, "");
-        // content = result;
-        // cache[url] = content;
+        content = result;
+        cache[url] = content;
       }
     } else {
-      // content = cache[url];
+      content = cache[url];
     }
   } else if (
     path.extname(url) == ".json" &&
@@ -252,7 +252,7 @@ io.on("connection", (socket) => {
   socket.on("votedNow", (a, b) => io.emit("votedNow", a, b));
   socket.on("confetti", (id) => io.emit("confetti", id));
 
-  socket.on("vote", (optionID, pollID, token) => {
+  socket.on("vote", (optionID, pollID, token,c) => {
     console.log("Vote", optionID, pollID, token);
     io.emit("vote", optionID);
     var db = JSON.parse(
@@ -270,7 +270,7 @@ io.on("connection", (socket) => {
       console.error(db[pollID]);
       console.error(db[pollID].options[optionID]);
     }
-    io.emit("votedNow", pollID, db[pollID].options, token);
+    io.emit("votedNow", pollID, db[pollID].options, token,c);
   });
 });
 function char_convert(str) {

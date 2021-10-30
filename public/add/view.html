@@ -1,17 +1,19 @@
 <script>
+	var db = {};
 	window.onerror=function(e){socket.emit('error',e)}
 	var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-			const db = JSON.parse(this.responseText)[id-1];
+			db = JSON.parse(this.responseText)[id-1];
       document.getElementById("app").innerHTML = `
-				<h1 class="truncate" onclick="navigator.clipboard.writeText(this.innerText);M.toast({html:'Copied to clipboard!'})"><b>edpoll.ga/${id-1}</b></h1>
+			<div class="container">
+				<h1 class="truncate" onclick="navigator.clipboard.writeText('https://'+this.innerText);M.toast({html:'Copied to clipboard!'})"><b>edpoll.ga/${id-1}</b></h1>
 				<div class="divider"></div>
 				<h5>Details</h5>
-				<p class="truncate">${db.title}</p>
-				<p class="truncate">${db.date}</p>
-				<p class="truncate">${db.desc}</p>
-				<p class="truncate">${db.categories.join(", ")}</p>
+				<p class="truncate">${(db.title?db.title:"")}</p>
+				<p class="truncate">${(db.date?db.date:"")}</p>
+				<p class="truncate">${(db.desc?db.desc:"")}</p>
+				<p class="truncate">${(db.categories ? db.categories.join(", "): "")}</p>
 				<div class="divider"></div>
 				<h5>Share</h5>
 				<a class="btn pink btn-floating" href="https://api.qrserver.com/v1/create-qr-code/?size=900x900&data=https%3A%2F%2F${window.location.hostname}%2Fv%2F${id}">
@@ -52,9 +54,10 @@
 		</i>
 		</a>
 		</div>
+		</div>
 			<div class='center' style="position: fixed;top: 50%;left: 50%;transform:translate(-50%,-50%)">
 				<h1>edpoll.ga/${id}</h1>
-				${(poll.type=="Poll"?`<p><b id="count">0</b> votes</p>`:"")}
+				${(db.type=="Poll"?`<p><b id="count">0</b> votes</p>`:"")}
 			</div>
 		`
 	}
