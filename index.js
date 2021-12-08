@@ -210,6 +210,23 @@ io.on("connection", (socket) => {
   socket.on("message", function (e) {
     console.log(e);
   });
+	socket.on("upvotePoll", function (number, pollId, optionId) {
+		var db = JSON.parse(fs.readFileSync("./public/database/polls.json"));
+		if(db[pollId].responses[optionId].includes('|--LIKES--|')) {
+			db[pollId].responses[optionId] = db[pollId].responses[optionId].replace(`|--LIKES--|${number-1}`, `|--LIKES--|${number}`);
+
+			io.emit("newLike", number, pollId, optionId)
+		}
+		else {
+			db[pollId].responses[optionId] = db[pollId].responses[optionId]+"|--LIKES--|1"
+		}
+		console.log(db[pollId].responses[optionId])
+ 		fs.writeFileSync(
+      "./public/database/polls.json",
+      JSON.stringify(db),
+      "utf-8"
+    );
+  });
   socket.on("addWord1", function (a, b, c) {
     var db = JSON.parse(fs.readFileSync("./public/database/polls.json"));
     db[a].responses.push(c);
@@ -223,13 +240,15 @@ io.on("connection", (socket) => {
 	socket.on("addBulletinNote", function (c, pollid) {
 		console.log((c))
     var db = JSON.parse(fs.readFileSync("./public/database/polls.json"));
-    db[pollid].responses.push(c);
+    db[pollid].responses.push(c+"|--LIKES--|0");
+		var optionId = db[pollid].responses.length
+		var optionId1 = db[pollid].responses.length+1
     fs.writeFileSync(
       "./public/database/polls.json",
       JSON.stringify(db),
       "utf-8"
     );
-    io.emit("addBulletin",c,pollid);
+    io.emit("addBulletin",c,pollid, optionId, optionId1);
   });
   socket.on("error", (e) => {
     console.error(e);

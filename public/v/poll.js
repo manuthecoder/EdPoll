@@ -1,7 +1,7 @@
 // REMOVE THIS
 // localStorage.clear();
 
-function char_convert(str) {
+function htmlspecialchars(str) {
   str = str.replace(/&/g, "&amp;");
   str = str.replace(/>/g, "&gt;");
   str = str.replace(/</g, "&lt;");
@@ -9,20 +9,34 @@ function char_convert(str) {
   str = str.replace(/'/g, "&#039;");
   return str;
 }
-function addNote(el) {
+function addNote(el, id) {
   if (el.trim() !== "") {
     document.getElementById("noteContainer").insertAdjacentHTML(
       "afterbegin",
       `
-<div class="card blue white-text">
+<div class="card blue white-text" data-likes="${(el.split("|--LIKES--|")[1]?el.split("|--LIKES--|")[1]:0)}" data-id="${id}">
 	<div class="card-content">
-  	${el}
+  	${(el.split("|--LIKES--|")[0]||0)}
+<div style="text-align:right;">
+		<button class="btn red darken-5 waves-effect z-depth-0" style="display:inline-block;border-radius:999px;margin-top:10px;" onclick="likeButton(this);localStorage.setItem('like${id}', 'true')" ${(localStorage.getItem('like'+id) ? 'disabled': '')} id="likeButton_${id}">
+			<i class="material-icons left">${(localStorage.getItem('like'+id) ? 'thumb_up_alt': 'thumb_up_alt')}</i> <span>${(el.split("|--LIKES--|")[1]?el.split("|--LIKES--|")[1]:0)}</span>
+		</button></div>
   </div>
 </div>
 `
     );
   }
   document.getElementById("noteInput").value = "";
+}
+function likeButton(el) {
+	el.disabled=true;
+	el.getElementsByTagName('i')[0].innerHTML
+	 = "thumb_up_alt"
+	el.getElementsByTagName("span")[0].innerHTML = parseInt(el.getElementsByTagName("span")[0].innerHTML)+1;
+	socket.emit("upvotePoll", 
+	parseInt(el.parentElement.parentElement.parentElement.getAttribute('data-likes'))+1,
+	parseInt(pollID), 
+	parseInt(el.parentElement.parentElement.parentElement.getAttribute("data-id")))
 }
 const banner = `
 <div class="card">
@@ -47,7 +61,7 @@ const banner = `
       </label>
     </p>
 	<div class="input-field input-border">
-		<label style="background:#303030!important">Any suggestions</label>
+		<label style="background:var(--bg-color)!important">Any suggestions</label>
 		<textarea name="suggestions" class="materialize-textarea" style="background:transparent!important;margin-left:0!important;padding-top: 15px!important;"></textarea>
 	</div>
   <!-- your other form fields go here -->
@@ -65,6 +79,20 @@ var totalVotes = 0;
 var _app = document.querySelector("#_root");
 var poll = {};
 const pollID = window.location.href.replace(/\D/g, "");
+
+socket.on("newLike", (number, pollId, optionId) => {
+	if(pollId == pollID){
+		document.getElementById("likeButton_"+optionId).getElementsByTagName("span")[0].innerHTML = number;
+
+		document.getElementById("likeButton_"+optionId).classList.add("scaleAnimate");
+		document.getElementById("likeButton_"+optionId).parentElement.parentElement.parentElement.setAttribute("data-likes", number)
+
+		setTimeout(function() {
+			document.getElementById("likeButton_"+optionId).classList.remove("scaleAnimate");
+		}, 200)
+	}
+})
+
 window.addEventListener("load", () => {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function () {
@@ -82,7 +110,7 @@ window.addEventListener("load", () => {
         }
         if (poll.categories) {
           poll.categories.forEach(
-            (e) => (categories += `<div class="chip">${char_convert(e)}</div>`)
+            (e) => (categories += `<div class="chip">${htmlspecialchars(e)}</div>`)
           );
         }
         var Authorization = new Promise((resolve, reject) => {
@@ -135,7 +163,7 @@ window.addEventListener("load", () => {
 					<div class="nav-wrapper">
 						<ul>
 							<li><a href="/" class="grey-text btn-floating btn-flat waves-effect" style="margin-left: 7px !important"><i class="material-icons" onclick="document.getElementById('cancelAudio').play()">arrow_back</i></a></li>
-							<li><a href="/" id="navTitle" style="color:var(--font-color-1)!important">Poll</a></li>
+							<li><a href="/" id="navTitle" style="color:var(--font-color-1)!important">${poll.type}</a></li>
 						</ul>
 						<ul class="right">
 							<li>
@@ -149,7 +177,7 @@ window.addEventListener("load", () => {
 							<li class="tab col s3" onclick="document.getElementById('swipe').play();"><a onclick='window.location.hash="#vote"' draggable="false" href="#vote" class="waves-effect">Vote</a></li>
 							<li class="tab col s3" onclick="document.getElementById('swipe1').play();"><a onclick='window.location.hash="#talk"' draggable="false" href="#talk" class="waves-effect${
                 poll.hideChat ? " disabled" : ""
-              }">Talk [New!]${poll.hideChat ? " (Disabled)" : ""}</a></li>
+              }">Talk ${poll.hideChat ? " (Disabled)" : ""}</a></li>
 					</ul>
 				</div>
 				</nav>
@@ -166,7 +194,7 @@ window.addEventListener("load", () => {
                 )}" class="pollImage">`
               : ""
           }
-					<h3 class="truncate"><b>${char_convert(poll.title)}</b></h3>
+					<h3 class="truncate"><b>${htmlspecialchars(poll.title)}</b></h3>
 					<p class="truncate">${poll.desc == "" ? "" : poll.desc}</p>
 					${categories} <div class="chip">Created on: ${poll.date}</div>
 					<br>
@@ -233,7 +261,7 @@ window.addEventListener("load", () => {
 						${
               value.name.trim() !== ""
                 ? `<div class="card-content">
-							${char_convert(value.name)}
+							${htmlspecialchars(value.name)}
 						</div>
 						`
                 : ""
@@ -279,9 +307,9 @@ ${
     : ""
 }
 <div class="introwordcloud">
-			<h3 class="truncate"><b>${char_convert(poll.title)}</b></h3>
-			<p class="truncate">${poll.desc == "" ? "" : char_convert(poll.desc)}</p>
-${categories} <div class="chip">Created on: ${char_convert(poll.date)}</div>
+			<h3 class="truncate"><b>${htmlspecialchars(poll.title)}</b></h3>
+			<p class="truncate">${poll.desc == "" ? "" : htmlspecialchars(poll.desc)}</p>
+${categories} <div class="chip">Created on: ${htmlspecialchars(poll.date)}</div>
 			</div>
 
 <div class="input-field input-border" id="addWordCloudContainer">
@@ -303,6 +331,7 @@ ${categories} <div class="chip">Created on: ${char_convert(poll.date)}</div>
             $("#addWordCloud").characterCounter();
             initWordCloud();
             socket.on("addWord", (pollID, token, word) => {
+							document.getElementById("newVote").play();
               document.getElementById("text").value += " " + word;
               document.getElementById("go").click();
             });
@@ -330,16 +359,13 @@ ${categories} <div class="chip">Created on: ${char_convert(poll.date)}</div>
 	<b><span id="count">${totalVotes}</span></b>
 	<p style="margin:0!important;line-height:1!important">Responses</p>
 </div>
-
-
-
 </div>
 </div>
 <center>
 <div id="noteContainer" style="padding: 0 10px;"></div>
 </center>
 <div style="height: 200px;width: 100%"></div>
-<div id="noteBar" class="noteBar z-depth-2" style="background:var(--bg-color);padding: 0 20px;width: 90vw;position:fixed;bottom:10px;left: 50%;transform:translateX(-50%);border-radius: 4px;" onclick="this.classList.remove('noteBarCollapse');document.getElementById('noteInput').focus()">
+<div id="noteBar" tabindex="0" onkeyup="if(event.keyCode===13)this.click();" class="noteBar z-depth-2" style="background:var(--bg-color);padding: 0 20px;width: 90vw;position:fixed;bottom:10px;left: 50%;transform:translateX(-50%);border-radius: 4px;" onclick="this.classList.remove('noteBarCollapse');document.getElementById('noteInput').focus()">
 	<div class="input-field input-border">
   	<textarea data-length="300" maxlength="300" type="text" onkeyup="if( !event.shiftKey && event.keyCode==13){this.value=this.value.trim();socket.emit('addBulletinNote', this.value, ${pollID});document.getElementById('noteBar').classList.add('noteBarCollapse')}" id='noteInput' class="materialize-textarea" style="margin-left: 0!important" placeholder="Shift+Enter for multiple lines"></textarea>
     <label style="pointer-events: none">Enter your response here...</label>
@@ -347,7 +373,7 @@ ${categories} <div class="chip">Created on: ${char_convert(poll.date)}</div>
 </div>
 `;
             $("#noteInput").characterCounter();
-            poll.responses.forEach((d) => addNote(d));
+            poll.responses.forEach((d,k) => addNote(d, k));
             $("#noteInput").focus();
             $(".tooltipped").tooltip();
             document.getElementsByClassName("nav-content")[0].innerHTML = ``;
@@ -479,7 +505,7 @@ socket.on("votedNow", function (pollID1, dbPollID, token, c) {
   }
   if (pollID1 == pollID && alreadyVoted) {
     showResults(pollID, dbPollID, c.toString() !== "false" ? true : false);
-    sendNotification(`New vote on "${char_convert(poll.title)}"`, pollID);
+    sendNotification(`New vote on "${htmlspecialchars(poll.title)}"`, pollID);
   }
 });
 
@@ -571,11 +597,12 @@ window.onerror = function (msg, url, linenumber) {
     lineNumber: linenumber,
   });
 };
-socket.on("addBulletin", function (e, id) {
+socket.on("addBulletin", function (e, id, optionId, optionId1) {
   document.getElementById("count").innerHTML =
     parseInt(document.getElementById("count").innerText) + 1;
   if (id == pollID) {
+		socket.emit("message", optionId)
     document.getElementById("newVote").play();
-    addNote(e);
+    addNote(e, optionId-1);
   }
 });
